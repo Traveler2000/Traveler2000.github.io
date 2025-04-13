@@ -110,7 +110,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9fpmjcf000454uh8ago4r9f" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9fpsojy000c2guhh7s1cljm" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -160,8 +160,6 @@
 <p><code>mt_rand()</code>：随机数函数。可以直接用，也可以设定最大与最小值（参数1和参数2）</p>
 <p>本题找个 PHP 解释器生成一下伪随机数，然后通过 URL 发送 GET 请求即可。</p>
 <hr>
-<hr>
-<hr>
 <p><strong>题目二</strong></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$r</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">mt_srand</span>(<span class="title function_ invoke__">hexdec</span>(<span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$flag</span>), <span class="number">0</span>,<span class="number">8</span>)));</span><br><span class="line">    <span class="variable">$rand</span> = <span class="title function_ invoke__">intval</span>(<span class="variable">$r</span>)-<span class="title function_ invoke__">intval</span>(<span class="title function_ invoke__">mt_rand</span>());</span><br><span class="line">    <span class="keyword">if</span>((!<span class="variable">$rand</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;token&#x27;</span>]==(<span class="title function_ invoke__">mt_rand</span>()+<span class="title function_ invoke__">mt_rand</span>()))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$rand</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat /proc/version&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -184,7 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9fpmjch000854uh4gxy1ule" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9fpsojr00012guh538l56qn" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -237,7 +235,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9fpmjci000954uh6ycmd0fj" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9fpsojt00032guh6yi8fh0h" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -287,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9fpmjce000354uhfe1pby0w" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9fpsojw00072guhhfl15qk7" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -323,12 +321,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="博客回显测试用"><a href="#博客回显测试用" class="headerlink" title="博客回显测试用"></a>博客回显测试用</h1><p>本文章用于测试 Hexo 功能。</p>
+        <p>本文章用于测试 Hexo 功能。</p>
 <h2 id="二号标题1"><a href="#二号标题1" class="headerlink" title="二号标题1"></a>二号标题1</h2><h3 id="三号标题1"><a href="#三号标题1" class="headerlink" title="三号标题1"></a>三号标题1</h3><h4 id="四号标题1"><a href="#四号标题1" class="headerlink" title="四号标题1"></a>四号标题1</h4><h5 id="五号标题1"><a href="#五号标题1" class="headerlink" title="五号标题1"></a>五号标题1</h5><h3 id="三号标题2"><a href="#三号标题2" class="headerlink" title="三号标题2"></a>三号标题2</h3><h5 id="五号标题2"><a href="#五号标题2" class="headerlink" title="五号标题2"></a>五号标题2</h5>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9fpmjch000754uhdunbe9cy" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9fpsojv00062guhbivj48w0" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -379,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/hello-world/" data-id="cm9fpmjcb000154uhcsk7343z" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/hello-world/" data-id="cm9fpsojw00082guhdz2v9ywh" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
