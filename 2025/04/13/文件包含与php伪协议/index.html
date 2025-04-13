@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>文件包含与 php:// 伪协议 | Traveler2000🪐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1234567891011&lt;?phperror_reporting(0);if(isset($_GET[&#x27;c&#x27;]))&#123;    $c &#x3D; $_GET[&#x27;c&#x27;];    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#x27;|\&#96;|echo|\;|\(&#x2F;i&quot;,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含与 php:&#x2F;&#x2F; 伪协议">
+<meta property="og:url" content="http://traveler2000.github.io/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Traveler2000🪐">
+<meta property="og:description" content="1234567891011&lt;?phperror_reporting(0);if(isset($_GET[&#x27;c&#x27;]))&#123;    $c &#x3D; $_GET[&#x27;c&#x27;];    if(!preg_match(&quot;&#x2F;flag|system|php|cat|sort|shell|\.| |\&#x27;|\&#96;|echo|\;|\(&#x2F;i&quot;,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-13T14:10:25.145Z">
+<meta property="article:modified_time" content="2025-04-13T14:14:54.536Z">
+<meta property="article:author" content="Traveler2000">
+<meta property="article:tag" content="命令执行">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Traveler2000🪐</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://traveler2000.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-文件包含与php伪协议" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  <time class="dt-published" datetime="2025-04-13T14:10:25.145Z" itemprop="datePublished">2025-04-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      文件包含与 php:// 伪协议
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大量过滤，无法使用空格、分号、单引号和括号。</p>
+<p>所以利用文件包含漏洞， payload 如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=include$_GET[1]?&gt;&amp;1=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>include</code> ：文件包含标识符。</strong></li>
+</ul>
+<p>  在 PHP 中常用的文件包含语句有以下四种：</p>
+<ul>
+<li><p><code>include()</code></p>
+<p>找不到被包含的文件时只会产生警告，脚本将继续运行。</p>
+</li>
+<li><p><code>include_once()</code></p>
+<p>与 <code>include()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+</li>
+<li><p><code>require()</code></p>
+<p>找不到被包含的文件时会产生致命错误，并停止脚本运行。</p>
+</li>
+<li><p><code>require_once()</code></p>
+<p>与 <code>require()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+</li>
+</ul>
+<p>  当以上 <em>四种函数</em> 参数可控的情况下，我们需要知道以下两点特性，</p>
+<ul>
+<li>若文件内容符合 PHP 语法规范（例如有 <code>&lt;?php</code> ），包含时不管扩展名是什么都会被 PHP 解析。</li>
+<li>若文件内容不符合 PHP 语法规范则可能暴漏其源码。</li>
+</ul>
+<ul>
+<li><p><strong>为什么是 <code>include$_GET[1]</code> ？</strong></p>
+<p> <code>include()</code> 不是函数，可以用括号也可以加空格：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$_GET</span>[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>另外， PHP 解释器会把 <code>include$_GET[1]</code> 中的 <code>$_GET[1]</code> 解析为变量而不会因为无空格就报错。</p>
+</li>
+<li><p><strong><code>?&gt;</code> 是干什么的？</strong></p>
+<p>因为分号被过滤了，语句不完整会报错无法执行，所以要找分号的代替品。 <code>?&gt;</code> 前的代码会被解析为 PHP 的最后一句代码，不用加分号也不会报错。此外，<code>eval()</code> 函数不是把 PHP 语句“插入”到代码中再执行，所以这里不会出现 <code>?&gt;</code> 把后面的代码全部截断的问题。</p>
+</li>
+<li><p><strong>为什么不直接写文件路径 <code>./flag.php</code> 而是写一长串 <code>php://</code> 开头的东西？</strong></p>
+<p>文件包含时：</p>
+<ul>
+<li>若文件内容包含<strong>有效的PHP标签</strong>（如<code>&lt;?php</code>开头），PHP会<strong>解析并执行标签内的代码</strong>，标签外的文本会直接输出。<ul>
+<li>PHP 解析器从 <code>&lt;?php</code> 开始解析代码，直到遇到 <code>?&gt;</code> 或<strong>文件末尾</strong>。</li>
+<li><strong>如果文件末尾没有 <code>?&gt;</code><strong>，解析器会直接执行到文件结束，</strong>不会报错</strong>，且所有代码均有效。</li>
+</ul>
+</li>
+<li>若文件内容<strong>没有PHP标签</strong>，PHP会将其视为纯文本或HTML，直接输出内容到前端。</li>
+</ul>
+<p>剧透一下 <code>flag.php</code> 文件，这个文件有<code>&lt;?php</code>开头，语法也正确，所以会被解析为 PHP 文件。但文件内只有一个变量的定义，没有任何输出，所以直接访问该文件不会回显内容。</p>
+</li>
+<li><p><strong>那 <code>php://filter/convert.base64-encode/resource=flag.php</code> 是什么？</strong></p>
+<p>PHP 的 <strong><code>php://</code> 伪协议（PHP Wrapper Protocols）</strong>是一种用于访问输入&#x2F;输出流（I&#x2F;O Streams）和内存资源的特殊协议。它允许开发者通过文件系统函数（如 <code>file_get_contents()</code>、<code>file_put_contents()</code>、<code>fopen()</code> 等）直接操作数据流，而无需真实的物理文件。</p>
+<p>像这样的文件包含协议还有<code>file://</code>、<code>data://</code>等等。后面会详细展开。</p>
+<p>简单说说 <code>php://</code> 伪协议的几种用法（此处不细讲）：</p>
+<ul>
+<li><p><code>php://input</code> ：读取原始的 HTTP 请求体数据（如 POST 数据）。</p>
+</li>
+<li><p><code>php://output</code> ：直接向输出缓冲区写入数据。</p>
+</li>
+<li><p><code>php://stdin</code> 、 <code>php://stdout</code> 、 <code>php://stderr</code> ：访问标准输入、输出和错误流（常用于命令行脚本）。</p>
+</li>
+<li><p><strong><code>php://filter</code> ：对数据流应用过滤器（如编码转换、压缩）。（本题所用方法）</strong></p>
+</li>
+<li><p><code>php://temp</code> 、 <code>php://memory</code> ：临时存储数据到内存或临时文件。</p>
+</li>
+<li><p><code>php://fd</code> ：直接访问文件描述符（File Descriptor）。</p>
+</li>
+</ul>
+<p>本题所用的 <code>php://filter</code> <strong>与其说是“过滤器”，不如说是“转换器”</strong>，即读&#x2F;写时转换目标资源内容的编码、格式等。先看看基本语法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>操作</strong>：<code>read</code>（读取时过滤）、<code>write</code>（写入时过滤）或空（默认同时应用读写）。</li>
+<li><strong>过滤器链</strong>：多个过滤器用 <code>|</code> 分隔，按顺序执行（无过滤器会输出原始文件）。</li>
+<li><strong>目标资源</strong>：可以是文件路径、URL 或其他伪协议（如 <code>php://input</code>）。</li>
+</ul>
+<p>关于过滤器链，PHP 内置了多种过滤器，分为几类：</p>
+<ul>
+<li><p><strong>字符串处理</strong></p>
+<ul>
+<li><p><code>string.rot13</code>：对字符串进行 ROT13 编码（把英文字母按字母表往后推 13 位，因为字母表有 26 位，所以加解密可以用同一套算法）。</p>
+</li>
+<li><p><code>string.toupper / string.tolower</code>：转大写&#x2F;小写。</p>
+</li>
+<li><p><code>string.strip_tags</code>：去除 HTML&#x2F;PHP 标签。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>编码转换</strong></p>
+<ul>
+<li><code>convert.base64-encode / convert.base64-decode</code>：Base64 编解码。</li>
+<li><code>convert.quoted-printable-encode / convert.quoted-printable-decode</code>：QP 编解码。</li>
+<li><code>convert.iconv.*</code>：字符集转换（需安装 iconv 扩展）。</li>
+</ul>
+</li>
+<li><p><strong>压缩处理</strong></p>
+<ul>
+<li><code>zlib.deflate / zlib.inflate</code>：使用 Zlib 压缩&#x2F;解压。</li>
+<li><code>bzip2.compress / bzip2.decompress</code>：Bzip2 压缩&#x2F;解压。</li>
+</ul>
+</li>
+<li><p><strong>加密</strong></p>
+<ul>
+<li><code>mcrypt.* / mdecrypt.*</code>：加密解密（已废弃，不建议使用）。</li>
+</ul>
+</li>
+</ul>
+<p>所以本题是通过 <code>convert.base64-encode</code> 把会被解析成 PHP 文件、无回显的 <code>flag.php</code> 转换为 Base64 编码然后输出，绕过了 PHP 文件的解析。</p>
+<p> Base64 解码得（已删去注释）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$flag</span>=<span class="string">&quot;ctfshow&#123;ead582c0-8247-4aa9-a2fa-abc1bb47c29d&#125;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>有<code>&lt;?php</code>开头且语法正确，但作用仅仅是定义了一个变量<code>$flag</code>，所以直接包含该文件会解析为 PHP 文件且无回显。转换为 Base64 编码，则被识别为文本文件，直接回显内容。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9fqamdm000dbkuh6qa3bfi7" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          我的第一道命令执行
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">操作系统交互函数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 20px;">爆破</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">四月 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">我的第一道命令执行</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/">操作系统交互函数</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/">我的第一次爆破</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/">PHP 伪随机数</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Traveler2000<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
