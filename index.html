@@ -73,6 +73,322 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-data伪协议" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  <time class="dt-published" datetime="2025-04-14T14:01:28.746Z" itemprop="datePublished">2025-04-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/">data:// 伪协议</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">include</span>(<span class="variable">$c</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与前面的题相比，没有了 <code>eval()</code> 函数，但可通过 <code>data://</code> 伪协议解决。</p>
+<h2 id="什么是-data-伪协议："><a href="#什么是-data-伪协议：" class="headerlink" title="什么是 data:// 伪协议："></a>什么是 <code>data://</code> 伪协议：</h2><p><code>data://</code> 伪协议允许直接在 URI 中嵌入数据（如文本或 Base64 编码的内容），常用于动态生成数据流。</p>
+<p><strong>tips</strong>：</p>
+<p>URI 统一资源标识符，URI 包括 URL 和 URN，或其他特殊形式，比如此处的 <code>data://</code> 伪协议。URL 通过协议、位置等标识资源；URN 仅通过名称标识资源。</p>
+<p><strong>人话：<code>data://</code> 伪协议相当于在 <code>data://</code> 后写入数据， <code>data://</code> 及其后的数据会被当作文件处理。</strong></p>
+<p>看看实例就明白了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$uri</span> = <span class="string">&#x27;data://text/plain;base64,SGVsbG8gV29ybGQh&#x27;</span></span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$uri</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$data</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>核心参数</strong>：MIME类型、<code>charset</code>（可选）、<code>base64</code>（可选）、数据内容。</p>
+</li>
+<li><p><strong>分隔符</strong>：用分号 <code>;</code> 分隔参数，逗号 <code>,</code> 分隔参数和数据。</p>
+</li>
+<li><p><strong>参数选项</strong>：</p>
+<ul>
+<li><p><strong>MIME类型</strong>：指定数据的媒体类型（Multipurpose Internet Mail Extensions）。常见的MIME类型有：</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">示例值</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>文本类</strong></td>
+<td align="center"><code>text/plain</code></td>
+<td align="left">纯文本（默认值，可省略但建议显式声明）</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>text/html</code></td>
+<td align="left">HTML 内容</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>text/css</code></td>
+<td align="left">CSS 样式表</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>text/javascript</code></td>
+<td align="left">JavaScript 代码</td>
+</tr>
+<tr>
+<td align="center"><strong>图像类</strong></td>
+<td align="center"><code>image/png</code></td>
+<td align="left">PNG 图片</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>image/jpeg</code></td>
+<td align="left">JPEG 图片</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>image/gif</code></td>
+<td align="left">GIF 图片</td>
+</tr>
+<tr>
+<td align="center"><strong>应用类</strong></td>
+<td align="center"><code>application/json</code></td>
+<td align="left">JSON 数据</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>application/xml</code></td>
+<td align="left">XML 数据</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>application/pdf</code></td>
+<td align="left">PDF 文档</td>
+</tr>
+<tr>
+<td align="center"><strong>其他</strong></td>
+<td align="center"><code>audio/mpeg</code></td>
+<td align="left">MP3 音频</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>video/mp4</code></td>
+<td align="left">MP4 视频</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>charset（字符编码）</strong>：指定数据的字符编码（仅对文本类 MIME 类型有效）。如UTF-8 与 GBK。</p>
+</li>
+<li><p><strong>base64</strong>：声明数据部分使用 Base64 编码（显而易见非文本类数据必须使用）。<strong>（可用于绕过过滤）</strong></p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>数据包含特殊字符（如 <code>,</code> <code>;</code> <code>\n</code>）。</li>
+<li>二进制数据（如图片、音频）。</li>
+</ul>
+</li>
+<li><p><strong>数据部分</strong>：实际内容，可以是明文或 Base64 编码的字符串。未启用 Base64 编码，数据按明文处理时，需对特殊字符（<code>,</code>&#x2F;<code>;</code>&#x2F;<code>%</code>）进行 URL 编码（本身作为参数、数据的分隔符）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="本题解析"><a href="#本题解析" class="headerlink" title="本题解析"></a>本题解析</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=data:<span class="comment">//text/plain,&lt;?php system(&quot;tac fla*.php&quot;)?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>就是让 <code>data://text/plain,&lt;?php system(&quot;tac fla*.php&quot;)?&gt;</code> 作为被包含的文件，它将会因为 <code>&lt;?php</code> 被识别为 PHP 文件，被解析并执行。于是<code>$flag</code> 被赋值并回显，OK。</p>
+<h2 id="变体"><a href="#变体" class="headerlink" title="变体"></a>变体</h2><ul>
+<li><p>将正则表达式修改为 <code>&quot;/flag|php|file/i&quot;</code> ，<code>&lt;?php ?&gt;</code> 没法用，但可用 <code>&lt;? ?&gt;</code> 或者 Base64 编码绕过。（ <code>&lt;? ?&gt;</code> 就是简化版的 <code>&lt;?php ?&gt;</code> ，仅在 PHP 配置文件 <code>php.ini</code> 里 <code>short_open_tag</code> 选项设置为 <code>On</code> 时有效）</p>
+</li>
+<li><p>将文件包含改为 <code>include($c.&quot;.php&quot;);</code> 的情况。其实只有 <code>&lt;?php ?&gt;</code> 中的内容会被解析，文本会直接回显到网页（例如此处如果<code>$c</code>无任何回显，则网页上只会出现<code>.php</code>）</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9h58l5o000hj4uh04jlfk7v" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-文件包含与php伪协议" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
+  <time class="dt-published" datetime="2025-04-14T12:43:05.333Z" itemprop="datePublished">2025-04-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大量过滤，无法使用空格、分号、单引号和括号。</p>
+<p>所以利用文件包含漏洞， payload 如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=include$_GET[1]?&gt;&amp;1=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>include</code> ：文件包含标识符。</strong></li>
+</ul>
+<p>  在 PHP 中常用的文件包含语句有以下四种：</p>
+<ul>
+<li><p><code>include()</code></p>
+<p>找不到被包含的文件时只会产生警告，脚本将继续运行。</p>
+</li>
+<li><p><code>include_once()</code></p>
+<p>与 <code>include()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+</li>
+<li><p><code>require()</code></p>
+<p>找不到被包含的文件时会产生致命错误，并停止脚本运行。</p>
+</li>
+<li><p><code>require_once()</code></p>
+<p>与 <code>require()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
+</li>
+</ul>
+<p>  当以上 <em>四种函数</em> 参数可控的情况下，我们需要知道以下两点特性，</p>
+<ul>
+<li>若文件内容符合 PHP 语法规范（例如有 <code>&lt;?php</code> ），包含时不管扩展名是什么都会被 PHP 解析。</li>
+<li>若文件内容不符合 PHP 语法规范则可能暴漏其源码。</li>
+</ul>
+<ul>
+<li><p><strong>为什么是 <code>include$_GET[1]</code> ？</strong></p>
+<p> <code>include()</code> 不是函数，可以用括号也可以加空格：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$_GET</span>[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>另外， PHP 解释器会把 <code>include$_GET[1]</code> 中的 <code>$_GET[1]</code> 解析为变量而不会因为无空格就报错。</p>
+</li>
+<li><p><strong><code>?&gt;</code> 是干什么的？</strong></p>
+<p>因为分号被过滤了，语句不完整会报错无法执行，所以要找分号的代替品。 <code>?&gt;</code> 前的代码会被解析为 PHP 的最后一句代码，不用加分号也不会报错。此外，<code>eval()</code> 函数不是把 PHP 语句“插入”到代码中再执行，所以这里不会出现 <code>?&gt;</code> 把后面的代码全部截断的问题。</p>
+</li>
+<li><p><strong>为什么不直接写文件路径 <code>./flag.php</code> 而是写一长串 <code>php://</code> 开头的东西？</strong></p>
+<p>文件包含时：</p>
+<ul>
+<li>若文件内容包含<strong>有效的PHP标签</strong>（如<code>&lt;?php</code>开头），PHP会<strong>解析并执行标签内的代码</strong>，标签外的文本会直接输出。<ul>
+<li>PHP 解析器从 <code>&lt;?php</code> 开始解析代码，直到遇到 <code>?&gt;</code> 或<strong>文件末尾</strong>。</li>
+<li><strong>如果文件末尾没有 <code>?&gt;</code><strong>，解析器会直接执行到文件结束，</strong>不会报错</strong>，且所有代码均有效。</li>
+</ul>
+</li>
+<li>若文件内容<strong>没有PHP标签</strong>，PHP会将其视为纯文本或HTML，<strong>直接输出内容到前端</strong>。</li>
+</ul>
+<p>剧透一下 <code>flag.php</code> 文件，这个文件有<code>&lt;?php</code>开头，语法也正确，所以会被解析为 PHP 文件。但文件内只有一个变量的定义，没有任何输出，所以直接访问该文件不会回显内容。</p>
+</li>
+<li><p><strong>那 <code>php://filter/convert.base64-encode/resource=flag.php</code> 是什么？</strong></p>
+<p>PHP 的 <strong><code>php://</code> 伪协议（PHP Wrapper Protocols）</strong>是一种用于访问输入&#x2F;输出流（I&#x2F;O Streams）和内存资源的特殊协议。它允许开发者通过文件系统函数（如 <code>file_get_contents()</code>、<code>file_put_contents()</code>、<code>fopen()</code> 等）直接操作数据流，而无需真实的物理文件。</p>
+<p>像这样的文件包含协议还有<code>file://</code>、<code>data://</code>等等。后面会详细展开。</p>
+<p>简单说说 <code>php://</code> 伪协议的几种用法（此处不细讲）：</p>
+<ul>
+<li><p><code>php://input</code> ：读取原始的 HTTP 请求体数据（如 POST 数据）。</p>
+</li>
+<li><p><code>php://output</code> ：直接向输出缓冲区写入数据。</p>
+</li>
+<li><p><code>php://stdin</code> 、 <code>php://stdout</code> 、 <code>php://stderr</code> ：访问标准输入、输出和错误流（常用于命令行脚本）。</p>
+</li>
+<li><p><strong><code>php://filter</code> ：对数据流应用过滤器（如编码转换、压缩）。（本题所用方法）</strong></p>
+</li>
+<li><p><code>php://temp</code> 、 <code>php://memory</code> ：临时存储数据到内存或临时文件。</p>
+</li>
+<li><p><code>php://fd</code> ：直接访问文件描述符（File Descriptor）。</p>
+</li>
+</ul>
+<p>本题所用的 <code>php://filter</code> <strong>与其说是“过滤器”，不如说是“转换器”</strong>，即读&#x2F;写时转换目标资源内容的编码、格式等。先看看基本语法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>操作</strong>：<code>read</code>（读取时过滤）、<code>write</code>（写入时过滤）或空（默认同时应用读写）。</li>
+<li><strong>过滤器链</strong>：多个过滤器用 <code>|</code> 分隔，按顺序执行（无过滤器会输出原始文件）。</li>
+<li><strong>目标资源</strong>：可以是文件路径、URL 或其他伪协议（如 <code>php://input</code>）。</li>
+</ul>
+<p>关于过滤器链，PHP 内置了多种过滤器，分为几类：</p>
+<ul>
+<li><p><strong>字符串处理</strong></p>
+<ul>
+<li><p><code>string.rot13</code>：对字符串进行 ROT13 编码（把英文字母按字母表往后推 13 位，因为字母表有 26 位，所以加解密可以用同一套算法）。</p>
+</li>
+<li><p><code>string.toupper / string.tolower</code>：转大写&#x2F;小写。</p>
+</li>
+<li><p><code>string.strip_tags</code>：去除 HTML&#x2F;PHP 标签。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>编码转换</strong></p>
+<ul>
+<li><code>convert.base64-encode / convert.base64-decode</code>：Base64 编解码。</li>
+<li><code>convert.quoted-printable-encode / convert.quoted-printable-decode</code>：QP 编解码。</li>
+<li><code>convert.iconv.*</code>：字符集转换（需安装 iconv 扩展）。</li>
+</ul>
+</li>
+<li><p><strong>压缩处理</strong></p>
+<ul>
+<li><code>zlib.deflate / zlib.inflate</code>：使用 Zlib 压缩&#x2F;解压。</li>
+<li><code>bzip2.compress / bzip2.decompress</code>：Bzip2 压缩&#x2F;解压。</li>
+</ul>
+</li>
+<li><p><strong>加密</strong></p>
+<ul>
+<li><code>mcrypt.* / mdecrypt.*</code>：加密解密（已废弃，不建议使用）。</li>
+</ul>
+</li>
+</ul>
+<p>所以本题是通过 <code>convert.base64-encode</code> 把会被解析成 PHP 文件、无回显的 <code>flag.php</code> 转换为 Base64 编码然后输出，绕过了 PHP 文件的解析。</p>
+<p> Base64 解码得（已删去注释）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$flag</span>=<span class="string">&quot;ctfshow&#123;ead582c0-8247-4aa9-a2fa-abc1bb47c29d&#125;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>有<code>&lt;?php</code>开头且语法正确，但作用仅仅是定义了一个变量<code>$flag</code>，所以直接包含该文件会解析为 PHP 文件且无回显。转换为 Base64 编码，则被识别为文本文件，直接回显内容。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9h58l5x001lj4uh1pw4dkeb" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-关于服务器的知识（持续更新）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" class="article-date">
@@ -104,7 +420,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9glw3dq000wbouh3eb80wsg" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9h58l5m000dj4uh8das0b5d" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -164,7 +480,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9glw3dq000vbouh7uwo8qb8" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9h58l5m000cj4uhe8u26old" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -315,7 +631,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9glw3dg0001bouh19pddpmz" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9h58l5k0006j4uhah257z4p" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -359,7 +675,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9glw3dl0007bouh6bt77hs2" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9h58l5i0003j4uhe91w82zw" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -410,7 +726,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9glw3dr0010bouhdicc7ktr" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9h58l5v0019j4uhfpu1hy4z" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -488,170 +804,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9glw3ds0017bouhdpl6fl1o" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9h58l5w001dj4uh8z345ozh" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-文件包含与php伪协议" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T14:10:25.145Z" itemprop="datePublished">2025-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>大量过滤，无法使用空格、分号、单引号和括号。</p>
-<p>所以利用文件包含漏洞， payload 如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=include$_GET[1]?&gt;&amp;1=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong><code>include</code> ：文件包含标识符。</strong></li>
-</ul>
-<p>  在 PHP 中常用的文件包含语句有以下四种：</p>
-<ul>
-<li><p><code>include()</code></p>
-<p>找不到被包含的文件时只会产生警告，脚本将继续运行。</p>
-</li>
-<li><p><code>include_once()</code></p>
-<p>与 <code>include()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
-</li>
-<li><p><code>require()</code></p>
-<p>找不到被包含的文件时会产生致命错误，并停止脚本运行。</p>
-</li>
-<li><p><code>require_once()</code></p>
-<p>与 <code>require()</code> 类似，唯一区别是如果该文件中的代码已经被包含，则不会再次包含。</p>
-</li>
-</ul>
-<p>  当以上 <em>四种函数</em> 参数可控的情况下，我们需要知道以下两点特性，</p>
-<ul>
-<li>若文件内容符合 PHP 语法规范（例如有 <code>&lt;?php</code> ），包含时不管扩展名是什么都会被 PHP 解析。</li>
-<li>若文件内容不符合 PHP 语法规范则可能暴漏其源码。</li>
-</ul>
-<ul>
-<li><p><strong>为什么是 <code>include$_GET[1]</code> ？</strong></p>
-<p> <code>include()</code> 不是函数，可以用括号也可以加空格：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="number">1</span>])</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$_GET</span>[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<p>另外， PHP 解释器会把 <code>include$_GET[1]</code> 中的 <code>$_GET[1]</code> 解析为变量而不会因为无空格就报错。</p>
-</li>
-<li><p><strong><code>?&gt;</code> 是干什么的？</strong></p>
-<p>因为分号被过滤了，语句不完整会报错无法执行，所以要找分号的代替品。 <code>?&gt;</code> 前的代码会被解析为 PHP 的最后一句代码，不用加分号也不会报错。此外，<code>eval()</code> 函数不是把 PHP 语句“插入”到代码中再执行，所以这里不会出现 <code>?&gt;</code> 把后面的代码全部截断的问题。</p>
-</li>
-<li><p><strong>为什么不直接写文件路径 <code>./flag.php</code> 而是写一长串 <code>php://</code> 开头的东西？</strong></p>
-<p>文件包含时：</p>
-<ul>
-<li>若文件内容包含<strong>有效的PHP标签</strong>（如<code>&lt;?php</code>开头），PHP会<strong>解析并执行标签内的代码</strong>，标签外的文本会直接输出。<ul>
-<li>PHP 解析器从 <code>&lt;?php</code> 开始解析代码，直到遇到 <code>?&gt;</code> 或<strong>文件末尾</strong>。</li>
-<li><strong>如果文件末尾没有 <code>?&gt;</code><strong>，解析器会直接执行到文件结束，</strong>不会报错</strong>，且所有代码均有效。</li>
-</ul>
-</li>
-<li>若文件内容<strong>没有PHP标签</strong>，PHP会将其视为纯文本或HTML，直接输出内容到前端。</li>
-</ul>
-<p>剧透一下 <code>flag.php</code> 文件，这个文件有<code>&lt;?php</code>开头，语法也正确，所以会被解析为 PHP 文件。但文件内只有一个变量的定义，没有任何输出，所以直接访问该文件不会回显内容。</p>
-</li>
-<li><p><strong>那 <code>php://filter/convert.base64-encode/resource=flag.php</code> 是什么？</strong></p>
-<p>PHP 的 <strong><code>php://</code> 伪协议（PHP Wrapper Protocols）</strong>是一种用于访问输入&#x2F;输出流（I&#x2F;O Streams）和内存资源的特殊协议。它允许开发者通过文件系统函数（如 <code>file_get_contents()</code>、<code>file_put_contents()</code>、<code>fopen()</code> 等）直接操作数据流，而无需真实的物理文件。</p>
-<p>像这样的文件包含协议还有<code>file://</code>、<code>data://</code>等等。后面会详细展开。</p>
-<p>简单说说 <code>php://</code> 伪协议的几种用法（此处不细讲）：</p>
-<ul>
-<li><p><code>php://input</code> ：读取原始的 HTTP 请求体数据（如 POST 数据）。</p>
-</li>
-<li><p><code>php://output</code> ：直接向输出缓冲区写入数据。</p>
-</li>
-<li><p><code>php://stdin</code> 、 <code>php://stdout</code> 、 <code>php://stderr</code> ：访问标准输入、输出和错误流（常用于命令行脚本）。</p>
-</li>
-<li><p><strong><code>php://filter</code> ：对数据流应用过滤器（如编码转换、压缩）。（本题所用方法）</strong></p>
-</li>
-<li><p><code>php://temp</code> 、 <code>php://memory</code> ：临时存储数据到内存或临时文件。</p>
-</li>
-<li><p><code>php://fd</code> ：直接访问文件描述符（File Descriptor）。</p>
-</li>
-</ul>
-<p>本题所用的 <code>php://filter</code> <strong>与其说是“过滤器”，不如说是“转换器”</strong>，即读&#x2F;写时转换目标资源内容的编码、格式等。先看看基本语法：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>操作</strong>：<code>read</code>（读取时过滤）、<code>write</code>（写入时过滤）或空（默认同时应用读写）。</li>
-<li><strong>过滤器链</strong>：多个过滤器用 <code>|</code> 分隔，按顺序执行（无过滤器会输出原始文件）。</li>
-<li><strong>目标资源</strong>：可以是文件路径、URL 或其他伪协议（如 <code>php://input</code>）。</li>
-</ul>
-<p>关于过滤器链，PHP 内置了多种过滤器，分为几类：</p>
-<ul>
-<li><p><strong>字符串处理</strong></p>
-<ul>
-<li><p><code>string.rot13</code>：对字符串进行 ROT13 编码（把英文字母按字母表往后推 13 位，因为字母表有 26 位，所以加解密可以用同一套算法）。</p>
-</li>
-<li><p><code>string.toupper / string.tolower</code>：转大写&#x2F;小写。</p>
-</li>
-<li><p><code>string.strip_tags</code>：去除 HTML&#x2F;PHP 标签。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>编码转换</strong></p>
-<ul>
-<li><code>convert.base64-encode / convert.base64-decode</code>：Base64 编解码。</li>
-<li><code>convert.quoted-printable-encode / convert.quoted-printable-decode</code>：QP 编解码。</li>
-<li><code>convert.iconv.*</code>：字符集转换（需安装 iconv 扩展）。</li>
-</ul>
-</li>
-<li><p><strong>压缩处理</strong></p>
-<ul>
-<li><code>zlib.deflate / zlib.inflate</code>：使用 Zlib 压缩&#x2F;解压。</li>
-<li><code>bzip2.compress / bzip2.decompress</code>：Bzip2 压缩&#x2F;解压。</li>
-</ul>
-</li>
-<li><p><strong>加密</strong></p>
-<ul>
-<li><code>mcrypt.* / mdecrypt.*</code>：加密解密（已废弃，不建议使用）。</li>
-</ul>
-</li>
-</ul>
-<p>所以本题是通过 <code>convert.base64-encode</code> 把会被解析成 PHP 文件、无回显的 <code>flag.php</code> 转换为 Base64 编码然后输出，绕过了 PHP 文件的解析。</p>
-<p> Base64 解码得（已删去注释）：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$flag</span>=<span class="string">&quot;ctfshow&#123;ead582c0-8247-4aa9-a2fa-abc1bb47c29d&#125;&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>有<code>&lt;?php</code>开头且语法正确，但作用仅仅是定义了一个变量<code>$flag</code>，所以直接包含该文件会解析为 PHP 文件且无回显。转换为 Base64 编码，则被识别为文本文件，直接回显内容。</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9glw3dt0019bouhc8ab6krn" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
 
     </footer>
   </div>
@@ -712,7 +869,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9glw3ds0013bouh2mz9erys" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9h58l5x001hj4uhcxpi5ui9" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -763,83 +920,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9glw3dr000ybouhh4tya1t1" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9h58l5v001aj4uh2w4q4cv6" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-PHP伪随机数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T13:53:52.183Z" itemprop="datePublished">2025-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/">PHP 伪随机数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><strong>题目一</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$r</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">mt_srand</span>(<span class="number">372619038</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$r</span>)===<span class="title function_ invoke__">intval</span>(<span class="title function_ invoke__">mt_rand</span>()))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat /proc/version&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>tips</strong></p>
-<p><code>mt_srand()</code>：播种函数。伪随机数，种子相同，通过<code>mt_rand()</code>生成的一系列随机数必然相同。也就是两次播种的种子是同一个，这两次播种后每次用<code>mt_rand()</code>生成的随机数都互相对应。如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">114</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//325627173</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//271482249</span></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">114</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//325627173</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//271482249</span></span><br><span class="line"><span class="title function_ invoke__">mt_srand</span>(<span class="number">514</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//1025750179</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">mt_rand</span>().<span class="string">&#x27;&lt;br&gt;&#x27;</span>;<span class="comment">//490569148</span></span><br></pre></td></tr></table></figure>
-
-<p><code>mt_rand()</code>：随机数函数。可以直接用，也可以设定最大与最小值（参数1和参数2）</p>
-<p>本题找个 PHP 解释器生成一下伪随机数，然后通过 URL 发送 GET 请求即可。</p>
-<hr>
-<p><strong>题目二</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$r</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;r&#x27;</span>];</span><br><span class="line">    <span class="title function_ invoke__">mt_srand</span>(<span class="title function_ invoke__">hexdec</span>(<span class="title function_ invoke__">substr</span>(<span class="title function_ invoke__">md5</span>(<span class="variable">$flag</span>), <span class="number">0</span>,<span class="number">8</span>)));</span><br><span class="line">    <span class="variable">$rand</span> = <span class="title function_ invoke__">intval</span>(<span class="variable">$r</span>)-<span class="title function_ invoke__">intval</span>(<span class="title function_ invoke__">mt_rand</span>());</span><br><span class="line">    <span class="keyword">if</span>((!<span class="variable">$rand</span>))&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;token&#x27;</span>]==(<span class="title function_ invoke__">mt_rand</span>()+<span class="title function_ invoke__">mt_rand</span>()))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$rand</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat /proc/version&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>本题随机数种子固定 <code>hexdec(substr(md5($flag), 0,8))</code> ，**<code>$_GET[&#39;r&#39;]</code> 与首次生成的随机数不等<strong>时会返回两数相减的值，</strong>相等且 <code>$_COOKIE[&#39;token&#39;]</code> 等于第二三次生成随机数之和**时会返回 flag 。</p>
-<p>可以先把已生成的随机数得出来：<code>?r=0</code>，记得去掉负号，于是返回 flag 的第一重条件满足了。</p>
-<p>通过伪随机数得到种子比较困难，好在有大佬写了工具 php_mt_seed ，把源码编译完即可运行。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/openwall/php_mt_seed">https://github.com/openwall/php_mt_seed</a></p>
-<p>在源码目录中编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
-
-<p>运行，<code>&lt;seed&gt;</code> 为种子。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time ./php_mt_seed &lt;seed&gt;</span><br></pre></td></tr></table></figure>
-
-<p>运行后选择 PHP 7.0 以上版本（结合题目提供的操作系统版本信息得知）的种子，每个生成三次随机数待使用。</p>
-<p>打开 burp 抓包。修改 URL 中参数 <code>r</code> ，并添加 <code>Cookie: token=</code> ，值为某种子第二三次随机数的和（要多试几次不同的种子）。</p>
-<p><strong>手动修改 Cookie 时，一定要注意 burp 内的报文格式！若是请求体为空，则最后有两行空行（请求空行和请求体），这点与一般认知（请求空行作为最后一行表示请求体为空）不同。</strong></p>
-<p>手动修改时没注意，好几次发包响应报文都是完全空白。建议在 Proxy 模块的 Intercept 页或 Repeater 模块这两处右方的 Inspector 区域修改。</p>
-<p>最后以正确格式发包，得到有 flag 的响应，OK。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9glw3di0003bouh4bdh73im" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
 
     </footer>
   </div>
@@ -884,7 +969,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 15px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 15px;">命令执行</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 20px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 15px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 20px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 15px;">爆破</a>
     </div>
   </div>
 
@@ -906,6 +991,14 @@
       <ul>
         
           <li>
+            <a href="/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/">data:// 伪协议</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">关于服务器的知识（持续增加）</a>
           </li>
         
@@ -915,14 +1008,6 @@
         
           <li>
             <a href="/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/">URL 知识点</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/14/Cookie%E2%98%86/">Cookie☆</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/">关于注释</a>
           </li>
         
       </ul>
