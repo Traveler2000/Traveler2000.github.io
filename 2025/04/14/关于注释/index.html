@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>我的第一次爆破 | Traveler2000🪐</title>
+  <title>关于注释 | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="题目： ctf.show web21考察 HTTP Basic 认证协议与爆破 进入靶场后随意输入账号密码 admin 与 password ，抓包发现 Authorization 字段中有 Base64 编码 YWRtaW46cGFzc3dvcmQ ，转换得 admin:password 。 此处基于 HTTP Basic 认证协议 ，会拼接账号、冒号与密码为一个字符串，再转换为 Base64">
+  <meta name="description" content="--  表示 SQL 标准注释，用于注释单行（注意最后有一空格）。 当网站存在尾部空格过滤的功能时，将会无法正确进行 SQL 注入例如： 1SELECT * FROM users WHERE username&#x3D;&#x27;a&#x27; or true --&#x27; AND password&#x3D;&#x27;1&#x27;  此处注入语句尾部空格被去掉，无法正常注入。可用 MySQL 的单行注释">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的第一次爆破">
-<meta property="og:url" content="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/index.html">
+<meta property="og:title" content="关于注释">
+<meta property="og:url" content="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="题目： ctf.show web21考察 HTTP Basic 认证协议与爆破 进入靶场后随意输入账号密码 admin 与 password ，抓包发现 Authorization 字段中有 Base64 编码 YWRtaW46cGFzc3dvcmQ ，转换得 admin:password 。 此处基于 HTTP Basic 认证协议 ，会拼接账号、冒号与密码为一个字符串，再转换为 Base64">
+<meta property="og:description" content="--  表示 SQL 标准注释，用于注释单行（注意最后有一空格）。 当网站存在尾部空格过滤的功能时，将会无法正确进行 SQL 注入例如： 1SELECT * FROM users WHERE username&#x3D;&#x27;a&#x27; or true --&#x27; AND password&#x3D;&#x27;1&#x27;  此处注入语句尾部空格被去掉，无法正常注入。可用 MySQL 的单行注释">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-13T13:53:52.186Z">
-<meta property="article:modified_time" content="2025-04-13T13:57:59.217Z">
+<meta property="article:published_time" content="2025-04-14T04:49:49.106Z">
+<meta property="article:modified_time" content="2025-04-14T04:52:27.670Z">
 <meta property="article:author" content="Traveler2000">
-<meta property="article:tag" content="爆破">
+<meta property="article:tag" content="SQL注入">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
@@ -74,14 +74,14 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-我的第一次爆破" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-关于注释" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T13:53:52.186Z" itemprop="datePublished">2025-04-13</time>
+    <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" class="article-date">
+  <time class="dt-published" datetime="2025-04-14T04:49:49.106Z" itemprop="datePublished">2025-04-14</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a>
+    <a class="article-category-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
   </div>
 
   </div>
@@ -92,7 +92,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      我的第一次爆破
+      关于注释
     </h1>
   
 
@@ -100,22 +100,22 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>题目： ctf.show web21<br>考察 <strong>HTTP Basic 认证协议</strong>与爆破</p>
-<p>进入靶场后随意输入账号密码 <code>admin</code> 与 <code>password</code> ，抓包发现 <code>Authorization</code> 字段中有 Base64 编码 <code>YWRtaW46cGFzc3dvcmQ</code> ，转换得 <code>admin:password</code> 。</p>
-<p>此处基于 <strong>HTTP Basic 认证协议</strong> ，会拼接账号、冒号与密码为一个字符串，再转换为 Base64 编码，插入请求头的 <code>Authorization</code> 字段。</p>
-<p>但不管本题具体是什么协议，得到了账号密码拼接方式即可进行爆破。</p>
-<p>打开 Burp Suite 的 Intruder 模块，在 <code>Authorization</code> 字段中添加 Payload 。</p>
-<p>只有一个 Payload ，所以选择 Sniper attack 。在 Payloads 具体内容中， Payload type 选 Custom iterator （自定义迭代）； Payload configuration 中的 Position 1-3 分别设置账号、 <code>:</code> 和密码字典； Payload processing 加入 Base64 编码；取消 Payload encoding 的 URL 编码（因为此处 Payload 不在 URL 中）。</p>
-<p>开始攻击，有 <code>200</code> 状态码出现，复制对应的 Payload 到请求头 <code>Authorization</code> 字段，响应中有 flag ，OK。</p>
+        <p> <code>-- </code> 表示 SQL 标准注释，用于注释单行（注意最后有一空格）。</p>
+<p>当网站存在<strong>尾部空格过滤</strong>的功能时，将会无法正确进行 SQL 注入<br>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;a&#x27;</span> <span class="keyword">or</span> <span class="literal">true</span> <span class="comment">--&#x27; AND password=&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>此处注入语句尾部空格被去掉，无法正常注入。<br>可用 MySQL 的单行注释符 <code>#</code> 来代替，不需要额外添加空格，更加简单有效。<br>也可在 <code>-- </code> 后加上使尾部空格不会被过滤的其他字符，如 <code>-- a</code> ，有用但不推荐。</p>
+<p> <code>#</code> 表示 MySQL 单行注释符，功能与 <code>-- </code> 相同。</p>
+<p>未编码的 <code>#</code> 在URL中被称为片段标识符（ Fragment Identifier ），方便浏览器将页面滚动到对应内容的位置。浏览器不会将 <code>#</code> 后的内容发送到服务器，所以，如果要在导航栏中进行 SQL 注入并使用 <code>#</code> ，需要编码为 <code>%23</code> 。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9glw3dr000ybouhh4tya1t1" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9glw3dr0010bouhdicc7ktr" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
 
     </footer>
   </div>
@@ -123,19 +123,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/04/14/Cookie%E2%98%86/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          操作系统交互函数
+          Cookie☆
         
       </div>
     </a>
   
   
-    <a href="/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">PHP 伪随机数</div>
+      <div class="article-nav-title">我的第一道命令执行</div>
     </a>
   
 </nav>
