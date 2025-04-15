@@ -73,6 +73,63 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-一些辨析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2025-04-15T07:32:55.790Z" itemprop="datePublished">2025-04-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="php-伪协议与-data-伪协议"><a href="#php-伪协议与-data-伪协议" class="headerlink" title="php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议"></a>php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议</h2><p><code>php://</code> 伪协议</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>data://</code> 伪协议</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><p><code>php://</code> 伪协议可用于转换文件内容为 Base64 编码，使文件包含时 PHP 文件不会被解析，而是作为 Base64 文本返回前端。</p>
+</li>
+<li><p><code>data://</code> 伪协议自由度较高，可用于文件包含时执行命令。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9iapa6f000btsuh1fm48pu8" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-多层函数绕过过滤" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" class="article-date">
@@ -165,12 +222,12 @@
 <p><strong>解析</strong></p>
 <p><code>get_defined_vars()</code>：返回当前作用域中所有变量的数组，包括超全局变量（如<code>$_GET</code>）。<br><strong>超全局变量（如 <code>$_GET</code>、<code>$_POST</code>、<code>$_SERVER</code> 等）默认位于返回数组的最前端</strong>。它们会以固定的顺序排列，但具体顺序由 PHP 内核决定，第一个通常是 <code>$_GET</code> 。<br><strong>用户定义的变量（如 <code>$a = 1;</code>）会紧随超全局变量之后</strong>。它们的排列顺序通常与代码中的定义顺序一致，但某些情况下可能受 PHP 优化影响（例如变量未使用时可能被忽略）。</p>
 <p>其他数组指针操作函数参考上面的表格。</p>
-<p> <code>$_GET</code> 数组的元素顺序按照 URL 中参数顺序排列，所以最后 <code>eval()</code> 函数执行 <code>$_GET</code> 数组的第二个元素 <code>pay</code> 的值。</p>
+<p> <code>$_GET</code> 数组的元素顺序按照 URL 中参数顺序排列，所以最后 <code>eval()</code> 函数会执行 <code>$_GET</code> 数组的第二个元素，也就是 URL 中第二个参数 <code>pay</code> 的值。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9i3iv6r001gpsuhahuh5d43" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9iapa6k000vtsuh20hl881k" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -220,7 +277,6 @@
 <p>看看实例就明白了：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$uri</span> = <span class="string">&#x27;data://text/plain;base64,SGVsbG8gV29ybGQh&#x27;</span></span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$uri</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$data</span>;</span><br></pre></td></tr></table></figure>
 
-<p><code>data://</code> 协议格式如下：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -319,20 +375,20 @@
 
 <p>就是让 <code>data://text/plain,&lt;?php system(&quot;tac fla*.php&quot;)?&gt;</code> 作为被包含的文件，它将会因为 <code>&lt;?php</code> 被识别为 PHP 文件，被解析并执行。于是<code>$flag</code> 被赋值并回显，OK。</p>
 <h2 id="变体"><a href="#变体" class="headerlink" title="变体"></a>变体</h2><ul>
-<li><p>将正则表达式修改为 <code>&quot;/flag|php|file/i&quot;</code> ，<code>&lt;?php ?&gt;</code> 没法用，但可用 <code>&lt;? ?&gt;</code> 或者 Base64 编码绕过。（ <code>&lt;? ?&gt;</code> 就是简化版的 <code>&lt;?php ?&gt;</code> ，仅在 PHP 配置文件 <code>php.ini</code> 里 <code>short_open_tag</code> 选项设置为 <code>On</code> 时有效）</p>
+<li><p>将正则表达式修改为 <code>&quot;/flag|php|file/i&quot;</code> ，<code>&lt;?php ?&gt;</code> 没法用，但可用<strong>短标签 <code>&lt;? ?&gt;</code></strong> 、**短输出标签 <code>&lt;?= ?&gt;</code>**或者 Base64 编码绕过。（ <code>&lt;? ?&gt;</code> 就是简化版的 <code>&lt;?php ?&gt;</code> ；<code>&lt;?= ?&gt;</code> 用于直接输出内容，如 <code>&lt;?= &quot;Hello&quot; ?&gt;</code> 等价于 <code>&lt;?php echo &quot;Hello&quot;; ?&gt;</code> 。此外 <code>&lt;? ?&gt;</code> 仅在 PHP 配置文件 <code>php.ini</code> 里 <code>short_open_tag</code> 选项设置为 <code>On</code> 时有效；<code>&lt;?= ?&gt;</code> 则无需配置即生效）</p>
 </li>
-<li><p>将文件包含改为 <code>include($c.&quot;.php&quot;);</code> 的情况。其实只有 <code>&lt;?php ?&gt;</code> 中的内容会被解析，文本会直接回显到网页（例如此处如果<code>$c</code>无任何回显，则网页上只会出现<code>.php</code>）</p>
+<li><p>将文件包含改为 <code>include($c.&quot;.php&quot;);</code> 的情况（往<code>data://</code>数据的最后拼接了<code>.php</code>）。其实只有 <code>&lt;?php ?&gt;</code> 中的内容会被解析，文件中 PHP 代码以外的文本会直接回显到网页（例如，此处如果<code>$c</code>要执行的命令无任何返回值，则网页上只会出现<code>.php</code>，因为<code>.php</code>在 PHP 代码以外）</p>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9i3iv6j0007psuh0vdyaj8z" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9iapa6e0007tsuh0bf3ax8x" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
 
     </footer>
   </div>
@@ -487,11 +543,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9i3iv6t001upsuh6ylbekvz" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9iapa6o0024tsuhb86ifems" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
 
     </footer>
   </div>
@@ -532,7 +588,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9i3iv6l000bpsuhgkrjhagr" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9iapa6h000gtsuh704g3imf" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -592,7 +648,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9i3iv6l000cpsuh0clkg9tj" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9iapa6j000qtsuh8v1kcobj" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -743,7 +799,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9i3iv6k0008psuh18rwfplv" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9iapa6d0006tsuh4g5c3s6b" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -787,7 +843,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9i3iv6e0001psuhacxrb41l" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9iapa690001tsuh6fba5cb7" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -838,7 +894,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9i3iv6n000kpsuhdne3ctjm" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9iapa6h000itsuhg8ik2fvj" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -916,76 +972,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9i3iv6r001hpsuhf4h896s0" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9iapa6n001ytsuh99nq199m" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-操作系统交互函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T14:10:25.141Z" itemprop="datePublished">2025-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/">操作系统交互函数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><strong><code>system()</code></strong><br><strong>输出行为</strong>：直接输出命令的<strong>标准输出（STDOUT）</strong>，输出所有结果。<br><strong>返回值：</strong>成功时返回所有输出；失败时返回 <code>false</code>。<br><strong>状态码</strong>：可通过第二个参数获取命令的退出状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$last_line</span> = <span class="title function_ invoke__">system</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="variable">$status_code</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong><code>exec()</code></strong><br><strong>输出行为</strong>：默认不直接输出结果，需通过第二个参数捕获完整输出数组。<br><strong>返回值</strong>：成功时返回命令的最后一行输出（若要全部输出，需要第二个参数捕获完整输出数组，然后输出该数组）；失败时返回 <code>false</code>。<br><strong>状态码</strong>：通过第三个参数获取退出状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">exec</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="variable">$output</span>, <span class="variable">$status_code</span>);</span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="variable">$output</span>); <span class="comment">// 输出数组形式的结果</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong><code>shell_exec()</code> 和反引号运算符（&#96;）</strong></p>
-<p><strong>输出行为</strong>：不直接输出结果，返回完整输出字符串。<br><strong>返回值</strong>：成功时返回完整的输出字符串；失败或空输出时返回 <code>null</code>。</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">shell_exec</span>(<span class="string">&#x27;ls -la&#x27;</span>);</span><br><span class="line"><span class="comment">// 或使用反引号</span></span><br><span class="line"><span class="variable">$result</span> = `ls -la`;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$result</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong><code>passthru()</code></strong><br><strong>输出行为</strong>：直接输出<strong>原始二进制数据</strong>（如图像、音频）到浏览器。<br><strong>返回值</strong>：无输出内容，但可通过第二个参数获取状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">passthru</span>(<span class="string">&#x27;cat image.jpg&#x27;</span>, <span class="variable">$status_code</span>);</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9i3iv6s001lpsuh2y9shdsj" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
 
     </footer>
   </div>
@@ -1020,7 +1011,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
     </div>
   </div>
 
@@ -1030,7 +1021,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 13.33px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a>
     </div>
   </div>
 
@@ -1052,6 +1043,10 @@
       <ul>
         
           <li>
+            <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/">多层函数绕过过滤</a>
           </li>
         
@@ -1065,10 +1060,6 @@
         
           <li>
             <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">关于服务器的知识（持续增加）</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/">关于“空白”网页无 JavaScript 代码却有弹窗的问题</a>
           </li>
         
       </ul>
