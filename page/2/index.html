@@ -73,57 +73,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-关于注释" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" class="article-date">
-  <time class="dt-published" datetime="2025-04-14T04:49:49.106Z" itemprop="datePublished">2025-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/">关于注释</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p> <code>-- </code> 表示 SQL 标准注释，用于注释单行（注意最后有一空格）。</p>
-<p>当网站存在<strong>尾部空格过滤</strong>的功能时，将会无法正确进行 SQL 注入<br>例如：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;a&#x27;</span> <span class="keyword">or</span> <span class="literal">true</span> <span class="comment">--&#x27; AND password=&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>此处注入语句尾部空格被去掉，无法正常注入。<br>可用 MySQL 的单行注释符 <code>#</code> 来代替，不需要额外添加空格，更加简单有效。<br>也可在 <code>-- </code> 后加上使尾部空格不会被过滤的其他字符，如 <code>-- a</code> ，有用但不推荐。</p>
-<p> <code>#</code> 表示 MySQL 单行注释符，功能与 <code>-- </code> 相同。</p>
-<p>未编码的 <code>#</code> 在URL中被称为片段标识符（ Fragment Identifier ），方便浏览器将页面滚动到对应内容的位置。浏览器不会将 <code>#</code> 后的内容发送到服务器，所以，如果要在导航栏中进行 SQL 注入并使用 <code>#</code> ，需要编码为 <code>%23</code> 。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9igy4lv001p0suhf636ek6y" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-我的第一道命令执行" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" class="article-date">
@@ -188,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9igy4ly00240suh2nq0bugk" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9ikwx6d002jvcuh1skz7b5g" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -253,7 +202,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9igy4lx001w0suhe8jzdud9" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9ikwx690015vcuh19a78wbx" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -304,7 +253,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9igy4ly00210suh4z1ch432" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9ikwx680013vcuh6s7jhkwq" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -376,7 +325,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9igy4lj00030suh984jc6qg" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9ikwx5y0003vcuh6slw8q27" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -429,7 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9igy4lm00060suhafucc6v1" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9ikwx610007vcuh8cif590y" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -479,7 +428,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9igy4ln000b0suhe39hg7em" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9ikwx64000gvcuhcjph1w8f" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -524,7 +473,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9igy4lw001r0suhgb9ahxpl" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9ikwx67000qvcuh7gjlg872" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -571,7 +520,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 18px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 14px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 16.67px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a>
     </div>
   </div>
 
@@ -597,10 +546,6 @@
           </li>
         
           <li>
-            <a href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/">大小写绕过</a>
-          </li>
-        
-          <li>
             <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
           </li>
         
@@ -610,6 +555,10 @@
         
           <li>
             <a href="/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/">data:// 伪协议</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
           </li>
         
       </ul>
