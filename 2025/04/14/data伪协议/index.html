@@ -14,7 +14,7 @@
 <meta property="og:description" content="12345678910111213&lt;?phperror_reporting(0);if(isset($_GET[&#x27;c&#x27;]))&#123;    $c &#x3D; $_GET[&#x27;c&#x27;];    if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;        include($c);        echo $flag;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-14T14:01:28.746Z">
-<meta property="article:modified_time" content="2025-04-14T12:51:17.966Z">
+<meta property="article:modified_time" content="2025-04-15T04:59:15.383Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="PHP">
 <meta property="article:tag" content="命令执行">
@@ -110,6 +110,8 @@
 <p><strong>人话：<code>data://</code> 伪协议相当于在 <code>data://</code> 后写入数据， <code>data://</code> 及其后的数据会被当作文件处理。</strong></p>
 <p>看看实例就明白了：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$uri</span> = <span class="string">&#x27;data://text/plain;base64,SGVsbG8gV29ybGQh&#x27;</span></span><br><span class="line"><span class="variable">$data</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$uri</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$data</span>;</span><br></pre></td></tr></table></figure>
+
+
 
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -218,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9h58l5o000hj4uh04jlfk7v" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9i1ahmv000t1ouh8jbb6asl" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
