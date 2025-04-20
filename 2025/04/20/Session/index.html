@@ -4,21 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>一些辨析 | Traveler2000🪐</title>
+  <title>Session | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议php:&#x2F;&#x2F; 伪协议 1php:&#x2F;&#x2F;filter&#x2F;[操作]&#x2F;[过滤器链]&#x2F;resource&#x3D;[目标资源]  data:&#x2F;&#x2F; 伪协议 1data:&#x2F;&#x2F;&lt;MIME类型&gt;[;charset&#x3D;&lt;编码&gt;][;base64],&lt;数据&gt;    php:&#x2F;&#x2F; 伪协议可用于转换文件内容为 Bas">
+  <meta name="description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 解决方案：Session 机制为每个用户分配一个 唯一 ID，通过这个 ID 将用户和服务器存储的数据关联起来。  Session工作原理流程 客户端访问网站 服务器创建 SessionID  通过 Cookie 发送给浏览">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一些辨析">
-<meta property="og:url" content="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/index.html">
+<meta property="og:title" content="Session">
+<meta property="og:url" content="http://traveler2000.github.io/2025/04/20/Session/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议php:&#x2F;&#x2F; 伪协议 1php:&#x2F;&#x2F;filter&#x2F;[操作]&#x2F;[过滤器链]&#x2F;resource&#x3D;[目标资源]  data:&#x2F;&#x2F; 伪协议 1data:&#x2F;&#x2F;&lt;MIME类型&gt;[;charset&#x3D;&lt;编码&gt;][;base64],&lt;数据&gt;    php:&#x2F;&#x2F; 伪协议可用于转换文件内容为 Bas">
+<meta property="og:description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 解决方案：Session 机制为每个用户分配一个 唯一 ID，通过这个 ID 将用户和服务器存储的数据关联起来。  Session工作原理流程 客户端访问网站 服务器创建 SessionID  通过 Cookie 发送给浏览">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-15T07:32:55.790Z">
-<meta property="article:modified_time" content="2025-04-15T07:33:52.223Z">
+<meta property="article:published_time" content="2025-04-20T12:55:59.000Z">
+<meta property="article:modified_time" content="2025-04-20T14:07:57.361Z">
 <meta property="article:author" content="Traveler2000">
-<meta property="article:tag" content="PHP">
-<meta property="article:tag" content="命令执行">
-<meta property="article:tag" content="文件包含">
+<meta property="article:tag" content="杂项知识点">
+<meta property="article:tag" content="Session">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
@@ -76,10 +75,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-一些辨析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-Session" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2025-04-15T07:32:55.790Z" itemprop="datePublished">2025-04-15</time>
+    <a href="/2025/04/20/Session/" class="article-date">
+  <time class="dt-published" datetime="2025-04-20T12:55:59.000Z" itemprop="datePublished">2025-04-20</time>
 </a>
     
   <div class="article-category">
@@ -94,7 +93,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      一些辨析
+      Session
     </h1>
   
 
@@ -102,28 +101,55 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="php-伪协议与-data-伪协议"><a href="#php-伪协议与-data-伪协议" class="headerlink" title="php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议"></a>php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议</h2><p><code>php://</code> 伪协议</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
-
-<p><code>data://</code> 伪协议</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
-
-
+        <h2 id="HTTP-无状态性的核心问题"><a href="#HTTP-无状态性的核心问题" class="headerlink" title="HTTP 无状态性的核心问题"></a>HTTP 无状态性的核心问题</h2><p>HTTP 协议本身 <strong>不会记住用户上一次的请求</strong>，每个请求都是独立的。例如：</p>
 <ul>
-<li><p><code>php://</code> 伪协议可用于转换文件内容为 Base64 编码，使文件包含时 PHP 文件不会被解析，而是作为 Base64 文本返回前端。</p>
-</li>
-<li><p><code>data://</code> 伪协议自由度较高，可用于文件包含时执行命令。</p>
-</li>
+<li><strong>问题</strong>：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。</li>
+<li><strong>解决方案</strong>：Session 机制为每个用户分配一个 <strong>唯一 ID</strong>，通过这个 ID 将用户和服务器存储的数据关联起来。</li>
+</ul>
+<h2 id="Session工作原理流程"><a href="#Session工作原理流程" class="headerlink" title="Session工作原理流程"></a>Session工作原理流程</h2><ul>
+<li>客户端访问网站</li>
+<li>服务器创建 SessionID </li>
+<li>通过 Cookie 发送给浏览器</li>
+<li>浏览器后续请求携带 SessionID </li>
+<li>服务器匹配 Session 数据</li>
+<li>读取&#x2F;修改数据</li>
+</ul>
+<h3 id="流程解析（以-PHP-为例）"><a href="#流程解析（以-PHP-为例）" class="headerlink" title="流程解析（以 PHP 为例）"></a>流程解析（以 PHP 为例）</h3><p><strong>用户首次访问</strong></p>
+<ol>
+<li><strong>请求到达服务器</strong>：用户访问网站（如 <code>example.com</code>）。</li>
+<li><strong>生成 Session ID</strong>：服务器检查请求中是否携带 Session ID。如果是新用户，服务器生成一个 <strong>唯一 Session ID</strong>（如 <code>abc123</code>），通常通过加密算法（如 PHP 默认使用 <code>sha1</code>）生成。</li>
+<li><strong>创建存储文件</strong>：服务器在指定目录（如 <code>/tmp/</code>）生成文件 <code>sess_abc123</code>，用于存储该用户的 Session 数据（如用户名、购物车内容等）。</li>
+<li><strong>返回 Session ID</strong>：服务器通过 <strong>HTTP 响应头</strong> 将 Session ID 传递给浏览器。默认使用 <strong>Cookie</strong>（如 <code>PHPSESSID=abc123</code>），但也可通过 URL 参数传递（不推荐）。</li>
+</ol>
+<p><strong>用户后续请求</strong></p>
+<ol>
+<li><strong>携带 Session ID</strong>：浏览器在后续请求中自动通过 Cookie 发送 Session ID （<code>PHPSESSID=abc123</code>）。</li>
+<li><strong>服务器读取数据</strong>：服务器收到请求后，通过 Session ID 找到对应的文件 <code>sess_abc123</code>，并将文件内容反序列化为 <code>$_SESSION</code> 数组。<br>注：<strong>序列化 (Serialization)<strong>：把程序中的</strong>对象</strong>（如变量、数据结构）转换为<strong>标准化格式</strong>（字符串&#x2F;二进制流）；<strong>反序列化 (Deserialization)<strong>：将</strong>标准化格式</strong>的数据重新转换为程序可用的<strong>原始对象</strong>，恢复其结构和功能。</li>
+<li><strong>数据更新与保存</strong>：PHP 脚本执行过程中修改 <code>$_SESSION</code> 的数据，脚本结束时，服务器将 <code>$_SESSION</code> 的数据序列化后写回文件。</li>
+</ol>
+<p><strong>服务器端数据存储</strong></p>
+<ul>
+<li><strong>默认存储方式</strong>：文件存储（每个 Session ID 对应一个文件，如 <code>sess_abc123</code>）。</li>
+<li><strong>存储路径</strong>：通过 <code>php.ini</code> 的 <code>session.save_path</code> 配置（如 <code>/tmp/</code>）。</li>
+<li><strong>序列化格式</strong>：数据以键值对形式序列化存储（如 <code>username|s:4:&quot;Lucy&quot;;</code>）。</li>
+<li><strong>其他存储方式</strong>：可自定义存储到数据库、Redis 等。</li>
+</ul>
+<p><strong>Session 的生命周期</strong></p>
+<ul>
+<li><strong>创建阶段</strong>：当用户首次访问启用了 Session 的网站时，服务器会为该用户创建一个唯一的 Session 对象，并分配一个唯一的 Session ID。</li>
+<li><strong>活动阶段</strong>：用户在访问网站的过程中，会不断地发送请求到服务器。只要用户有请求发送，并且服务器在处理这些请求时使用了 Session（例如，读取或写入 Session 中的数据），那么这个 Session 就处于<strong>活动状态</strong>。在活动阶段，用户可以通过操作 Session 来存储和获取与当前会话相关的信息。<br>例如：用户登录后可以将用户信息存储在 Session 中，在其他页面通过读取 Session 来验证用户身份。</li>
+<li><strong>空闲阶段</strong>：当用户在一段时间内没有发送任何请求到服务器时，Session 就进入空闲状态。这个空闲时间的长短通常是由服务器配置来决定的。<br>在 PHP 中，默认的 Session 过期时间是 1440 秒（24 分钟），可以通过修改 <code>php.ini</code> 中的 <code>session.gc_maxlifetime</code> 配置项来调整。</li>
+<li><strong>销毁阶段</strong>：当 Session 达到了设定的过期时间，服务器就会认为该 Session 已经失效，并将其销毁，释放相关的资源。另外，用户也可以主动注销登录或执行一些特定的操作来手动销毁 Session。<br>在 PHP 中，可以使用 <code>session_destroy()</code> 函数来销毁当前的 Session，该函数会清除服务器上存储的与该 Session 相关的所有数据，并删除客户端的 <code>PHPSESSID</code> <code>Cookie</code>（如果存在）。</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9pq3j6o000ib4uhe2v2gxsr" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9pq3j6g0006b4uh9wmscu68" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Session/" rel="tag">Session</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
 
     </footer>
   </div>
@@ -131,19 +157,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          PHP 伪协议之 php://input
-        
-      </div>
-    </a>
   
-  
-    <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">多层函数绕过过滤</div>
+      <div class="article-nav-title">条件竞争漏洞</div>
     </a>
   
 </nav>

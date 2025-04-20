@@ -6,15 +6,15 @@
   
   <title>Cookie☆ | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="网络安全菜鸟，大佬们见笑了">
+  <meta name="description" content="Cookie 是什么？ 本质：Cookie 是 ​​服务器发送到浏览器​​ 的一小段文本数据（通常小于 4KB），浏览器会保存它，并在后续请求中自动回传给服务器。 核心作用：​​维持 HTTP 协议的无状态性​​（HTTP 本身不记录用户状态），实现用户身份识别、会话跟踪等功能。 存储位置：浏览器本地（不同浏览器存储路径不同，如 Chrome 在 Cookies 数据库文件中）。  Cookie">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cookie☆">
 <meta property="og:url" content="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="网络安全菜鸟，大佬们见笑了">
+<meta property="og:description" content="Cookie 是什么？ 本质：Cookie 是 ​​服务器发送到浏览器​​ 的一小段文本数据（通常小于 4KB），浏览器会保存它，并在后续请求中自动回传给服务器。 核心作用：​​维持 HTTP 协议的无状态性​​（HTTP 本身不记录用户状态），实现用户身份识别、会话跟踪等功能。 存储位置：浏览器本地（不同浏览器存储路径不同，如 Chrome 在 Cookies 数据库文件中）。  Cookie">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-14T04:55:08.802Z">
-<meta property="article:modified_time" content="2025-04-14T04:59:00.948Z">
+<meta property="article:modified_time" content="2025-04-20T12:51:19.640Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="杂项知识点">
 <meta property="article:tag" content="Cookie">
@@ -101,11 +101,75 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h2 id="Cookie-是什么？"><a href="#Cookie-是什么？" class="headerlink" title="Cookie 是什么？"></a>Cookie 是什么？</h2><ul>
+<li><strong>本质</strong>：<br>Cookie 是 ​<strong>​服务器发送到浏览器​</strong>​ 的一小段文本数据（通常小于 <code>4KB</code>），浏览器会保存它，并在后续请求中自动回传给服务器。</li>
+<li><strong>核心作用</strong>：<br>​<strong>​维持 HTTP 协议的无状态性​</strong>​（HTTP 本身不记录用户状态），实现用户身份识别、会话跟踪等功能。</li>
+<li><strong>存储位置</strong>：<br><strong>浏览器本地</strong>（不同浏览器存储路径不同，如 Chrome 在 <code>Cookies</code> 数据库文件中）。</li>
+</ul>
+<h2 id="Cookie-的工作原理"><a href="#Cookie-的工作原理" class="headerlink" title="Cookie 的工作原理"></a>Cookie 的工作原理</h2><ul>
+<li><p><strong>服务器设置 Cookie</strong><br>通过 HTTP 响应头的 <strong><code>Set-Cookie</code></strong> 字段发送给浏览器：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">HTTP/1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Set-Cookie</span><span class="punctuation">: </span>user_id=123; Expires=Wed, 21 Oct 2025 07:28:00 GMT; Path=/; Secure; HttpOnly</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>浏览器存储 Cookie</strong></p>
+<p>浏览器按照规则存储 Cookie，后续每次请求<strong>相同域名和路径</strong>时，自动通过 <code>Cookie</code> 请求头回传：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/path</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>example.com</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>user_id=123; session=abc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Cookie 的关键属性</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">作用</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Expires</code></td>
+<td align="center">指定 Cookie 过期时间（GMT 格式）。如果没有设置，则为会话Cookie，浏览器关闭后删除</td>
+<td align="center"><code>Expires=Wed, 21 Oct 2025 07:28:00 GMT</code></td>
+</tr>
+<tr>
+<td align="center"><code>Max-Age</code></td>
+<td align="center">存活时间（秒，优先级高于 <code>Expires</code>）。不受客户端时钟影响。</td>
+<td align="center"><code>Max-Age=3600</code>（1小时）</td>
+</tr>
+<tr>
+<td align="center"><code>Domain</code></td>
+<td align="center">生效域名。若是<code>.example.com</code>的形式，则是对该域名的子域名也有用。</td>
+<td align="center"><code>Domain=example.com</code></td>
+</tr>
+<tr>
+<td align="center"><code>Path</code></td>
+<td align="center">生效路径（限制 Cookie 的访问路径）</td>
+<td align="center"><code>Path=/admin</code></td>
+</tr>
+<tr>
+<td align="center"><code>Secure</code></td>
+<td align="center">仅通过 HTTPS 传输时带有该属性。<strong>无值属性</strong></td>
+<td align="center"><code>Secure</code></td>
+</tr>
+<tr>
+<td align="center"><code>HttpOnly</code></td>
+<td align="center">禁止 JavaScript 访问（防 XSS 攻击）。<strong>无值属性</strong></td>
+<td align="center"><code>HttpOnly</code></td>
+</tr>
+<tr>
+<td align="center"><code>SameSite</code></td>
+<td align="center">限制跨站请求携带 Cookie（防 CSRF 攻击，可选 <code>Strict</code>&#x2F;<code>Lax</code>&#x2F;<code>None</code>）</td>
+<td align="center"><code>SameSite=Lax</code></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>以上是 Cookie 的标准属性，使用时<strong>不区分大小写</strong>。除了标准属性，还可以在 <code>Set-Cookie</code> 字段中自定义 Cookie 属性，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: abc=123;</span><br></pre></td></tr></table></figure>
+
+<p>自定义 Cookie 属性<strong>要区分大小写</strong>，若两个属性名称相同，大小写不同，则代表不同的自定义属性。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9o8ema2000390uhd9goa6oc" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9pq3j6d0003b4uh35y1d1jj" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -156,7 +220,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Session/" rel="tag">Session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
     </div>
   </div>
 
@@ -166,7 +230,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 18px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 16px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 14px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 17.5px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 15px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12.5px;">爆破</a>
     </div>
   </div>
 
@@ -188,6 +252,10 @@
       <ul>
         
           <li>
+            <a href="/2025/04/20/Session/">Session</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/">条件竞争漏洞</a>
           </li>
         
@@ -201,10 +269,6 @@
         
           <li>
             <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/">多层函数绕过过滤</a>
           </li>
         
       </ul>
