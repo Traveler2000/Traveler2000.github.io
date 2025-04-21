@@ -6,15 +6,15 @@
   
   <title>Session | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 解决方案：Session 机制为每个用户分配一个 唯一 ID，通过这个 ID 将用户和服务器存储的数据关联起来。  Session工作原理流程 客户端访问网站 服务器创建 SessionID  通过 Cookie 发送给浏览">
+  <meta name="description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 Cookie 的局限性：虽然 Cookie 可以存储用户信息，但直接存储敏感数据在客户端（如用户ID）存在安全隐患，且可能被篡改。 解决方案：开发者提出将敏感数据存储在服务器端，客户端仅保存一个随机生成的 ID（Sessio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Session">
 <meta property="og:url" content="http://traveler2000.github.io/2025/04/20/Session/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 解决方案：Session 机制为每个用户分配一个 唯一 ID，通过这个 ID 将用户和服务器存储的数据关联起来。  Session工作原理流程 客户端访问网站 服务器创建 SessionID  通过 Cookie 发送给浏览">
+<meta property="og:description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 Cookie 的局限性：虽然 Cookie 可以存储用户信息，但直接存储敏感数据在客户端（如用户ID）存在安全隐患，且可能被篡改。 解决方案：开发者提出将敏感数据存储在服务器端，客户端仅保存一个随机生成的 ID（Sessio">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-20T12:55:59.000Z">
-<meta property="article:modified_time" content="2025-04-20T14:07:57.361Z">
+<meta property="article:modified_time" content="2025-04-21T07:53:14.934Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="杂项知识点">
 <meta property="article:tag" content="Session">
@@ -104,12 +104,13 @@
         <h2 id="HTTP-无状态性的核心问题"><a href="#HTTP-无状态性的核心问题" class="headerlink" title="HTTP 无状态性的核心问题"></a>HTTP 无状态性的核心问题</h2><p>HTTP 协议本身 <strong>不会记住用户上一次的请求</strong>，每个请求都是独立的。例如：</p>
 <ul>
 <li><strong>问题</strong>：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。</li>
-<li><strong>解决方案</strong>：Session 机制为每个用户分配一个 <strong>唯一 ID</strong>，通过这个 ID 将用户和服务器存储的数据关联起来。</li>
+<li><strong>Cookie 的局限性</strong>：虽然 Cookie 可以存储用户信息，但直接存储敏感数据在客户端（如用户ID）存在安全隐患，且可能被篡改。</li>
+<li><strong>解决方案</strong>：开发者提出将敏感数据存储在<strong>服务器端</strong>，客户端仅保存一个随机生成的 ID（Session ID），通过这个 ID 关联服务器数据，解决了安全性和状态管理问题。</li>
 </ul>
 <h2 id="Session工作原理流程"><a href="#Session工作原理流程" class="headerlink" title="Session工作原理流程"></a>Session工作原理流程</h2><ul>
 <li>客户端访问网站</li>
 <li>服务器创建 SessionID </li>
-<li>通过 Cookie 发送给浏览器</li>
+<li>通过 Cookie 发送给浏览器（ Set-Cookie 字段）</li>
 <li>浏览器后续请求携带 SessionID </li>
 <li>服务器匹配 Session 数据</li>
 <li>读取&#x2F;修改数据</li>
@@ -127,6 +128,14 @@
 <li><strong>服务器读取数据</strong>：服务器收到请求后，通过 Session ID 找到对应的文件 <code>sess_abc123</code>，并将文件内容反序列化为 <code>$_SESSION</code> 数组。<br>注：<strong>序列化 (Serialization)<strong>：把程序中的</strong>对象</strong>（如变量、数据结构）转换为<strong>标准化格式</strong>（字符串&#x2F;二进制流）；<strong>反序列化 (Deserialization)<strong>：将</strong>标准化格式</strong>的数据重新转换为程序可用的<strong>原始对象</strong>，恢复其结构和功能。</li>
 <li><strong>数据更新与保存</strong>：PHP 脚本执行过程中修改 <code>$_SESSION</code> 的数据，脚本结束时，服务器将 <code>$_SESSION</code> 的数据序列化后写回文件。</li>
 </ol>
+<h2 id="一些细节"><a href="#一些细节" class="headerlink" title="一些细节"></a>一些细节</h2><p><strong>Session 的创建</strong></p>
+<p>Session 的创建和管理是由<strong>后端编程语言或框架</strong>（应用服务器）实现，如：</p>
+<ul>
+<li><strong>Tomcat</strong>：Java Servlet 容器，运行 Java Web 应用。</li>
+<li><strong>uWSGI</strong>：Python 应用服务器，配合 Django&#x2F;Flask 使用。</li>
+<li><strong>Node.js</strong>：本身不是应用服务器，但 Express、Koa 等框架提供类似功能。</li>
+<li><strong>PHP-FPM</strong>：专为 PHP 设计的进程管理器，与 Nginx&#x2F;Apache 配合使用。</li>
+</ul>
 <p><strong>服务器端数据存储</strong></p>
 <ul>
 <li><strong>默认存储方式</strong>：文件存储（每个 Session ID 对应一个文件，如 <code>sess_abc123</code>）。</li>
@@ -135,17 +144,55 @@
 <li><strong>其他存储方式</strong>：可自定义存储到数据库、Redis 等。</li>
 </ul>
 <p><strong>Session 的生命周期</strong></p>
+<p>Session 数据在会话期间（持续操作 Session 时）持续有效，也可通过 <code>session_destroy()</code> 或配置的过期时间（ <code>php.ini</code> 中的 <code>session.gc_maxlifetime</code> 配置项）自动清理。若用户在一定时间内没有对服务器进行任何与该 Session 相关的操作（如关闭浏览器），服务器就会认为会话已结束，从而使 Session 失效。<br>有些应用可能会采用持久化 Session 的方式，将 Session 数据存储在数据库或其他持久化存储介质中。这样即使关闭浏览器，下次打开浏览器访问该网站时，只要在一定的有效期内，仍然可以恢复之前的 Session 状态。（“记住我”功能）</p>
+<h2 id="PHP-中的-Session"><a href="#PHP-中的-Session" class="headerlink" title="PHP 中的 Session"></a>PHP 中的 Session</h2><h3 id="SESSION-数组"><a href="#SESSION-数组" class="headerlink" title="$_SESSION 数组"></a><code>$_SESSION</code> 数组</h3><p>与其他超全局变量（如 <code>$_GET</code>、<code>$_POST</code>、<code>$_COOKIE</code>）不同，<code>$_SESSION</code> 的内容并非直接来自客户端的输入，而是存储在<strong>服务器端</strong>。</p>
+<p>当用户首次访问时，PHP 会生成一个唯一的 <code>Session ID</code>，并发送到客户端。后续请求中，客户端携带 <code>Session ID</code>（如通过 Cookie 或 URL），服务器根据该 ID 找到对应的 Session 数据并加载到 <code>$_SESSION</code> 数组中。</p>
+<h3 id="Session-工作流程"><a href="#Session-工作流程" class="headerlink" title="Session 工作流程"></a>Session 工作流程</h3><p><strong>初始化会话</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">session_start</span>(); <span class="comment">// 开启会话，读取或创建 Session ID</span></span><br></pre></td></tr></table></figure>
+
+<p>当调用 <code>session_start()</code> 时，PHP 会执行以下操作：</p>
 <ul>
-<li><strong>创建阶段</strong>：当用户首次访问启用了 Session 的网站时，服务器会为该用户创建一个唯一的 Session 对象，并分配一个唯一的 Session ID。</li>
-<li><strong>活动阶段</strong>：用户在访问网站的过程中，会不断地发送请求到服务器。只要用户有请求发送，并且服务器在处理这些请求时使用了 Session（例如，读取或写入 Session 中的数据），那么这个 Session 就处于<strong>活动状态</strong>。在活动阶段，用户可以通过操作 Session 来存储和获取与当前会话相关的信息。<br>例如：用户登录后可以将用户信息存储在 Session 中，在其他页面通过读取 Session 来验证用户身份。</li>
-<li><strong>空闲阶段</strong>：当用户在一段时间内没有发送任何请求到服务器时，Session 就进入空闲状态。这个空闲时间的长短通常是由服务器配置来决定的。<br>在 PHP 中，默认的 Session 过期时间是 1440 秒（24 分钟），可以通过修改 <code>php.ini</code> 中的 <code>session.gc_maxlifetime</code> 配置项来调整。</li>
-<li><strong>销毁阶段</strong>：当 Session 达到了设定的过期时间，服务器就会认为该 Session 已经失效，并将其销毁，释放相关的资源。另外，用户也可以主动注销登录或执行一些特定的操作来手动销毁 Session。<br>在 PHP 中，可以使用 <code>session_destroy()</code> 函数来销毁当前的 Session，该函数会清除服务器上存储的与该 Session 相关的所有数据，并删除客户端的 <code>PHPSESSID</code> <code>Cookie</code>（如果存在）。</li>
+<li><strong>检查客户端是否携带有效的 Session ID</strong>：<ul>
+<li>如果客户端通过 Cookie 或 URL 传递了有效的 Session ID（ Cookie 中默认为 <code>PHPSESSID</code>），PHP 会尝试读取对应的 Session 文件。</li>
+<li>如果未找到有效的 Session ID，PHP 会生成一个新的 Session ID，并创建一个新的 Session 文件（通常为空文件，路径由 <code>session.save_path</code> 配置决定）。新的 Session ID 会通过 HTTP 响应头（ Cookie 或 URL ）将 Session ID 传递给浏览器。</li>
+</ul>
+</li>
+<li>**加载数据到 <code>$_SESSION</code>**：<ul>
+<li>如果 Session 文件中有数据，PHP 会将其反序列化并加载到 <code>$_SESSION</code> 数组中。</li>
+<li>如果是一个新会话，<code>$_SESSION</code> 数组初始化为空。</li>
+</ul>
+</li>
+</ul>
+<p><strong>操作 Session 数据</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>] = <span class="string">&#x27;Alice&#x27;</span>; <span class="comment">// 写入数据</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>];      <span class="comment">// 读取数据</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>**修改 <code>$_SESSION</code>**：<ul>
+<li>开发者可以在脚本中直接操作 <code>$_SESSION</code> 数组（如 <code>$_SESSION[&#39;key&#39;] = &#39;value&#39;</code>）。</li>
+<li>此时所有修改仅保存在内存中的 <code>$_SESSION</code> 数组里，<strong>尚未写入 Session 文件</strong>。</li>
+</ul>
+</li>
+<li><strong>自动提交</strong>：<ul>
+<li>PHP 会在脚本执行结束时（或调用 <code>session_write_close()</code> 时），将 <code>$_SESSION</code> 数组的内容序列化，并写入到 Session 文件中。（默认情况下，Session 文件会被加锁。如果脚本执行时间过长，其他请求访问同一 Session 会被阻塞。可通过 <code>session_write_close()</code> 提前释放锁。）</li>
+<li>写入完成后，Session 文件会更新为最新的数据。</li>
+</ul>
+</li>
+</ul>
+<p>**销毁 Session **</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">session_destroy</span>(); <span class="comment">// 删除服务器端 Session 数据</span></span><br></pre></td></tr></table></figure>
+
+<p>可通过 <code>session_destroy()</code> 或配置的过期时间（ <code>session.gc_maxlifetime</code> 配置项）来销毁 Session 。</p>
+<h3 id="Session-的常用配置项"><a href="#Session-的常用配置项" class="headerlink" title="Session 的常用配置项"></a>Session 的常用配置项</h3><ul>
+<li><code>session.save_path</code>：Session文件存储路径（默认 <code>/tmp</code>）。</li>
+<li><code>session.name</code>：Session Cookie的名称（默认 <code>PHPSESSID</code>）。</li>
+<li><code>session.cookie_lifetime</code>：Session ID的存活时间（秒，0表示浏览器关闭后失效）。</li>
+<li><code>session.gc_maxlifetime</code>：Session数据过期时间（默认1440秒，24分钟）。</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9pq3j6g0006b4uh9wmscu68" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9qxpc8b0008kwuh5bjt4s2c" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -177,7 +224,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
     </div>
   </div>
 

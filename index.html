@@ -102,12 +102,13 @@
         <h2 id="HTTP-无状态性的核心问题"><a href="#HTTP-无状态性的核心问题" class="headerlink" title="HTTP 无状态性的核心问题"></a>HTTP 无状态性的核心问题</h2><p>HTTP 协议本身 <strong>不会记住用户上一次的请求</strong>，每个请求都是独立的。例如：</p>
 <ul>
 <li><strong>问题</strong>：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。</li>
-<li><strong>解决方案</strong>：Session 机制为每个用户分配一个 <strong>唯一 ID</strong>，通过这个 ID 将用户和服务器存储的数据关联起来。</li>
+<li><strong>Cookie 的局限性</strong>：虽然 Cookie 可以存储用户信息，但直接存储敏感数据在客户端（如用户ID）存在安全隐患，且可能被篡改。</li>
+<li><strong>解决方案</strong>：开发者提出将敏感数据存储在<strong>服务器端</strong>，客户端仅保存一个随机生成的 ID（Session ID），通过这个 ID 关联服务器数据，解决了安全性和状态管理问题。</li>
 </ul>
 <h2 id="Session工作原理流程"><a href="#Session工作原理流程" class="headerlink" title="Session工作原理流程"></a>Session工作原理流程</h2><ul>
 <li>客户端访问网站</li>
 <li>服务器创建 SessionID </li>
-<li>通过 Cookie 发送给浏览器</li>
+<li>通过 Cookie 发送给浏览器（ Set-Cookie 字段）</li>
 <li>浏览器后续请求携带 SessionID </li>
 <li>服务器匹配 Session 数据</li>
 <li>读取&#x2F;修改数据</li>
@@ -125,6 +126,14 @@
 <li><strong>服务器读取数据</strong>：服务器收到请求后，通过 Session ID 找到对应的文件 <code>sess_abc123</code>，并将文件内容反序列化为 <code>$_SESSION</code> 数组。<br>注：<strong>序列化 (Serialization)<strong>：把程序中的</strong>对象</strong>（如变量、数据结构）转换为<strong>标准化格式</strong>（字符串&#x2F;二进制流）；<strong>反序列化 (Deserialization)<strong>：将</strong>标准化格式</strong>的数据重新转换为程序可用的<strong>原始对象</strong>，恢复其结构和功能。</li>
 <li><strong>数据更新与保存</strong>：PHP 脚本执行过程中修改 <code>$_SESSION</code> 的数据，脚本结束时，服务器将 <code>$_SESSION</code> 的数据序列化后写回文件。</li>
 </ol>
+<h2 id="一些细节"><a href="#一些细节" class="headerlink" title="一些细节"></a>一些细节</h2><p><strong>Session 的创建</strong></p>
+<p>Session 的创建和管理是由<strong>后端编程语言或框架</strong>（应用服务器）实现，如：</p>
+<ul>
+<li><strong>Tomcat</strong>：Java Servlet 容器，运行 Java Web 应用。</li>
+<li><strong>uWSGI</strong>：Python 应用服务器，配合 Django&#x2F;Flask 使用。</li>
+<li><strong>Node.js</strong>：本身不是应用服务器，但 Express、Koa 等框架提供类似功能。</li>
+<li><strong>PHP-FPM</strong>：专为 PHP 设计的进程管理器，与 Nginx&#x2F;Apache 配合使用。</li>
+</ul>
 <p><strong>服务器端数据存储</strong></p>
 <ul>
 <li><strong>默认存储方式</strong>：文件存储（每个 Session ID 对应一个文件，如 <code>sess_abc123</code>）。</li>
@@ -133,17 +142,55 @@
 <li><strong>其他存储方式</strong>：可自定义存储到数据库、Redis 等。</li>
 </ul>
 <p><strong>Session 的生命周期</strong></p>
+<p>Session 数据在会话期间（持续操作 Session 时）持续有效，也可通过 <code>session_destroy()</code> 或配置的过期时间（ <code>php.ini</code> 中的 <code>session.gc_maxlifetime</code> 配置项）自动清理。若用户在一定时间内没有对服务器进行任何与该 Session 相关的操作（如关闭浏览器），服务器就会认为会话已结束，从而使 Session 失效。<br>有些应用可能会采用持久化 Session 的方式，将 Session 数据存储在数据库或其他持久化存储介质中。这样即使关闭浏览器，下次打开浏览器访问该网站时，只要在一定的有效期内，仍然可以恢复之前的 Session 状态。（“记住我”功能）</p>
+<h2 id="PHP-中的-Session"><a href="#PHP-中的-Session" class="headerlink" title="PHP 中的 Session"></a>PHP 中的 Session</h2><h3 id="SESSION-数组"><a href="#SESSION-数组" class="headerlink" title="$_SESSION 数组"></a><code>$_SESSION</code> 数组</h3><p>与其他超全局变量（如 <code>$_GET</code>、<code>$_POST</code>、<code>$_COOKIE</code>）不同，<code>$_SESSION</code> 的内容并非直接来自客户端的输入，而是存储在<strong>服务器端</strong>。</p>
+<p>当用户首次访问时，PHP 会生成一个唯一的 <code>Session ID</code>，并发送到客户端。后续请求中，客户端携带 <code>Session ID</code>（如通过 Cookie 或 URL），服务器根据该 ID 找到对应的 Session 数据并加载到 <code>$_SESSION</code> 数组中。</p>
+<h3 id="Session-工作流程"><a href="#Session-工作流程" class="headerlink" title="Session 工作流程"></a>Session 工作流程</h3><p><strong>初始化会话</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">session_start</span>(); <span class="comment">// 开启会话，读取或创建 Session ID</span></span><br></pre></td></tr></table></figure>
+
+<p>当调用 <code>session_start()</code> 时，PHP 会执行以下操作：</p>
 <ul>
-<li><strong>创建阶段</strong>：当用户首次访问启用了 Session 的网站时，服务器会为该用户创建一个唯一的 Session 对象，并分配一个唯一的 Session ID。</li>
-<li><strong>活动阶段</strong>：用户在访问网站的过程中，会不断地发送请求到服务器。只要用户有请求发送，并且服务器在处理这些请求时使用了 Session（例如，读取或写入 Session 中的数据），那么这个 Session 就处于<strong>活动状态</strong>。在活动阶段，用户可以通过操作 Session 来存储和获取与当前会话相关的信息。<br>例如：用户登录后可以将用户信息存储在 Session 中，在其他页面通过读取 Session 来验证用户身份。</li>
-<li><strong>空闲阶段</strong>：当用户在一段时间内没有发送任何请求到服务器时，Session 就进入空闲状态。这个空闲时间的长短通常是由服务器配置来决定的。<br>在 PHP 中，默认的 Session 过期时间是 1440 秒（24 分钟），可以通过修改 <code>php.ini</code> 中的 <code>session.gc_maxlifetime</code> 配置项来调整。</li>
-<li><strong>销毁阶段</strong>：当 Session 达到了设定的过期时间，服务器就会认为该 Session 已经失效，并将其销毁，释放相关的资源。另外，用户也可以主动注销登录或执行一些特定的操作来手动销毁 Session。<br>在 PHP 中，可以使用 <code>session_destroy()</code> 函数来销毁当前的 Session，该函数会清除服务器上存储的与该 Session 相关的所有数据，并删除客户端的 <code>PHPSESSID</code> <code>Cookie</code>（如果存在）。</li>
+<li><strong>检查客户端是否携带有效的 Session ID</strong>：<ul>
+<li>如果客户端通过 Cookie 或 URL 传递了有效的 Session ID（ Cookie 中默认为 <code>PHPSESSID</code>），PHP 会尝试读取对应的 Session 文件。</li>
+<li>如果未找到有效的 Session ID，PHP 会生成一个新的 Session ID，并创建一个新的 Session 文件（通常为空文件，路径由 <code>session.save_path</code> 配置决定）。新的 Session ID 会通过 HTTP 响应头（ Cookie 或 URL ）将 Session ID 传递给浏览器。</li>
+</ul>
+</li>
+<li>**加载数据到 <code>$_SESSION</code>**：<ul>
+<li>如果 Session 文件中有数据，PHP 会将其反序列化并加载到 <code>$_SESSION</code> 数组中。</li>
+<li>如果是一个新会话，<code>$_SESSION</code> 数组初始化为空。</li>
+</ul>
+</li>
+</ul>
+<p><strong>操作 Session 数据</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>] = <span class="string">&#x27;Alice&#x27;</span>; <span class="comment">// 写入数据</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_SESSION</span>[<span class="string">&#x27;username&#x27;</span>];      <span class="comment">// 读取数据</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>**修改 <code>$_SESSION</code>**：<ul>
+<li>开发者可以在脚本中直接操作 <code>$_SESSION</code> 数组（如 <code>$_SESSION[&#39;key&#39;] = &#39;value&#39;</code>）。</li>
+<li>此时所有修改仅保存在内存中的 <code>$_SESSION</code> 数组里，<strong>尚未写入 Session 文件</strong>。</li>
+</ul>
+</li>
+<li><strong>自动提交</strong>：<ul>
+<li>PHP 会在脚本执行结束时（或调用 <code>session_write_close()</code> 时），将 <code>$_SESSION</code> 数组的内容序列化，并写入到 Session 文件中。（默认情况下，Session 文件会被加锁。如果脚本执行时间过长，其他请求访问同一 Session 会被阻塞。可通过 <code>session_write_close()</code> 提前释放锁。）</li>
+<li>写入完成后，Session 文件会更新为最新的数据。</li>
+</ul>
+</li>
+</ul>
+<p>**销毁 Session **</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">session_destroy</span>(); <span class="comment">// 删除服务器端 Session 数据</span></span><br></pre></td></tr></table></figure>
+
+<p>可通过 <code>session_destroy()</code> 或配置的过期时间（ <code>session.gc_maxlifetime</code> 配置项）来销毁 Session 。</p>
+<h3 id="Session-的常用配置项"><a href="#Session-的常用配置项" class="headerlink" title="Session 的常用配置项"></a>Session 的常用配置项</h3><ul>
+<li><code>session.save_path</code>：Session文件存储路径（默认 <code>/tmp</code>）。</li>
+<li><code>session.name</code>：Session Cookie的名称（默认 <code>PHPSESSID</code>）。</li>
+<li><code>session.cookie_lifetime</code>：Session ID的存活时间（秒，0表示浏览器关闭后失效）。</li>
+<li><code>session.gc_maxlifetime</code>：Session数据过期时间（默认1440秒，24分钟）。</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9pq3j6g0006b4uh9wmscu68" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9qxpc8b0008kwuh5bjt4s2c" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -187,7 +234,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9pq3j6z002ab4uhe0elaod2" data-title="条件竞争漏洞" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9qxpc8t002jkwuh5bau2bi8" data-title="条件竞争漏洞" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -208,7 +255,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
   </div>
 
   </div>
@@ -233,7 +280,7 @@
 <p>冒号被过滤，不能用伪协议了。直接上日志注入。</p>
 <p>先抓包看看响应头 <strong><code>server:</code></strong> 字段，确定是什么服务器软件。（浏览器 F12 也自带查看响应头的工具）</p>
 <p>我抓出来是 <strong><code>server: nginx/1.20.1</code></strong> ，服务器为 <strong>nginx</strong>。上网查资料，nginx 日志文件位置为： <strong><code>/var/log/nginx/access.log</code></strong> ，一会儿要用。</p>
-<p>大多数服务器日志会记录以下信息：</p>
+<p>大多数 Web 服务器日志会记录以下信息：</p>
 <ul>
 <li><strong>时间戳</strong>：请求发生的日期和时间。</li>
 <li><strong>客户端IP</strong>：访问者的IP地址。</li>
@@ -263,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9pq3j70002jb4uh2xk74i6o" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9qxpc8u002mkwuh3pa32oxp" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -320,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9pq3j6l000bb4uh222e1yu5" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9qxpc8d000ckwuhd3t7d69r" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -377,7 +424,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9pq3j6o000ib4uhe2v2gxsr" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9qxpc8f000gkwuh3y1wggtu" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -491,7 +538,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9pq3j6w0021b4uh428e4fue" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9qxpc8k0012kwuh10312ja7" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -648,7 +695,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9pq3j6k0008b4uh50eg1sm2" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9qxpc8c000bkwuh8ixu69tz" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -807,7 +854,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9pq3j70002gb4uh0oj9h6x1" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9qxpc8s002ekwuhfqdvgwdw" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -847,12 +894,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="访问的是-PHP-文件，为什么前端得到的是-HTML-文件"><a href="#访问的是-PHP-文件，为什么前端得到的是-HTML-文件" class="headerlink" title="访问的是 PHP 文件，为什么前端得到的是 HTML 文件"></a>访问的是 PHP 文件，为什么前端得到的是 HTML 文件</h2><p><strong>服务器</strong>收到<strong>客户端浏览器</strong>发来的请求后，会检查储存在服务器上的对应文件类型。</p>
+        <h2 id="访问的是-PHP-文件，为什么前端得到的是-HTML-文件"><a href="#访问的是-PHP-文件，为什么前端得到的是-HTML-文件" class="headerlink" title="访问的是 PHP 文件，为什么前端得到的是 HTML 文件"></a>访问的是 PHP 文件，为什么前端得到的是 HTML 文件</h2><p><strong>Web 服务器</strong>收到<strong>客户端浏览器</strong>发来的请求后，会检查储存在服务器上的对应文件类型。</p>
 <p>若发现文件是<strong>静态文件</strong>（ <code>.html/.css/.js</code> ），则直接将文件返回给浏览器；</p>
-<p>如果有<strong>动态内容</strong>（如 <code>.php</code> ），则发送给处理对应内容的插件生成内容，然后将内容返回给浏览器（如将请求转发给 PHP 解释器，然后返回处理结果）。</p>
-<p><strong>若服务器未安装生成对应动态内容的插件或模块，或未正确进行配置，则无法正常返回网页</strong>（如 Nginx 或 Apache 在没有配置 PHP 支持时，会对 <code>.php</code> 请求返回 <code>403 Forbidden</code> 、 <code>404 Not Found</code> ，甚至直接显示PHP源代码）。</p>
-<p>如果服务器识别不了文件（如 <code>.txt/.exe</code> 等），则会直接把文件不作处理发给客户端，呈现在用户面前的就是该文件加入浏览器的“下载”列表。</p>
-<h2 id="常见服务器软件日志路径"><a href="#常见服务器软件日志路径" class="headerlink" title="常见服务器软件日志路径"></a>常见服务器软件日志路径</h2><table>
+<p>如果有<strong>动态内容</strong>（如 <code>.php</code> ），则发送给处理对应内容的<strong>插件</strong>或<strong>应用服务器</strong>生成内容，然后将内容返回给浏览器（如将请求转发给 PHP-FPM， PHP-FPM 返回处理结果后，将处理结果返回给浏览器）。</p>
+<p><strong>若 Web 服务器未安装生成对应动态内容的插件或模块，或未正确进行配置，则无法正常返回网页</strong>（如 Nginx 或 Apache 在没有配置 PHP 支持时，会对 <code>.php</code> 请求返回 <code>403 Forbidden</code> 、 <code>404 Not Found</code> ，甚至直接显示PHP源代码）。</p>
+<p>如果 Web 服务器识别不了文件（如 <code>.txt/.exe</code> 等），则会直接把文件不作处理发给客户端，呈现在用户面前的就是该文件加入浏览器的“下载”列表。</p>
+<h2 id="常见-Web-服务器软件日志路径"><a href="#常见-Web-服务器软件日志路径" class="headerlink" title="常见 Web 服务器软件日志路径"></a>常见 Web 服务器软件日志路径</h2><table>
 <thead>
 <tr>
 <th align="center">服务器软件</th>
@@ -886,11 +933,114 @@
 <td align="center">同目录下按站点分级的错误日志</td>
 </tr>
 </tbody></table>
+<h2 id="常见服务器类型以及例子"><a href="#常见服务器类型以及例子" class="headerlink" title="常见服务器类型以及例子"></a>常见服务器类型以及例子</h2><h3 id="1-Web-服务器（Web-Server）"><a href="#1-Web-服务器（Web-Server）" class="headerlink" title="1. Web 服务器（Web Server）"></a>1. <strong>Web 服务器（Web Server）</strong></h3><p><strong>作用</strong></p>
+<p>托管网站或 Web 应用程序，接收客户端（如浏览器）的 HTTP&#x2F;HTTPS 请求，返回 HTML 页面、图片、视频等静态或动态内容。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li><strong>静态内容</strong>：直接返回服务器上存储的文件（如 HTML、CSS、图片）。</li>
+<li><strong>动态内容</strong>：与后端应用服务器（如 Tomcat）协作，通过 CGI、FastCGI 或反向代理将请求转发给后端处理，再返回结果。</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><strong>Apache HTTP Server</strong>：模块化设计，支持 PHP、Python 等动态语言。</li>
+<li><strong>Nginx</strong>：高性能，擅长处理高并发，常用于反向代理和负载均衡。</li>
+<li><strong>Caddy</strong>：自动 HTTPS 配置，适合新手快速部署。</li>
+</ul>
+<hr>
+<h3 id="2-数据库服务器（Database-Server）"><a href="#2-数据库服务器（Database-Server）" class="headerlink" title="2. 数据库服务器（Database Server）"></a>2. <strong>数据库服务器（Database Server）</strong></h3><p><strong>作用</strong></p>
+<p>集中存储和管理结构化数据（如用户信息、订单记录），提供高效的查询、插入、更新和删除操作。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li>使用 SQL（如 MySQL）或 NoSQL（如 MongoDB）语言操作数据。</li>
+<li>通过事务管理（ACID）保证数据一致性（适用于银行、支付系统）。</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><p>关系型数据库：</p>
+<ul>
+<li>MySQL：开源，适合中小型应用。</li>
+<li>PostgreSQL：支持复杂查询和 JSON 数据类型，适合数据分析。</li>
+</ul>
+</li>
+<li><p>NoSQL 数据库：</p>
+<ul>
+<li>MongoDB：文档型数据库，适合非结构化数据（如日志、社交网络）。</li>
+</ul>
+</li>
+<li><p>Redis：内存数据库，用于缓存和高速读写（如秒杀系统）。</p>
+</li>
+</ul>
+<hr>
+<h3 id="3-邮件服务器（Mail-Server）"><a href="#3-邮件服务器（Mail-Server）" class="headerlink" title="3. 邮件服务器（Mail Server）"></a>3. <strong>邮件服务器（Mail Server）</strong></h3><p><strong>作用</strong></p>
+<p>负责电子邮件的发送（SMTP）、接收（POP3&#x2F;IMAP）和存储，管理用户邮箱账号。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li><strong>SMTP 协议</strong>：发送邮件（如从 Outlook 发送到 Gmail）。</li>
+<li><strong>POP3&#x2F;IMAP 协议</strong>：接收邮件（POP3 下载后删除，IMAP 同步保留在服务器）。</li>
+<li><strong>反垃圾邮件</strong>：通过 SPF、DKIM 等技术验证邮件合法性。</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><strong>Postfix + Dovecot</strong>：开源组合，Postfix 处理 SMTP，Dovecot 处理 IMAP&#x2F;POP3。</li>
+<li><strong>Microsoft Exchange</strong>：集成日历、联系人功能，适合企业协同办公。</li>
+</ul>
+<hr>
+<h3 id="4-文件服务器（File-Server）"><a href="#4-文件服务器（File-Server）" class="headerlink" title="4. 文件服务器（File Server）"></a>4. <strong>文件服务器（File Server）</strong></h3><p><strong>作用</strong></p>
+<p>集中存储文件（如文档、视频），支持多用户共享和权限管理。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li><p>协议支持：</p>
+<ul>
+<li>SMB&#x2F;CIFS：Windows 文件共享（如 <code>\\192.168.1.100\share</code>）。</li>
+</ul>
+</li>
+<li><p>NFS：Linux&#x2F;Unix 文件共享。</p>
+<ul>
+<li>FTP&#x2F;SFTP：跨平台文件传输（如 FileZilla）。</li>
+</ul>
+</li>
+<li><p><strong>权限控制</strong>：限制用户对文件的读写权限。</p>
+</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><strong>Windows Server 文件服务</strong>：通过 SMB 协议共享文件夹。</li>
+<li><strong>FreeNAS</strong>：开源 NAS 系统，支持 RAID 冗余和快照备份。</li>
+<li><strong>Nextcloud</strong>：自建私有云盘（类似 Dropbox）。</li>
+</ul>
+<hr>
+<h3 id="5-DNS-服务器（Domain-Name-System-Server）"><a href="#5-DNS-服务器（Domain-Name-System-Server）" class="headerlink" title="5. DNS 服务器（Domain Name System Server）"></a>5. <strong>DNS 服务器（Domain Name System Server）</strong></h3><p><strong>作用</strong></p>
+<p>将人类可读的域名（如 <code>www.google.com</code>）转换为机器可识别的 IP 地址（如 <code>142.250.189.206</code>）。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li><strong>递归查询</strong>：客户端向 DNS 服务器请求解析，若服务器无缓存则逐级向上查询（根域名 → 顶级域名 → 权威域名）。</li>
+<li><strong>权威 DNS</strong>：存储特定域名的解析记录（如 A 记录、CNAME 记录）。</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><strong>BIND</strong>：最广泛使用的开源 DNS 软件。</li>
+<li><strong>Cloudflare DNS</strong>：提供快速解析和 DDoS 防护。</li>
+<li><strong>阿里云 DNS</strong>：国内常用的域名解析服务。</li>
+</ul>
+<hr>
+<h3 id="6-应用服务器（Application-Server）"><a href="#6-应用服务器（Application-Server）" class="headerlink" title="6. 应用服务器（Application Server）"></a>6. <strong>应用服务器（Application Server）</strong></h3><p><strong>作用</strong></p>
+<p>运行后端业务逻辑（如用户登录、支付接口），处理复杂计算或数据库操作，为 Web 服务器提供动态内容。</p>
+<p><strong>工作机制</strong></p>
+<ul>
+<li>接收来自 Web 服务器的请求（如通过 REST API）。</li>
+<li>执行业务逻辑（如 Java&#x2F;Python 代码），连接数据库并返回 JSON&#x2F;XML 数据。</li>
+</ul>
+<p><strong>常见例子</strong></p>
+<ul>
+<li><strong>Tomcat</strong>：轻量级 Java Web 应用服务器。</li>
+<li><strong>Node.js</strong>：基于 JavaScript 的运行时环境（如 Express 框架）。</li>
+<li><strong>Microsoft IIS（集成 ASP.NET）</strong>：支持 C# 编写的动态网站。</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9pq3j6p000qb4uh77cf940j" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9qxpc8i000qkwuhe5adffst" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -950,7 +1100,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9pq3j6p000nb4uheupw1nsu" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9qxpc8g000jkwuheong2som" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -979,7 +1129,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
     </div>
   </div>
 
