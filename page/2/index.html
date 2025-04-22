@@ -73,157 +73,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-URL知识点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" class="article-date">
-  <time class="dt-published" datetime="2025-04-14T04:55:08.805Z" itemprop="datePublished">2025-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/">URL 知识点</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.example.com:8080/path/to/resource?query=param#fragment</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong><code>https://</code></strong></p>
-<p>协议（Scheme）。其他常见协议：<code>http</code>、<code>ftp</code>等</p>
-</li>
-<li><p><strong><code>www.example.com</code></strong></p>
-<p>域名（Host&#x2F;Domain）。</p>
-</li>
-<li><p><strong><code>:8080</code></strong></p>
-<p>端口（Port）。默认端口如<code>80</code>、<code>443</code>等可省略，非标准端口需要显式声明。</p>
-</li>
-<li><p><strong><code>/path/to/resource</code></strong></p>
-<p>路径（Path）。</p>
-</li>
-<li><p><strong><code>?query=param</code></strong></p>
-<p>查询参数（Query String）。以<code>?</code>开头，键值对形式，多个参数用<code>&amp;</code>连接。</p>
-</li>
-<li><p><strong><code>#fragment</code></strong></p>
-<p>片段标识符（Fragment）。以<code>#</code>开头。用于在客户端定位页面内的特定部分（如锚点链接），<strong>不会发送到服务器</strong>。</p>
-</li>
-</ul>
-<p>了解了 URL 的结构，再要了解 URL 编码也就不难了。</p>
-<p>先放个定义： URL 编码（百分号编码）确保 URL 的正确传输和解析，主要处理保留字符、非 ASCII 字符及不安全字符。如<code>/</code>, <code>?</code>, <code>&amp;</code>, <code>=</code>, <code>#</code>, <code>%</code>等。</p>
-<p>那么何时需要 URL 编码呢？</p>
-<p><u><strong>提前总结</strong>： URL 要用到某个符号的部分（例如路径中用到 <code>/</code> ）或因为历史遗留问题禁用某个符号的，就要转码。</u></p>
-<ul>
-<li><strong>路径（Path）</strong><ul>
-<li><strong>允许直接使用</strong>：字母、数字、<code>-</code>、<code>_</code>、<code>.</code>、<code>~</code>、<code>/</code>（分隔路径）。</li>
-<li>需要转码的字符：<ul>
-<li>空格 → 转为 <code>%20</code> 或 <code>+</code>（但 <code>+</code> 在路径中可能被误解，建议用 <code>%20</code>）。</li>
-<li>其他保留字符（如 <code>/</code> , <code>?</code>, <code>#</code>, <code>[</code>, <code>]</code>, <code>@</code> 等）在路径中出现时需转码。</li>
-<li>非 ASCII 字符（如中文）→ 用 UTF-8 编码后转码，例如 <code>张三</code> → <code>%E5%BC%A0%E4%B8%89</code>。</li>
-</ul>
-</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong>（0x00-0x1F, 0x7F）</li>
-<li><strong>空格</strong>（0x20 → <code>%20</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>，当不作为编码前缀时）</li>
-<li><strong>斜杠</strong> <code>/</code>（0x2F → <code>%2F</code>，当出现在路径段内而非分隔符时）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>问号</strong> <code>?</code>（0x3F → <code>%3F</code>，路径结束后才是查询部分）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>查询参数（Query String）</strong><ul>
-<li><strong>允许直接使用</strong>：字母、数字、<code>-</code>、<code>_</code>、<code>.</code>、<code>~</code>。</li>
-<li>需要转码的字符：<ul>
-<li>空格 → 通常转为 <code>+</code> 或 <code>%20</code>（两者都常见）。</li>
-<li>保留字符：<code>=</code>, <code>&amp;</code>, <code>+</code>, <code>?</code>, <code>#</code>, <code>%</code> 等。例如：<ul>
-<li><code>&amp;</code> → <code>%26</code></li>
-<li><code>=</code> → <code>%3D</code></li>
-<li><code>?</code> → <code>%3F</code></li>
-</ul>
-</li>
-<li>非 ASCII 字符 → UTF-8 转码，例如 <code>张三</code> → <code>%E5%BC%A0%E4%B8%89</code>。</li>
-</ul>
-</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong></li>
-<li><strong>空格</strong>（0x20 → <code>%20</code> 或 <code>+</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>）</li>
-<li><strong>与号</strong> <code>&amp;</code>（0x26 → <code>%26</code>，当不作为参数分隔符时）</li>
-<li><strong>加号</strong> <code>+</code>（0x2B → <code>%2B</code>，当不作为空格替代符时）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>等号</strong> <code>=</code>（0x3D → <code>%3D</code>，当不作为键值分隔符时）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>片段标识符（Fragment，即 # 后的部分）</strong><ul>
-<li>规则与查询参数类似，但 <code>#</code> 本身必须转码为 <code>%23</code>。</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong></li>
-<li><strong>空格</strong>（0x20 → <code>%20</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>，否则会被视为片段起始符）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9s8lzwf000bxwuh0ji56dxa" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-Cookie☆" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/14/Cookie%E2%98%86/" class="article-date">
@@ -318,7 +167,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9s8lzw70001xwuha7y47nmo" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/Cookie%E2%98%86/" data-id="cm9sdahm80001wguhb1csdu4j" data-title="Cookie☆" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -369,7 +218,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9s8lzwj000xxwuhexx3099v" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%B3%A8%E9%87%8A/" data-id="cm9sdahmm001hwguhf8dtg4e9" data-title="关于注释" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -390,7 +239,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
   </div>
 
   </div>
@@ -447,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9s8lzwq002nxwuh5o5kaksf" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" data-id="cm9sdahmo001pwguh8uy0gqkx" data-title="我的第一道命令执行" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -468,7 +317,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a>
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
   </div>
 
   </div>
@@ -512,7 +361,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9s8lzwp002fxwuhb63y1hte" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cm9sdahmp001vwguhdgyab3ug" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -563,7 +412,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9s8lzwk0015xwuh04w66rmo" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" data-id="cm9sdahmp001twguh5br1186p" data-title="我的第一次爆破" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -635,7 +484,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9s8lzwa0003xwuhbf9h7zxk" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/PHP%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" data-id="cm9sdahmb0003wguh3701cmww" data-title="PHP 伪随机数" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -688,7 +537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9s8lzwd0007xwuh203paze4" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/ctfshow_Web23%E5%93%88%E5%B8%8C%E7%88%86%E7%A0%B4%E4%B8%8D%E5%86%99%E8%84%9A%E6%9C%AC/" data-id="cm9sdahmg000cwguh2w4y2tls" data-title="ctfshow_Web23哈希爆破不写脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -738,7 +587,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9s8lzwh000nxwuhhkzofdbm" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%B0%8F%E6%8A%80%E5%B7%A7/" data-id="cm9sdahmn001jwguhdni67oyv" data-title="信息收集小技巧" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -784,7 +633,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9s8lzwj000uxwuh4en945rk" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9B%9E%E6%98%BE%E6%B5%8B%E8%AF%95%E7%94%A8/" data-id="cm9sdahmn001mwguh406hdjbb" data-title="博客回显测试用" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -811,7 +660,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
     </div>
   </div>
 
@@ -831,7 +680,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 17.5px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 15px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12.5px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 18px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 14px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12px;">爆破</a>
     </div>
   </div>
 
@@ -865,11 +714,11 @@
           </li>
         
           <li>
-            <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/">PHP 伪协议之 php://input</a>
+            <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
           </li>
         
           <li>
-            <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
+            <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/">多层函数绕过过滤</a>
           </li>
         
       </ul>
