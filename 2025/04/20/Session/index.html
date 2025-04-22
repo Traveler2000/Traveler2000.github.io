@@ -14,7 +14,7 @@
 <meta property="og:description" content="HTTP 无状态性的核心问题HTTP 协议本身 不会记住用户上一次的请求，每个请求都是独立的。例如：  问题：用户登录后，跳转到其他页面时，服务器无法自动识别这是同一个用户。 Cookie 的局限性：虽然 Cookie 可以存储用户信息，但直接存储敏感数据在客户端（如用户ID）存在安全隐患，且可能被篡改。 解决方案：开发者提出将敏感数据存储在服务器端，客户端仅保存一个随机生成的 ID（Sessio">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-20T12:55:59.000Z">
-<meta property="article:modified_time" content="2025-04-21T07:53:14.934Z">
+<meta property="article:modified_time" content="2025-04-21T13:20:36.964Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="杂项知识点">
 <meta property="article:tag" content="Session">
@@ -119,7 +119,7 @@
 <ol>
 <li><strong>请求到达服务器</strong>：用户访问网站（如 <code>example.com</code>）。</li>
 <li><strong>生成 Session ID</strong>：服务器检查请求中是否携带 Session ID。如果是新用户，服务器生成一个 <strong>唯一 Session ID</strong>（如 <code>abc123</code>），通常通过加密算法（如 PHP 默认使用 <code>sha1</code>）生成。</li>
-<li><strong>创建存储文件</strong>：服务器在指定目录（如 <code>/tmp/</code>）生成文件 <code>sess_abc123</code>，用于存储该用户的 Session 数据（如用户名、购物车内容等）。</li>
+<li><strong>创建存储文件</strong>：服务器在指定目录（如 <code>/tmp/</code>）生成文件 <code>sess_abc123</code>（注意该文件无后缀名），用于存储该用户的 Session 数据（如用户名、购物车内容等）。</li>
 <li><strong>返回 Session ID</strong>：服务器通过 <strong>HTTP 响应头</strong> 将 Session ID 传递给浏览器。默认使用 <strong>Cookie</strong>（如 <code>PHPSESSID=abc123</code>），但也可通过 URL 参数传递（不推荐）。</li>
 </ol>
 <p><strong>用户后续请求</strong></p>
@@ -192,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9qxpc8b0008kwuh5bjt4s2c" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9s8lzwc0006xwuh9q88b4zr" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
