@@ -73,6 +73,363 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Python-requests" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/24/Python-requests/" class="article-date">
+  <time class="dt-published" datetime="2025-04-24T07:04:47.000Z" itemprop="datePublished">2025-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/24/Python-requests/">Python-requests</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="requests-库简介"><a href="#requests-库简介" class="headerlink" title="requests 库简介"></a>requests 库简介</h2><p><code>requests</code> 库是 Python 中用于发送 HTTP 请求的常用库，以下通过实例简单介绍一下用法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标 URL</span></span><br><span class="line">url = <span class="string">&#x27;https://www.example.com&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送 GET 请求</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查响应状态码</span></span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">    <span class="comment"># 打印响应内容</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;响应内容：&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(response.text)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;请求失败，状态码：<span class="subst">&#123;response.status_code&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>requests</code> 库中基于 HTTP 请求方法内置了大量方法，如：</p>
+<ul>
+<li><code>requests.get(url, params=None, **kwargs)</code>：发送 HTTP GET 请求以从服务器获取资源。</li>
+<li><code>requests.post(url, data=None, json=None, **kwargs)</code>：发送 HTTP POST 请求，通常用于向服务器提交数据。</li>
+<li><code>requests.put(url, data=None, **kwargs)</code>：发送 HTTP PUT 请求，常用于更新服务器上的资源。</li>
+<li><code>requests.delete(url, **kwargs)</code>：发送 HTTP DELETE 请求，用于请求服务器删除指定的资源。</li>
+<li><code>requests.head(url, **kwargs)</code>：发送 HTTP HEAD 请求，只返回响应头，不返回响应体。</li>
+<li><code>requests.options(url, **kwargs)</code>：发送 HTTP OPTIONS 请求，用于获取服务器支持的请求方法等信息。</li>
+<li><code>requests.request(method, url, **kwargs)</code>：通用的请求方法，可根据 <code>method</code> 参数指定的 HTTP 请求方法发送请求。</li>
+</ul>
+<p>更多方法不再赘述，下面对各方法的参数进行说明：</p>
+<h2 id="requests-库各方法的参数与用法"><a href="#requests-库各方法的参数与用法" class="headerlink" title="requests 库各方法的参数与用法"></a>requests 库各方法的参数与用法</h2><h3 id="通用参数（适用于所有HTTP方法）"><a href="#通用参数（适用于所有HTTP方法）" class="headerlink" title="通用参数（适用于所有HTTP方法）"></a>通用参数（适用于所有HTTP方法）</h3><p>所有请求方法（如 <code>get()</code>, <code>post()</code>, <code>put()</code> 等）都支持以下参数：</p>
+<ol>
+<li><code>url</code> (<strong>必填</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 字符串</p>
+</li>
+<li><p><strong>作用</strong>: 请求的目标URL。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(url=&quot;https://api.example.com/data&quot;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><code>params</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 字典、元组列表或字节</p>
+</li>
+<li><p><strong>作用</strong>: 将参数拼接到<strong>URL</strong>中，形成查询字符串（query string）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">params = &#123;<span class="string">&#x27;key1&#x27;</span>: <span class="string">&#x27;value1&#x27;</span>, <span class="string">&#x27;key2&#x27;</span>: <span class="string">&#x27;value2&#x27;</span>&#125;</span><br><span class="line">response = requests.get(url, params=params)</span><br><span class="line"><span class="comment"># 实际请求URL变为：https://api.example.com/data?key1=value1&amp;key2=value2</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><code>headers</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 字典</p>
+</li>
+<li><p><strong>作用</strong>: 设置HTTP请求头信息（如User-Agent、Content-Type等）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;my-app/1.0&#x27;</span>, <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line">response = requests.get(url, headers=headers)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li><code>timeout</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 浮点数或元组</p>
+</li>
+<li><p><strong>作用</strong>: 设置请求超时时间（秒）。若服务器在指定时间内未响应，抛出 <code>Timeout</code> 异常。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(url, timeout=<span class="number">5</span>)          <span class="comment"># 连接+读取总超时5秒</span></span><br><span class="line">response = requests.get(url, timeout=(<span class="number">3</span>, <span class="number">10</span>))    <span class="comment"># 连接3秒，读取10秒</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="5">
+<li><code>auth</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 元组或自定义认证类</p>
+</li>
+<li><p><strong>作用</strong>: 用于HTTP基本认证（如用户名密码）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auth = (<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">response = requests.get(url, auth=auth)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li><code>cookies</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 字典或CookieJar对象</p>
+</li>
+<li><p><strong>作用</strong>: 发送Cookie到服务器。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cookies = &#123;<span class="string">&#x27;session_id&#x27;</span>: <span class="string">&#x27;12345abc&#x27;</span>&#125;</span><br><span class="line">response = requests.get(url, cookies=cookies)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="7">
+<li><code>allow_redirects</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 布尔值</p>
+</li>
+<li><p><strong>作用</strong>: 是否允许重定向（默认<code>True</code>）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(url, allow_redirects=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="8">
+<li><code>verify</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 布尔值或字符串（证书路径）</p>
+</li>
+<li><p><strong>作用</strong>: 是否验证SSL证书（默认<code>True</code>）。设为<code>False</code>可跳过验证（不推荐生产环境使用）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(url, verify=<span class="literal">False</span>)  <span class="comment"># 关闭SSL验证</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="9">
+<li><code>proxies</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 字典</p>
+</li>
+<li><p><strong>作用</strong>: 设置代理服务器。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxies = &#123;<span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;http://10.10.1.10:3128&#x27;</span>, <span class="string">&#x27;https&#x27;</span>: <span class="string">&#x27;http://10.10.1.10:1080&#x27;</span>&#125;</span><br><span class="line">response = requests.get(url, proxies=proxies)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="10">
+<li><code>stream</code> (<strong>可选</strong>)</li>
+</ol>
+<ul>
+<li><p><strong>类型</strong>: 布尔值</p>
+</li>
+<li><p><strong>作用</strong>: 是否以流模式下载（适合大文件，避免立即加载到内存）。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(url, stream=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;large_file.zip&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> chunk <span class="keyword">in</span> response.iter_content(<span class="number">1024</span>):</span><br><span class="line">            f.write(chunk)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="针对不同HTTP方法的参数"><a href="#针对不同HTTP方法的参数" class="headerlink" title="针对不同HTTP方法的参数"></a>针对不同HTTP方法的参数</h3><ol>
+<li><strong>GET请求：<code>requests.get()</code></strong></li>
+</ol>
+<ul>
+<li><p>主要用于获取数据，参数通过 <strong><code>params</code></strong> 传递。</p>
+</li>
+<li><p>示例:</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">response = requests.get(</span><br><span class="line">    url=<span class="string">&quot;https://example.com/search&quot;</span>,</span><br><span class="line">    params=&#123;<span class="string">&#x27;query&#x27;</span>: <span class="string">&#x27;python&#x27;</span>, <span class="string">&#x27;page&#x27;</span>: <span class="number">2</span>&#125;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><strong>POST请求：<code>requests.post()</code></strong></li>
+</ol>
+<ul>
+<li><p>用于提交数据，常用参数：**<code>data</code>**, <strong><code>json</code></strong>, **<code>files</code>**。</p>
+</li>
+<li><p><code>data</code> 参数:</p>
+<ul>
+<li>类型: 字典、元组列表、字符串、字节流</li>
+<li>作用: 发送表单数据（<code>application/x-www-form-urlencoded</code>）。</li>
+<li>注意：相比使用使用 <code>json</code> ，使用 <code>data</code> 时需手动设置 <code>Content-Type</code> 。</li>
+<li>示例:</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;secret&#x27;</span>&#125; <span class="comment"># 字典类型</span></span><br><span class="line">response = requests.post(url, data=data)</span><br><span class="line"></span><br><span class="line">data = [(<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>), (<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>), (<span class="string">&#x27;vegetable&#x27;</span>, <span class="string">&#x27;carrot&#x27;</span>)] <span class="comment"># 元组列表类型，适用于需要处理多个同名字段或对数据顺序有要求的情况。传参到服务端会把同名参数的值以类似 &quot;fruit&quot;:[&quot;apple&quot;,&quot;banana&quot;] 这样的形式存放。</span></span><br><span class="line">data = <span class="string">&#x27;name=Bob&amp;age=30&#x27;</span> <span class="comment"># 用于传输 URL 编码后的字符串</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>json</code> 参数:</p>
+<ul>
+<li>类型: 字典</li>
+<li>作用: 发送JSON数据（自动设置<code>Content-Type: application/json</code>）。</li>
+<li>示例:</li>
+</ul>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">json_data = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;John&#x27;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="number">30</span>&#125;</span><br><span class="line">response = requests.post(url, json=json_data)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>files</code> 参数:</p>
+<ul>
+<li>类型: 字典</li>
+<li>作用: 上传文件（<code>multipart/form-data</code>）。</li>
+<li>示例:</li>
+</ul>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">files = &#123;<span class="string">&#x27;file&#x27;</span>: <span class="built_in">open</span>(<span class="string">&#x27;report.pdf&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>)&#125;</span><br><span class="line">response = requests.post(url, files=files)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><strong>PUT请求：<code>requests.put()</code></strong></li>
+</ol>
+<ul>
+<li><p>用于更新资源，参数与 <code>post()</code> 相同（<code>data</code>, <code>json</code>, <code>files</code>）。</p>
+</li>
+<li><p>示例:</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.put(url, json=&#123;<span class="string">&#x27;title&#x27;</span>: <span class="string">&#x27;New Title&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li><strong>DELETE请求：<code>requests.delete()</code></strong></li>
+</ol>
+<ul>
+<li><p>用于删除资源，通常不需要请求体。</p>
+</li>
+<li><p>示例:</p>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.delete(url)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="5">
+<li><strong>其他方法：<code>head()</code>, <code>options()</code>, <code>patch()</code></strong></li>
+</ol>
+<ul>
+<li>参数与 <code>get()</code> 或 <code>post()</code> 类似，但使用频率较低。</li>
+</ul>
+<h3 id="高级参数：requests-request"><a href="#高级参数：requests-request" class="headerlink" title="高级参数：requests.request()"></a>高级参数：<code>requests.request()</code></h3><ul>
+<li><p>作用: 通用请求方法，可通过 <code>method</code> 参数指定HTTP方法（如<code>GET</code>、<code>POST</code>）。</p>
+</li>
+<li><p>示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response = requests.request(method=<span class="string">&#x27;POST&#x27;</span>, url=url, json=data)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="关于-requests-库返回的对象"><a href="#关于-requests-库返回的对象" class="headerlink" title="关于 requests 库返回的对象"></a>关于 requests 库返回的对象</h2><p>在 Python 的 <code>requests</code> 库中，如 <code>response = requests.get(url=url)</code> 返回的是一个 <strong>对象</strong>（属于 <code>requests.models.Response</code> 类）。这个对象包含了 HTTP 请求的所有响应信息，但直接打印 <code>response</code> 并不会显示所有内容，而是会返回一个对象的内存地址表示（例如：<code>&lt;Response [200]&gt;</code>）。</p>
+<p>以下是对 <code>response</code> 对象相关属性的介绍：</p>
+<h3 id="基础属性"><a href="#基础属性" class="headerlink" title="基础属性"></a><strong>基础属性</strong></h3><ul>
+<li><p><strong><code>response.status_code</code></strong><br>HTTP 状态码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.status_code)  <span class="comment"># 输出: 200</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>response.url</code></strong><br>实际请求的最终 URL（可能会因重定向改变）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.url)  <span class="comment"># 输出: https://example.com</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>response.headers</code></strong><br>响应头的字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.headers[<span class="string">&#x27;Content-Type&#x27;</span>])  <span class="comment"># 输出: text/html; charset=utf-8</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="响应内容"><a href="#响应内容" class="headerlink" title="响应内容"></a><strong>响应内容</strong></h3><ul>
+<li><p><strong><code>response.text</code></strong><br>响应内容的字符串形式（自动根据编码解码）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.text[:<span class="number">100</span>])  <span class="comment"># 输出前 100 个字符的文本</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>response.content</code></strong><br>响应内容的原始字节形式（适合非文本内容，如图片）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;image.jpg&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(response.content)  <span class="comment"># 保存二进制内容（如图片）</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>response.json()</code></strong><br>将 JSON 格式的响应内容解析为 Python 字典或列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = response.json()</span><br><span class="line"><span class="built_in">print</span>(data[<span class="string">&#x27;key&#x27;</span>])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="编码相关"><a href="#编码相关" class="headerlink" title="编码相关"></a><strong>编码相关</strong></h3><ul>
+<li><p><strong><code>response.encoding</code></strong><br>响应内容的字符编码（如 <code>utf-8</code>），可手动修改。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response.encoding = <span class="string">&#x27;gbk&#x27;</span>  <span class="comment"># 手动指定编码（如中文网页）</span></span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="其他实用属性"><a href="#其他实用属性" class="headerlink" title="其他实用属性"></a><strong>其他实用属性</strong></h3><ul>
+<li><p><strong><code>response.cookies</code></strong><br>服务器返回的 Cookies。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.cookies[<span class="string">&#x27;session_id&#x27;</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>response.elapsed</code></strong><br>请求耗时（例如 <code>0:00:01.234567</code>）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(response.elapsed.total_seconds())  <span class="comment"># 输出请求耗时（秒）</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9v3wl2q0007pguhgnszcpg7" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/requests/" rel="tag">requests</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Python-面向对象入门" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" class="article-date">
+  <time class="dt-published" datetime="2025-04-22T13:00:39.000Z" itemprop="datePublished">2025-04-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/">Python-面向对象入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>来看一个简单的定义类的案例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>:</span><br><span class="line">    <span class="comment"># 类属性</span></span><br><span class="line">    species = <span class="string">&#x27;犬科动物&#x27;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 方法：返回种类</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">whatspecies</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> species</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构造函数：创建小狗时必须提供名字和年龄</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name  <span class="comment"># 小狗的名字（属性）</span></span><br><span class="line">        <span class="variable language_">self</span>.age = age    <span class="comment"># 小狗的年龄（属性）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 方法：小狗坐下</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;self.name&#125;</span> 乖乖坐下了！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以理解为，因为许多对象都有共同点，可以根据共同点对它们分类，所以有了“类”。不过，实践中往往是定义好类后，才以定义好的类为标准，“创造”出许多同一类的对象。这些被“创造”出来的对象，称为实例。用定义好的类“创造”对象的过程，称为实例化。</p>
+<h2 id="属性与方法，实例化"><a href="#属性与方法，实例化" class="headerlink" title="属性与方法，实例化"></a>属性与方法，实例化</h2><p>在类中可以定义属性和方法。如上面的代码段在类 <code>Dog</code> 中定义了属性 <code>species</code> 和方法 <code>whatspecies</code>、 <code>__init__</code> 、<code>sit</code> 等。</p>
+<p>要调用某个类的属性和方法，可以直接通过 <code>类名.属性/方法</code> 这样的方式，也可以通过实例化。</p>
+<p><strong>类名.属性&#x2F;方法</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(Dog().species) <span class="comment"># 共输出2次“犬科动物”</span></span><br><span class="line"><span class="built_in">print</span>(Dog().whatspecies()) <span class="comment"># 即使定义时省略了括号，Dog()在此处也不能省略括号，否则不会被当成类名</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>实例化</strong>：<br>实例化是指用定义好的类“创造”对象，让不同的对象（实例）来自同一类，共享类中的属性与方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dog1 = Dog()</span><br><span class="line">dog2 = Dog()</span><br><span class="line"><span class="built_in">print</span>(dog1.species)</span><br><span class="line"><span class="built_in">print</span>(dog1.whatspecies())</span><br><span class="line"><span class="built_in">print</span>(dog2.species)</span><br><span class="line"><span class="built_in">print</span>(dog2.whatspecies()) <span class="comment"># 共输出4次“犬科动物”</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，属性的定义与变量的定义一致，不过要调用时需要<code>类名.属性</code>或实例化的方式；但方法与函数的定义有一点不同：<strong>必须有一个额外的第一个参数名称, 按照惯例它的名称是 self</strong> （后面会细讲）。</p>
+<h2 id="init-方法"><a href="#init-方法" class="headerlink" title="__init__ 方法"></a><code>__init__</code> 方法</h2><p>上面的实例化是直接进行实例化，也可以通过 <code>__init__()</code> 方法实例化类。如上面案例中的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>:</span><br><span class="line">    <span class="comment"># 构造函数：创建小狗时必须提供名字和年龄</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        <span class="variable language_">self</span>.name = name  <span class="comment"># 小狗的名字（属性）</span></span><br><span class="line">        <span class="variable language_">self</span>.age = age    <span class="comment"># 小狗的年龄（属性）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 方法：小狗坐下</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sit</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;self.name&#125;</span> 乖乖坐下了！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>功能</strong>：在创建一个类的实例（对象）时，<code>__init__</code> 方法会被<strong>自动调用</strong>，用于为对象设置初始属性。</p>
+<p>对比一下有无 <code>__init__</code> 方法的两种情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dog1 = Dog(<span class="string">&quot;大黄&quot;</span>, <span class="number">10</span>)  <span class="comment"># 创建对象时直接传入属性值</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dog1 = Dog()</span><br><span class="line">dog1.name = <span class="string">&quot;大黄&quot;</span>  <span class="comment"># 手动添加属性</span></span><br><span class="line">dog1.age = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>Dog(&quot;大黄&quot;, 10)</code> 分别传参给 <code>name </code>与 <code>age</code> 两个属性，再在 <code>__init__</code> 方法中成为实例 <code>dog1</code> 的实例属性（ <code>self</code> 表示实例本身）。</p>
+<p><strong>关于实例属性与类属性</strong>：类属性可被所有属于该类的对象调用（类似 <code>dog1.species</code> ，所有该类实例的 <code>species</code> 属性都是“犬科动物”），实例属性则只能通过该实例调用（<code>dog1.name</code>）。</p>
+<p><strong>关于 <code>self</code></strong><br><code>self</code> 代表类的实例，而非类本身。类的方法相比普通函数只有一个特别的区别：它们必须有一个额外的第一个参数名称, 按照惯例它的名称是 <code>self</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Test</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">prt</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="variable language_">self</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="variable language_">self</span>.__class__)</span><br><span class="line"></span><br><span class="line">t = Test()</span><br><span class="line">t.prt()</span><br></pre></td></tr></table></figure>
+
+<p>以上实例执行结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;__main__.Test instance at 0x100771878&gt;</span><br><span class="line">__main__.Test</span><br></pre></td></tr></table></figure>
+
+<p>从执行结果可以很明显的看出，<code>self</code> 代表的是类的实例，<strong>代表当前对象的地址</strong>，而 <code>self.class</code> 则指向类。<br> 由于 <code>self</code> 并非关键字，所以可以将 <code>self</code> 替换成其他的关键字，也不会出现问题。<br>在 Python中，<code>self</code> 是一个惯用的名称，用于表示类的实例（对象）自身。它是一个指向实例的引用，使得类的方法能够访问和操作实例的属性。<br>当你定义一个类，并在类中定义方法时，第一个参数通常被命名为 <code>self</code>，尽管你可以使用其他名称，但强烈建议使用 <code>self</code>，以保持代码的一致性和可读性</p>
+<h2 id="核心概念解析"><a href="#核心概念解析" class="headerlink" title="核心概念解析"></a>核心概念解析</h2><ol>
+<li><p><strong>封装</strong>：把数据（属性）和操作（方法）打包在一起</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">my_dog.age += <span class="number">1</span>  <span class="comment"># 直接修改属性</span></span><br><span class="line">my_dog.sit()  <span class="comment"># 调用方法</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>继承</strong>：子类继承父类的特性（比如导盲犬是特殊的小狗）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">GuideDog</span>(<span class="title class_ inherited__">Dog</span>):  <span class="comment"># 继承自Dog类</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">guide</span>(<span class="params">self</span>):</span><br><span class="line">     <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;self.name&#125;</span> 正在引导主人！&quot;</span>)</span><br><span class="line"></span><br><span class="line">guide_dog = GuideDog(<span class="string">&quot;大黄&quot;</span>, <span class="number">4</span>)</span><br><span class="line">guide_dog.sit()      <span class="comment"># 继承父类方法</span></span><br><span class="line">guide_dog.guide()    <span class="comment"># 子类新增方法</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多态</strong>：不同对象对同一方法有不同的响应（比如猫狗的叫法不同）</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9v3wl2q0006pguhcjuq2l2g" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Session" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/20/Session/" class="article-date">
@@ -190,7 +547,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9shmkhh0007kguh8p0sdnfp" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9v3wl2n0003pguheqmrds4a" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -234,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9shmkhw0028kguh9c8qe6ac" data-title="条件竞争漏洞" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9v3wl31001kpguh0urt3mqr" data-title="条件竞争漏洞" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -310,7 +667,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9shmkhv0025kguh5xoe885b" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9v3wl32001opguh7yfz3l7x" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -367,7 +724,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9shmkhk000ckguhh3ovf5aw" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9v3wl2v000npguhf40ngmk6" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -481,7 +838,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9shmkhu001tkguh758tfkq2" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9v3wl2z0013pguhaklvbf6u" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -638,7 +995,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9shmkhj000bkguh4g920ii3" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/data%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9v3wl2v000ipguhhlbxcdtl" data-title="data:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -797,7 +1154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9shmkhv0022kguhfgzb08ir" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/" data-id="cm9v3wl31001ipguhe45e5y8x" data-title="文件包含与 php:// 伪协议" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -983,222 +1340,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9shmkhr001ikguh4twfcdni" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" data-id="cm9v3wl2y0010pguhewdshwlm" data-title="关于服务器的知识（持续增加）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-date">
-  <time class="dt-published" datetime="2025-04-14T04:55:08.808Z" itemprop="datePublished">2025-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/">关于“空白”网页无 JavaScript 代码却有弹窗的问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>做题遇到的网页，源代码只有一个 <code>html</code> 文件，内容如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- saved from url=(0029)chrome-error://chromewebdata/ --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在没有任何 JavaScript 代码的情况下，打开网页时有一弹窗，有两个输入框分别输入账号密码，下方有“登录”或“取消”两选项。该网页源代码没有任何涉及弹窗的内容，所以出现弹窗看起来很反常。</p>
-<p>其实是利用了 <strong>HTTP Basic 认证</strong>协议：</p>
-<ul>
-<li><p>当服务器返回 <code>401 Unauthorized</code> 状态码时，浏览器会强制自动弹出账号密码输入框。这是 HTTP 协议规定的标准行为，无需前端代码。</p>
-</li>
-<li><p>用户输入的账号密码会被浏览器自动拼接为 <code>username:password</code> 格式，并进行 Base64 编码，最终添加到请求头的 <code>Authorization</code> 字段中：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Authorization</span><span class="punctuation">: </span>Basic base64(username:password)</span><br></pre></td></tr></table></figure>
-
-<p>上述 <code>base64(username:password)</code> 实际替换为账号、冒号与密码拼接成的字符串的 Base64 编码。</p>
-<p> <code>Basic</code> 是认证方式，表示 <strong>HTTP Basic Authentication （基本认证）</strong>，还有 <code>Digest</code> 、 <code>Bearer Token (Token-Based)</code> 以及其他许多认证方式。</p>
-</li>
-</ul>
-<p>全过程由浏览器原生实现，不需要任何 JavaScript 代码。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/%E5%85%B3%E4%BA%8E%E2%80%9C%E7%A9%BA%E7%99%BD%E2%80%9D%E7%BD%91%E9%A1%B5%E6%97%A0%20JavaScript%20%E4%BB%A3%E7%A0%81%E5%8D%B4%E6%9C%89%E5%BC%B9%E7%AA%97%E7%9A%84%E9%97%AE%E9%A2%98/" data-id="cm9shmkhr001fkguhcd3bdqcb" data-title="关于“空白”网页无 JavaScript 代码却有弹窗的问题" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-URL知识点" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" class="article-date">
-  <time class="dt-published" datetime="2025-04-14T04:55:08.805Z" itemprop="datePublished">2025-04-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/">URL 知识点</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.example.com:8080/path/to/resource?query=param#fragment</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong><code>https://</code></strong></p>
-<p>协议（Scheme）。其他常见协议：<code>http</code>、<code>ftp</code>等</p>
-</li>
-<li><p><strong><code>www.example.com</code></strong></p>
-<p>域名（Host&#x2F;Domain）。</p>
-</li>
-<li><p><strong><code>:8080</code></strong></p>
-<p>端口（Port）。默认端口如<code>80</code>、<code>443</code>等可省略，非标准端口需要显式声明。</p>
-</li>
-<li><p><strong><code>/path/to/resource</code></strong></p>
-<p>路径（Path）。</p>
-</li>
-<li><p><strong><code>?query=param</code></strong></p>
-<p>查询参数（Query String）。以<code>?</code>开头，键值对形式，多个参数用<code>&amp;</code>连接。</p>
-</li>
-<li><p><strong><code>#fragment</code></strong></p>
-<p>片段标识符（Fragment）。以<code>#</code>开头。用于在客户端定位页面内的特定部分（如锚点链接），<strong>不会发送到服务器</strong>。</p>
-</li>
-</ul>
-<p>了解了 URL 的结构，再要了解 URL 编码也就不难了。</p>
-<p>先放个定义： URL 编码（百分号编码）确保 URL 的正确传输和解析，主要处理保留字符、非 ASCII 字符及不安全字符。如<code>/</code>, <code>?</code>, <code>&amp;</code>, <code>=</code>, <code>#</code>, <code>%</code>等。</p>
-<p>那么何时需要 URL 编码呢？</p>
-<p><u><strong>提前总结</strong>： URL 要用到某个符号的部分（例如路径中用到 <code>/</code> ）或因为历史遗留问题禁用某个符号的，就要转码。</u></p>
-<ul>
-<li><strong>路径（Path）</strong><ul>
-<li><strong>允许直接使用</strong>：字母、数字、<code>-</code>、<code>_</code>、<code>.</code>、<code>~</code>、<code>/</code>（分隔路径）。</li>
-<li>需要转码的字符：<ul>
-<li>空格 → 转为 <code>%20</code> 或 <code>+</code>（但 <code>+</code> 在路径中可能被误解，建议用 <code>%20</code>）。</li>
-<li>其他保留字符（如 <code>/</code> , <code>?</code>, <code>#</code>, <code>[</code>, <code>]</code>, <code>@</code> 等）在路径中出现时需转码。</li>
-<li>非 ASCII 字符（如中文）→ 用 UTF-8 编码后转码，例如 <code>张三</code> → <code>%E5%BC%A0%E4%B8%89</code>。</li>
-</ul>
-</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong>（0x00-0x1F, 0x7F）</li>
-<li><strong>空格</strong>（0x20 → <code>%20</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>，当不作为编码前缀时）</li>
-<li><strong>斜杠</strong> <code>/</code>（0x2F → <code>%2F</code>，当出现在路径段内而非分隔符时）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>问号</strong> <code>?</code>（0x3F → <code>%3F</code>，路径结束后才是查询部分）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>查询参数（Query String）</strong><ul>
-<li><strong>允许直接使用</strong>：字母、数字、<code>-</code>、<code>_</code>、<code>.</code>、<code>~</code>。</li>
-<li>需要转码的字符：<ul>
-<li>空格 → 通常转为 <code>+</code> 或 <code>%20</code>（两者都常见）。</li>
-<li>保留字符：<code>=</code>, <code>&amp;</code>, <code>+</code>, <code>?</code>, <code>#</code>, <code>%</code> 等。例如：<ul>
-<li><code>&amp;</code> → <code>%26</code></li>
-<li><code>=</code> → <code>%3D</code></li>
-<li><code>?</code> → <code>%3F</code></li>
-</ul>
-</li>
-<li>非 ASCII 字符 → UTF-8 转码，例如 <code>张三</code> → <code>%E5%BC%A0%E4%B8%89</code>。</li>
-</ul>
-</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong></li>
-<li><strong>空格</strong>（0x20 → <code>%20</code> 或 <code>+</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>）</li>
-<li><strong>与号</strong> <code>&amp;</code>（0x26 → <code>%26</code>，当不作为参数分隔符时）</li>
-<li><strong>加号</strong> <code>+</code>（0x2B → <code>%2B</code>，当不作为空格替代符时）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>等号</strong> <code>=</code>（0x3D → <code>%3D</code>，当不作为键值分隔符时）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>片段标识符（Fragment，即 # 后的部分）</strong><ul>
-<li>规则与查询参数类似，但 <code>#</code> 本身必须转码为 <code>%23</code>。</li>
-<li>全部符号：<ul>
-<li><strong>控制字符</strong></li>
-<li><strong>空格</strong>（0x20 → <code>%20</code>）</li>
-<li><strong>双引号</strong> <code>&quot;</code>（0x22 → <code>%22</code>）</li>
-<li><strong>井号</strong> <code>#</code>（0x23 → <code>%23</code>，否则会被视为片段起始符）</li>
-<li><strong>百分号</strong> <code>%</code>（0x25 → <code>%25</code>）</li>
-<li><strong>尖括号</strong> <code>&lt;</code> <code>&gt;</code>（0x3C → <code>%3C</code>，0x3E → <code>%3E</code>）</li>
-<li><strong>方括号</strong> <code>[</code> <code>]</code>（0x5B → <code>%5B</code>，0x5D → <code>%5D</code>）</li>
-<li><strong>反斜杠</strong> <code>\</code>（0x5C → <code>%5C</code>）</li>
-<li><strong>插入符</strong> <code>^</code>（0x5E → <code>%5E</code>）</li>
-<li><strong>反引号</strong> &#96;&#96;&#96;（0x60 → <code>%60</code>）</li>
-<li><strong>花括号</strong> <code>&#123;</code> <code>&#125;</code>（0x7B → <code>%7B</code>，0x7D → <code>%7D</code>）</li>
-<li><strong>竖线</strong> <code>|</code>（0x7C → <code>%7C</code>）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/14/URL%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="cm9shmkhh0006kguh58i3f3m7" data-title="URL 知识点" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
 
     </footer>
   </div>
@@ -1212,7 +1358,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -1223,7 +1369,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%8E%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">文件包含与命令执行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
     </div>
   </div>
 
@@ -1233,7 +1379,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Session/" rel="tag">Session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Session/" rel="tag">Session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/requests/" rel="tag">requests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li></ul>
     </div>
   </div>
 
@@ -1243,7 +1389,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 18px;">PHP</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 14px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 12px;">爆破</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 18.33px;">PHP</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 10px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/requests/" style="font-size: 10px;">requests</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 10px;">面向对象</a>
     </div>
   </div>
 
@@ -1265,6 +1411,14 @@
       <ul>
         
           <li>
+            <a href="/2025/04/24/Python-requests/">Python-requests</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/">Python-面向对象入门</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/20/Session/">Session</a>
           </li>
         
@@ -1274,14 +1428,6 @@
         
           <li>
             <a href="/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/">终于轮到了日志注入</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/">多层函数绕过过滤</a>
           </li>
         
       </ul>
