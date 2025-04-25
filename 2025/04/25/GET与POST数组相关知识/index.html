@@ -4,16 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>标签: Cookie | Traveler2000🪐</title>
+  <title>$_GET 与 $_POST 数组相关知识 | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="网络安全菜鸟，大佬们见笑了">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Traveler2000🪐">
-<meta property="og:url" content="http://traveler2000.github.io/tags/Cookie/index.html">
+  <meta name="description" content="在PHP中，$_GET 和 $_POST 是两种独立的超全局数组，它们的参数来源和处理逻辑有本质区别： $_GET 的底层逻辑 参数来源：URL查询字符串（如 ?key1&#x3D;value1&amp;key2&#x3D;value2）。 无关请求方法：无论请求是 GET、POST 还是其他方法，只要URL中存在查询字符串，PHP都会自动解析到 $_GET 数组中。  $_POST 的底层逻辑 参数来源：请求体（B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="$_GET 与 $_POST 数组相关知识">
+<meta property="og:url" content="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="网络安全菜鸟，大佬们见笑了">
+<meta property="og:description" content="在PHP中，$_GET 和 $_POST 是两种独立的超全局数组，它们的参数来源和处理逻辑有本质区别： $_GET 的底层逻辑 参数来源：URL查询字符串（如 ?key1&#x3D;value1&amp;key2&#x3D;value2）。 无关请求方法：无论请求是 GET、POST 还是其他方法，只要URL中存在查询字符串，PHP都会自动解析到 $_GET 数组中。  $_POST 的底层逻辑 参数来源：请求体（B">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-25T09:06:49.000Z">
+<meta property="article:modified_time" content="2025-04-25T09:30:02.444Z">
 <meta property="article:author" content="Traveler2000">
+<meta property="article:tag" content="杂项知识点">
+<meta property="article:tag" content="PHP">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
@@ -71,39 +75,69 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2025/04/14/Cookie%E2%98%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2025-04-14T04:55:08.802Z" itemprop="datePublished">4月 14</time>
+        <section id="main"><article id="post-GET与POST数组相关知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2025-04-25T09:06:49.000Z" itemprop="datePublished">2025-04-25</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/04/14/Cookie%E2%98%86/">Cookie☆</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      $_GET 与 $_POST 数组相关知识
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在PHP中，<code>$_GET</code> 和 <code>$_POST</code> 是两种独立的超全局数组，它们的参数来源和处理逻辑有本质区别：</p>
+<h2 id="GET-的底层逻辑"><a href="#GET-的底层逻辑" class="headerlink" title="$_GET 的底层逻辑"></a><code>$_GET</code> 的底层逻辑</h2><ul>
+<li><strong>参数来源</strong>：<strong>URL查询字符串</strong>（如 <code>?key1=value1&amp;key2=value2</code>）。</li>
+<li><strong>无关请求方法</strong>：无论请求是 <code>GET</code>、<code>POST</code> 还是其他方法，只要URL中存在查询字符串，PHP都会自动解析到 <code>$_GET</code> 数组中。</li>
+</ul>
+<h2 id="POST-的底层逻辑"><a href="#POST-的底层逻辑" class="headerlink" title="$_POST 的底层逻辑"></a><strong><code>$_POST</code> 的底层逻辑</strong></h2><ul>
+<li><strong>参数来源</strong>：<strong>请求体（Body）</strong>，且仅当请求头的 <code>Content-Type</code> 是 <code>application/x-www-form-urlencoded</code> 或 <code>multipart/form-data</code> 时（如表单提交）。</li>
+<li><strong>依赖请求方法</strong>：只有使用 <code>POST</code> 方法时，PHP才会自动解析请求体到 <code>$_POST</code> 数组。</li>
+<li><strong>注意</strong>：如果要在 Burp Suite 中将 GET 请求修改为 POST 请求并修改请求体，请在修改完请求行的 <code>GET</code> 后在右侧 Inspector 内修改请求体，否则 Burp Suite 不会自动向请求头中添加 <code>Content-Type</code> 字段，导致参数无法传给 <code>$_POST</code> 数组。</li>
+</ul>
+<p>由此可得：只要 URL 中存在查询字符串，都会被解析到 <code>$_GET</code> 数组；但 <code>$_POST</code> 数组要求更严，条件不满足时会有参数无法传到 <code>$_POST</code> 数组中的情况。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9wms3l30001kcuh3jm8bbze" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">filter 伪协议绕过 die（Web87）</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>

