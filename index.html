@@ -130,15 +130,7 @@
 <li><p><code>intval($num,0)</code> ：当参数二为 <code>0</code> 时，表示根据字符串格式自动选择合适的进制来完成转换。</p>
 </li>
 <li><p>构造 Payload ：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=0x117C</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=+4476</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476+1-1</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476e1  （科学计数法）</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=4476&#x27;  （开头为数字时会把开头的数字部分转换为数字，其他忽略）</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">?num=0x117C</span><br><span class="line">?num=010574   （0开头是八进制）</span><br><span class="line">?num=+4476</span><br><span class="line">?num=4476+1-1</span><br><span class="line">?num=4476.1</span><br><span class="line">?num=4476e1  （科学计数法）</span><br><span class="line">?num=4476&#x27;  （开头为数字时会把开头的数字部分转换为数字，其他忽略）</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="题目三"><a href="#题目三" class="headerlink" title="题目三"></a>题目三</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"><span class="variable">$a</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/im&#x27;</span>, <span class="variable">$a</span>))&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^php$/i&#x27;</span>, <span class="variable">$a</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;nonononono&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -148,17 +140,38 @@
 </li>
 <li><p><code>/^php$/i</code> ：不区分大小写，匹配整段字符串的内容是否为 <code>php</code> 。</p>
 </li>
-<li><p>注意：按行匹配是以换行符为每行的结尾来区分每行、进行匹配的，也就是说下面这种情况只能算一行：</p>
+<li><p>注意：按行匹配是以换行符 <code>%0A</code> 为每行的结尾来区分每行、进行匹配的，也就是说下面这种情况只能算一行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=php%0A</span><br></pre></td></tr></table></figure>
 
 <p>如果是下面这种情况就算两行，也就是本题 Payload ：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=%0Aphp</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h2 id="题目四"><a href="#题目四" class="headerlink" title="题目四"></a>题目四</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$num</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$num</span>==<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>)==<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<p><code>==</code> 两边分别为字符串与数字时，会将字符串转换为数字再比较。<strong>转换过程没搞懂，暂时问不清楚！</strong></p>
+<p>请看 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?num=0x117C</span><br><span class="line">?num=010574</span><br><span class="line">?num=4476.1</span><br><span class="line">?num=4476e1</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目五"><a href="#题目五" class="headerlink" title="题目五"></a>题目五</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$num</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$num</span>==<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-z]/i&quot;</span>, <span class="variable">$num</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>)==<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<p>又过滤了字母，还好前面总结的 Payload 够多。</p>
+<p>请看 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?num=010574</span><br><span class="line">?num=4476.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目六"><a href="#题目六" class="headerlink" title="题目六"></a>题目六</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$num</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$num</span>===<span class="string">&quot;4476&quot;</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-z]/i&quot;</span>, <span class="variable">$num</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">strpos</span>(<span class="variable">$num</span>, <span class="string">&quot;0&quot;</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">intval</span>(<span class="variable">$num</span>,<span class="number">0</span>)===<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<p>放宽了等于的条件，又加了一个条件，<code>strpos()</code> 返回某字符首次出现的位置，所以必须有 <code>0</code> 且 <code>0</code> 不能出现在首位。</p>
+<p>请看 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?num=%20010574   （加了一个空格的八进制数值，核心是加符号还有0）</span><br><span class="line">?num=4476.0</span><br><span class="line">?num=4476+0</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cm9znqrjq000ceouh6334b0ep" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cm9zpwlpe0007ksuhgjhh5qqa" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -216,7 +229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cm9znqrjw0019eouh34iocwc2" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cm9zpwlpn0019ksuh05665w4y" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -271,7 +284,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9znqrjl0003eouhe2k467hh" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9zpwlpd0006ksuhhcfe511g" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -354,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cm9znqrjt000peouhhsenayol" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cm9zpwlpk000tksuh9k1tfrxn" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -417,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9znqrk10026eouh8nhk4ia8" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cm9zpwlpr0027ksuhbbu63jdq" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -757,7 +770,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9znqrjo0008eouh4flzd5zc" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cm9zpwlpe0008ksuh8uvocei9" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -842,7 +855,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9znqrjo0007eouh5w7ka9sw" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cm9zpwlph000gksuhaj5w8lgl" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -978,7 +991,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9znqrjt000neouhgpmkc1m3" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cm9zpwlpg000bksuhh35b4oek" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1081,7 +1094,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9znqrk1002beouh0tvm0zrp" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cm9zpwlpt002fksuh7eau7f82" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1157,7 +1170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9znqrk2002eeouhczrk4rdd" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/16/%E7%BB%88%E4%BA%8E%E8%BD%AE%E5%88%B0%E4%BA%86%E6%97%A5%E5%BF%97%E6%B3%A8%E5%85%A5/" data-id="cm9zpwlps002cksuhht027ifp" data-title="终于轮到了日志注入" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
