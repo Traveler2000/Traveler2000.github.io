@@ -14,7 +14,7 @@
 <meta property="og:description" content="在PHP中，$_GET 和 $_POST 是两种独立的超全局数组，它们的参数来源和处理逻辑有本质区别： $_GET 的底层逻辑 参数来源：URL查询字符串（如 ?key1&#x3D;value1&amp;key2&#x3D;value2）。 无关请求方法：无论请求是 GET、POST 还是其他方法，只要URL中存在查询字符串，PHP都会自动解析到 $_GET 数组中。  $_POST 的底层逻辑 参数来源：请求体（B">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-25T09:06:49.000Z">
-<meta property="article:modified_time" content="2025-04-25T09:30:02.444Z">
+<meta property="article:modified_time" content="2025-04-29T03:08:00.801Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="杂项知识点">
 <meta property="article:tag" content="PHP">
@@ -111,12 +111,14 @@
 <li><strong>依赖请求方法</strong>：只有使用 <code>POST</code> 方法时，PHP才会自动解析请求体到 <code>$_POST</code> 数组。</li>
 <li><strong>注意</strong>：如果要在 Burp Suite 中将 GET 请求修改为 POST 请求并修改请求体，请在修改完请求行的 <code>GET</code> 后在右侧 Inspector 内修改请求体，否则 Burp Suite 不会自动向请求头中添加 <code>Content-Type</code> 字段，导致参数无法传给 <code>$_POST</code> 数组。</li>
 </ul>
-<p>由此可得：只要 URL 中存在查询字符串，都会被解析到 <code>$_GET</code> 数组；但 <code>$_POST</code> 数组要求更严，条件不满足时会有参数无法传到 <code>$_POST</code> 数组中的情况。</p>
+<p>由此可得：只要 URL 中<strong>存在查询字符串</strong>，都会被解析到 <strong><code>$_GET</code> 数组</strong>；但 <code>$_POST</code> 数组<strong>依赖 <code>POST</code> 方法与请求头</strong>，条件不满足时会有参数无法传到 <code>$_POST</code> 数组中的情况。</p>
+<p><strong>关于 <code>php://input</code> 伪协议</strong></p>
+<p><code>php://input</code> 伪协议可用于读取请求体的原始数据，不管请求方法是 <code>GET</code> 还是 <code>POST</code> 还是其他方法。类似 URL 传参时的 <code>$_GET</code> 数组。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cm9zpwlpd0006ksuhhcfe511g" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cma21qgo00007xwuh6tjafpnb" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -157,7 +159,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E7%89%B9%E6%80%A7/">PHP特性</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP特性题目</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
     </div>
   </div>
 
@@ -199,6 +201,10 @@
       <ul>
         
           <li>
+            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">SERVER数组</a>
+          </li>
+        
+          <li>
             <a href="/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP 特性题目</a>
           </li>
         
@@ -212,10 +218,6 @@
         
           <li>
             <a href="/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/">filter 伪协议绕过 die（Web87）</a>
-          </li>
-        
-          <li>
-            <a href="/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/">条件竞争变体题目</a>
           </li>
         
       </ul>
