@@ -99,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/29/SERVER%E6%95%B0%E7%BB%84/" data-id="cma21qgo3000jxwuh3uysg67l" data-title="SERVER数组" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/29/SERVER%E6%95%B0%E7%BB%84/" data-id="cma228zyp000cxguhdmj5eaas" data-title="SERVER数组" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -221,14 +221,24 @@
 
 <h2 id="题目五"><a href="#题目五" class="headerlink" title="题目五"></a>题目五</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>])) &#123;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>] != <span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>])</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;a&#x27;</span>]) === <span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>]))</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">&#x27;Wrong.&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>解题思路</strong></p>
 <p><code>md5()</code> 函数传入非字符串类型参数时会返回 <code>false</code> ，此处可传入两个数组使 <code>md5()</code> 函数返回 <code>false</code> ，于是 <code>false === false</code> 绕过 MD5 校验成功。</p>
+<p>Payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;a[]&quot;:1,&quot;b[]&quot;:2&#125;  # requests 脚本 data 参数</span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="题目六"><a href="#题目六" class="headerlink" title="题目六"></a>题目六</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$_GET</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_POST</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_COOKIE</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_SERVER</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;HTTP_FLAG&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$flag</span>:<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>解题思路</strong></p>
+<p>Python 脚本解法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma21qgo00008xwuh6ouwcm4q" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma228zym0006xguheb4f8m11" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -286,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cma21qgoa001ixwuhb1zcdpjc" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cma228zyw001gxguh3wrt5kxm" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -343,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cma21qgo00007xwuh6tjafpnb" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cma228zyk0003xguh1p10grdo" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -426,7 +436,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cma21qgo5000qxwuh82ebej74" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cma228zyt000vxguhb52j9swf" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -489,7 +499,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cma21qgoe0029xwuh82xahhuy" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cma228zz0002axguh7u19hjjm" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -829,7 +839,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cma21qgnz0006xwuhh0iqh3s4" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cma228zyo000bxguhho4e5mqp" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -914,7 +924,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cma21qgo1000bxwuhbv4ibb5q" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cma228zyn0008xguhdrj6adnj" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1050,7 +1060,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cma21qgo2000cxwuhc7ff28z5" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cma228zyq000gxguh5xcm1nbl" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1153,7 +1163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cma21qgom003zxwuhf3ks0q01" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cma228zz1002ixguh4k7f55lr" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
