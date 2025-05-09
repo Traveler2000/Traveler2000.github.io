@@ -4,20 +4,16 @@
   <meta charset="utf-8">
   
   
-  <title>操作系统交互函数 | Traveler2000🪐</title>
+  <title>归档: 2025/5 | Traveler2000🪐</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="system()输出行为：直接输出命令的标准输出（STDOUT），输出所有结果。返回值：成功时返回所有输出；失败时返回 false。状态码：可通过第二个参数获取命令的退出状态码。  1$last_line &#x3D; system(&#x27;ls -la&#x27;, $status_code);  exec()输出行为：默认不直接输出结果，需通过第二个参数捕获完整输出数组。返回值：成功时返回命令的最">
-<meta property="og:type" content="article">
-<meta property="og:title" content="操作系统交互函数">
-<meta property="og:url" content="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/index.html">
+  <meta name="description" content="网络安全菜鸟，大佬们见笑了">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Traveler2000🪐">
+<meta property="og:url" content="http://traveler2000.github.io/archives/2025/05/index.html">
 <meta property="og:site_name" content="Traveler2000🪐">
-<meta property="og:description" content="system()输出行为：直接输出命令的标准输出（STDOUT），输出所有结果。返回值：成功时返回所有输出；失败时返回 false。状态码：可通过第二个参数获取命令的退出状态码。  1$last_line &#x3D; system(&#x27;ls -la&#x27;, $status_code);  exec()输出行为：默认不直接输出结果，需通过第二个参数捕获完整输出数组。返回值：成功时返回命令的最">
+<meta property="og:description" content="网络安全菜鸟，大佬们见笑了">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-13T14:10:25.141Z">
-<meta property="article:modified_time" content="2025-04-19T10:39:17.058Z">
 <meta property="article:author" content="Traveler2000">
-<meta property="article:tag" content="PHP">
-<meta property="article:tag" content="命令执行">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
@@ -75,88 +71,58 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-操作系统交互函数" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" class="article-date">
-  <time class="dt-published" datetime="2025-04-13T14:10:25.141Z" itemprop="datePublished">2025-04-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      操作系统交互函数
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2025" class="archive-year">2025</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/" class="archive-article-date">
+  <time class="dt-published" datetime="2025-05-07T07:21:10.000Z" itemprop="datePublished">5月 7</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/">SQL注入题解与知识</a>
     </h1>
   
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><strong><code>system()</code></strong><br><strong>输出行为</strong>：直接输出命令的<strong>标准输出（STDOUT）</strong>，输出所有结果。<br><strong>返回值：</strong>成功时返回所有输出；失败时返回 <code>false</code>。<br><strong>状态码</strong>：可通过第二个参数获取命令的退出状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$last_line</span> = <span class="title function_ invoke__">system</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="variable">$status_code</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong><code>exec()</code></strong><br><strong>输出行为</strong>：默认不直接输出结果，需通过第二个参数捕获完整输出数组。<br><strong>返回值</strong>：成功时返回命令的最后一行输出（若要全部输出，需要第二个参数捕获完整输出数组，然后输出该数组）；失败时返回 <code>false</code>。<br><strong>状态码</strong>：通过第三个参数获取退出状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">exec</span>(<span class="string">&#x27;ls -la&#x27;</span>, <span class="variable">$output</span>, <span class="variable">$status_code</span>);</span><br><span class="line"><span class="title function_ invoke__">print_r</span>(<span class="variable">$output</span>); <span class="comment">// 输出数组形式的结果</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong><code>shell_exec()</code> 和反引号运算符（&#96;）</strong></p>
-<p><strong>输出行为</strong>：不直接输出结果，返回完整输出字符串。<br><strong>返回值</strong>：成功时返回完整的输出字符串；失败或空输出时返回 <code>null</code>。</p>
-</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">shell_exec</span>(<span class="string">&#x27;ls -la&#x27;</span>);</span><br><span class="line"><span class="comment">// 或使用反引号</span></span><br><span class="line"><span class="variable">$result</span> = `ls -la`;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$result</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong><code>passthru()</code></strong><br><strong>输出行为</strong>：直接输出<strong>原始二进制数据</strong>（如图像、音频）到浏览器。<br><strong>返回值</strong>：无输出内容，但可通过第二个参数获取状态码。</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">passthru</span>(<span class="string">&#x27;cat image.jpg&#x27;</span>, <span class="variable">$status_code</span>);</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://traveler2000.github.io/2025/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0/" data-id="cmag7dmn60022p0uhc9ua33s0" data-title="操作系统交互函数" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li></ul>
-
-    </footer>
+    </header>
   </div>
+</article>
   
     
-<nav id="article-nav">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2025/05/07/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="archive-article-date">
+  <time class="dt-published" datetime="2025-05-07T05:44:22.000Z" itemprop="datePublished">5月 7</time>
+</a>
+      
   
-    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E9%81%93%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          我的第一道命令执行
-        
-      </div>
-    </a>
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2025/05/07/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B0%8F%E6%8A%80%E5%B7%A7/">文件上传小技巧</a>
+    </h1>
   
-  
-    <a href="/2025/04/13/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%88%86%E7%A0%B4/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">我的第一次爆破</div>
-    </a>
-  
-</nav>
 
-  
+    </header>
+  </div>
 </article>
+  
+  
+    </div></section>
+  
 
 
 </section>

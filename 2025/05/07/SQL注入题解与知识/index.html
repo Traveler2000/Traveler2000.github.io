@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SQL注入题解与知识 | Traveler2000🪐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="题目一1select username,password from user where username !&#x3D;&#x27;flag&#x27; and id &#x3D; &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;  题目解析 简单的 SQL 注入，Payload 如下： 1&#x27; or 1&#x3D;1 ; --   没有任何过滤就拼接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入题解与知识">
+<meta property="og:url" content="http://traveler2000.github.io/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Traveler2000🪐">
+<meta property="og:description" content="题目一1select username,password from user where username !&#x3D;&#x27;flag&#x27; and id &#x3D; &#x27;&quot;.$_GET[&#x27;id&#x27;].&quot;&#x27; limit 1;  题目解析 简单的 SQL 注入，Payload 如下： 1&#x27; or 1&#x3D;1 ; --   没有任何过滤就拼接">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-07T07:21:10.000Z">
+<meta property="article:modified_time" content="2025-05-08T12:47:52.247Z">
+<meta property="article:author" content="Traveler2000">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Traveler2000🪐" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Traveler2000🪐</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://traveler2000.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-SQL注入题解与知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2025-05-07T07:21:10.000Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SQL注入题解与知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="题目一"><a href="#题目一" class="headerlink" title="题目一"></a>题目一</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,password <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> username <span class="operator">!=</span><span class="string">&#x27;flag&#x27;</span> <span class="keyword">and</span> id <span class="operator">=</span> <span class="string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="string">&#x27;].&quot;&#x27;</span> limit <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>题目解析</strong></p>
+<p>简单的 SQL 注入，Payload 如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; or 1=1 ; -- </span><br></pre></td></tr></table></figure>
+
+<p>没有任何过滤就拼接 SQL 语句，导致漏洞产生。下面分析 Payload 的效果：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,password <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> username <span class="operator">!=</span><span class="string">&#x27;flag&#x27;</span> <span class="keyword">and</span> id <span class="operator">=</span> <span class="string">&#x27;&quot;&#x27;</span> <span class="keyword">or</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> ; <span class="comment">-- &quot;&#x27; limit 1;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单引号 <code>&#39;</code> 与前面的单引号闭合，使后面的 <code>or 1=1 ; --</code> 被视为 SQL 语句而非字符串。</li>
+<li><code>or 1=1</code> 与前面的表达式组合得到 <code>username !=&#39;flag&#39; and id = &#39;&quot;&#39; or 1=1</code> ：</li>
+<li><code>where</code> 一般情况下<strong>检查表中的每一行</strong>，并针对每行计算 <code>where</code> 后的<strong>整个表达式</strong>的结果，若真则返回该行，反之则跳过。</li>
+<li>由于 <code>and</code> 的<strong>优先级</strong>比 <code>or</code> 高，所以最终计算结果恒为 <code>1</code> 。 <code>where 1</code> 会匹配并返回所有行。</li>
+<li>分号 <code>;</code> 结束该句，防止语法错误。</li>
+<li>注释符 <code>-- </code> 注释掉后面的双引号、单引号与 <code>limit 1</code> 。防止语法错误，以及绕过原语句中返回结果只有一行的限制。（最后面一定要有空格，关于注释，参考另一篇简单讲解 SQL 注释符的笔记）</li>
+</ul>
+<h2 id="题目二"><a href="#题目二" class="headerlink" title="题目二"></a>题目二</h2><p>SQL 部分</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,password <span class="keyword">from</span> ctfshow_user2 <span class="keyword">where</span> username <span class="operator">!=</span><span class="string">&#x27;flag&#x27;</span> <span class="keyword">and</span> id <span class="operator">=</span> <span class="string">&#x27;&quot;.$_GET[&#x27;</span>id<span class="string">&#x27;].&quot;&#x27;</span> limit <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>PHP 片段</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//检查结果是否有flag</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$row</span>-&gt;username!==<span class="string">&#x27;flag&#x27;</span>)&#123;</span><br><span class="line">      <span class="variable">$ret</span>[<span class="string">&#x27;msg&#x27;</span>]=<span class="string">&#x27;查询成功&#x27;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>题目解析</strong></p>
+<p>先探测列数：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; order by 1 -- </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>order by</code> ：在 SQL 里，<code>ORDER BY</code> 是用于对查询结果进行排序的子句。语法如：</li>
+</ul>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> column1 [<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>], column2 [<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>], ...;</span><br></pre></td></tr></table></figure>
+<p>  <code>column1</code> 为列，可以是<strong>列名</strong>，也可以是<strong>索引</strong>（1,2,3…）； <code>[ASC|DESC]</code> 为升降排序的可选项。</p>
+<ul>
+<li><code>order by 1</code> 则是测试列数，若<strong>无报错</strong>（这里应该是空结果，因为 <code>select username,password from ctfshow_user2 where username !=&#39;flag&#39; and id = &#39;&quot;&#39; order by 1 -- </code> ，不太可能有某个字段的值为 <code>&quot;</code> ）则<strong>递增</strong>数字，直到报错为止，那么列数即为<strong>未报错的最大数字</strong>。</li>
+</ul>
+<p>也可以使用联合查询来探测：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27; union select 1,2,3,4--  --递增列数</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>union select</code> ：在 SQL 中，<code>SELECT</code> 之间用 <code>UNION</code> 连接起来，结果集合并成一个结果集。<br>合并要求：</p>
+<ul>
+<li><strong>列数必须相同</strong>：所有 <code>SELECT</code> 语句的列数必须一致。</li>
+<li><strong>数据类型兼容</strong>：对应列的数据类型应该兼容（或可隐式转换）。</li>
+<li><strong><code>ORDER BY</code> 只能放在最后</strong>：合并结果只有一张表，所以 <code>ORDER BY</code> 要放在最后给整张表排序。列名通常继承自第一张表，如果要用列名排序，需要用<strong>第一张表的列名</strong>。也可以用<strong>索引</strong>和<strong>第一张表的别名</strong>排序。</li>
+</ul>
+<p>基本语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column1, column2 <span class="keyword">FROM</span> table1</span><br><span class="line"><span class="keyword">UNION</span> [<span class="keyword">ALL</span>]</span><br><span class="line"><span class="keyword">SELECT</span> column1, column2 <span class="keyword">FROM</span> table2;</span><br></pre></td></tr></table></figure>
+
+<p><code>UNION</code> 默认去重，使用 <code>UNION ALL</code> 合并结果时不去重。</p>
+</li>
+<li><p><code>union select 1,2,3,4</code> 测试列数。<strong>可以把 <code>select 1,2,3,4</code> 看作联合查询时自定义添加一行内容 <code>1,2,3,4</code> 。</strong>由于联合查询时列数必须相同，所以当无报错时，说明列数正确；如果报错，则修改列数再次测试，直到不报错。</p>
+</li>
+</ul>
+<p>确定列数后，利用联合查询，按照下列步骤获得 flag ：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,database()--  --返回数据库名</span><br><span class="line">&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema=&#x27;&lt;库名&gt;&#x27; --  --获取数据库里的表名</span><br><span class="line">&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;&lt;表名&gt;&#x27; --  --获取表内字段名</span><br><span class="line">&#x27; union select 1,group_concat(&lt;字段名&gt;) from 表名 --  --获取字段值（不要用username字段，会被后续的PHP脚本过滤掉）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>database()</code> ：MySQL内置函数，返回当前连接的数据库名。</li>
+<li><code>information_schema</code> ：虚拟的数据库，并不实际存储数据，由数据库系统根据元数据动态生成。包含数据库中所有数据库的信息、数据库中所有表的详细信息、数据库中所有列的信息与关于索引的元数据以及其他一些信息等等。</li>
+<li><code>information_schema.tables</code> ：包含了数据库中所有表的信息，如表名、表类型、存储引擎、行数、创建时间、更新时间等。此处用于<strong>获取当前数据库中有哪些表</strong>。</li>
+<li><code>where table_schema=&#39;&lt;库名&gt;&#39;</code> ：<code>table_schema</code> 是表中的一个字段，表明该表位于哪个数据库。</li>
+<li><code>information_schema.columns</code> ：大致同上，此处用于<strong>获取目标表中有哪些列</strong>。</li>
+<li><code>where table_name=&#39;&lt;表名&gt;&#39;</code> ：大致同上，表明列在哪张表中。</li>
+<li><code>group_concat()</code> ：将多行结果合并成逗号分隔的字符串，全部表示在一行中。</li>
+</ul>
+<p>整个过程，就是利用联合查询与数据库的特性得到各种信息，最后得到 flag 。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://traveler2000.github.io/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/" data-id="cmag7dmmv000bp0uh1b08aoc9" data-title="SQL注入题解与知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/05/07/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B0%8F%E6%8A%80%E5%B7%A7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">文件上传小技巧</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP特性题目</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">信息收集</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">命令执行与文件包含</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%AA%E5%88%86%E7%B1%BB/">未分类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/">杂项知识点</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%86%E7%A0%B4/">爆破</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">编程笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/" rel="tag">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag">SQL注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Session/" rel="tag">Session</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/URL/" rel="tag">URL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/requests/" rel="tag">requests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="tag">信息收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" rel="tag">命令执行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag">文件上传</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag">文件包含</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag">杂项知识点</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%86%E7%A0%B4/" rel="tag">爆破</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Python/" style="font-size: 11.67px;">Python</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">SQL注入</a> <a href="/tags/Session/" style="font-size: 13.33px;">Session</a> <a href="/tags/URL/" style="font-size: 10px;">URL</a> <a href="/tags/requests/" style="font-size: 10px;">requests</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" style="font-size: 10px;">信息收集</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 18.33px;">命令执行</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 10px;">文件上传</a> <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" style="font-size: 15px;">文件包含</a> <a href="/tags/%E6%9D%82%E9%A1%B9%E7%9F%A5%E8%AF%86%E7%82%B9/" style="font-size: 16.67px;">杂项知识点</a> <a href="/tags/%E7%88%86%E7%A0%B4/" style="font-size: 13.33px;">爆破</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 10px;">面向对象</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">四月 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/05/07/SQL%E6%B3%A8%E5%85%A5%E9%A2%98%E8%A7%A3%E4%B8%8E%E7%9F%A5%E8%AF%86/">SQL注入题解与知识</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/07/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%B0%8F%E6%8A%80%E5%B7%A7/">文件上传小技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/29/SERVER%E6%95%B0%E7%BB%84/">$_SERVER 数组</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/27/PHP%E7%89%B9%E6%80%A7%E9%A2%98%E7%9B%AE/">PHP 特性题目</a>
+          </li>
+        
+          <li>
+            <a href="/2025/04/27/%E5%88%A9%E7%94%A8%E6%88%96%E8%BF%90%E7%AE%97%E6%B4%BB%E5%AD%97%E5%8D%B0%E5%88%B7/">利用或运算活字印刷</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Traveler2000<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
